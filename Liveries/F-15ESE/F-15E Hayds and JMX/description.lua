@@ -146,11 +146,11 @@ livery = {
 	{"F-15EC_05",	1,	                "F-15E_EC05_NRM",				true};
 	{"F-15EC_05",	ROUGHNESS_METALLIC,	"F-15E_EC05_RoughMet", 			true};
 
-	{"F-15EC_06",	0,	                "F-15E_EC06B1hayds",					false};
+	{"F-15EC_06",	0,	                "F-15E_EC06B1hayds",			false};
 	{"F-15EC_06",	1,	                "F-15E_EC06_NRM",				true};
 	{"F-15EC_06",	ROUGHNESS_METALLIC,	"F-15E_EC06_RoughMet", 			true};
 
-	{"F-15EC_07",	0,	                "F-15E_EC07A2",					true};
+	{"F-15EC_07",	0,	                "EC07CHECK",					false};
 	{"F-15EC_07",	1,	                "F-15E_EC07A_NRM",				true};
 	{"F-15EC_07",	ROUGHNESS_METALLIC,	"F-15E_EC07A_RoughMet", 		true};
 --    {"F-15EC_07",	DECAL,	            "F-15EC_07_Decal",			true};
@@ -160,11 +160,11 @@ livery = {
 	{"F-15EC_05R",	1,	                "F-15E_EC05_NRM",				true};
 	{"F-15EC_05R",	ROUGHNESS_METALLIC,	"F-15E_EC05_RoughMet", 			true};
 
-	{"F-15EC_06R",	0,	                "F-15E_EC06B2389",					false};
+	{"F-15EC_06R",	0,	                "F-15E_EC06B2389",				false};
 	{"F-15EC_06R",	1,	                "F-15E_EC06_NRM",				true};
 	{"F-15EC_06R",	ROUGHNESS_METALLIC,	"F-15E_EC06_RoughMet", 			true};
 
-	{"F-15EC_07R",	0,	                "F-15E_EC07A1",					true};
+	{"F-15EC_07R",	0,	                "EC07JMX",						false};
 	{"F-15EC_07R",	1,	                "F-15E_EC07A_NRM",				true};
 	{"F-15EC_07R",	ROUGHNESS_METALLIC,	"F-15E_EC07A_RoughMet", 		true};
 --    {"F-15EC_07R",	DECAL,	            "F-15EC_07_Decal",			true};
@@ -210,7 +210,7 @@ livery = {
 
 
 
-name = "USAF 389th Thunderbolts 'Hayds & JMX'" --0366
+name = "366th 389th 'Hayds & JMX'" --0366
 countries = {"USA"}
 
 custom_args = 

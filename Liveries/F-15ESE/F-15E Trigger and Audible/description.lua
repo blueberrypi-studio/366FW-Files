@@ -212,7 +212,7 @@ livery = {
 
 
 
-name = "USAF 389th Thundebolts 'Trigger & Audible''" --0366
+name = "366th 389th 'Trigger & Audible'" --0366
 countries = {"USA"}
 
 custom_args = 

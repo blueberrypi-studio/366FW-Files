@@ -32,7 +32,7 @@ livery = {
 	{"F-15E_04AB",	1,	                "F-15e_E04_NRM",	true};
 	{"F-15E_04AB",	ROUGHNESS_METALLIC,	"F-15e_E04_A_RoughMet_COMBAT", true};
 --FLAP1
-	{"F-15E_04FT",	0,	                "F-15E_E04_A_COMBAT_SGT",			false};
+	{"F-15E_04FT",	0,	                "F-15E_E04_A_COMBAT_SG",			false};
 	{"F-15E_04FT",	1,	                "F-15e_E04_NRM",	true};
 	{"F-15E_04FT",	ROUGHNESS_METALLIC,	"F-15e_E04_A_RoughMet_COMBAT", true};
 
@@ -284,7 +284,7 @@ livery = {
 
 
 
-name = "USAF 428th Buccaneers Tom & Twitch" --1690
+name = "366th 428th 'Tom & Twitch'" --1690
 countries = {"USA"}
 
 custom_args = 

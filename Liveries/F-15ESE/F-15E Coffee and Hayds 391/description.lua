@@ -212,7 +212,7 @@ livery = {
 
 
 
-name = "USAF 391st Bold Tigers Coffee & Hayds" --0366
+name = "366th 391st 'Coffee & Hayds' Flagship" --0366
 countries = {"USA"}
 
 custom_args = 

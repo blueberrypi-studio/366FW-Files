@@ -43,7 +43,7 @@ livery = {
 
 
 
-	{"FPU_8A", 0 ,"FPU_8",false};
+	{"FPU_8A", 0 ,"FPU_8A",false};
 	{"FPU_8A", 2 ,"FPU_8A_Diff_RoughMet",true};
 	
 
@@ -51,7 +51,7 @@ livery = {
 
 
 }
-name = "USAF 390th ECS Rigster"
+name = "USAF 390th Wild Boars Rigster"
 countries = {"USA",}
 
 

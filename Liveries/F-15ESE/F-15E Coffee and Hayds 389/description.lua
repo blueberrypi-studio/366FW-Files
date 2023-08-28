@@ -210,7 +210,7 @@ livery = {
 
 
 
-name = "USAF 389th Thunderbolts 'Coffee & Hayds'" --0366
+name = "366th 389th 'Coffee & Hayds'" --0366
 countries = {"USA"}
 
 custom_args = 

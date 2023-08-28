@@ -148,9 +148,9 @@ livery = {
 	{"Fuel_Tank_300Gal", ROUGHNESS_METALLIC,	    "Fuel_Tank_300Gal_RoughMet",	    true};
 	
 -- F16_bl50_Fuel_Tank_370Gal
-	{"F_16_Tank_370", 0,	                        "F-16_Tank_370_diff",		        true};
-	{"F_16_Tank_370", 1,	                        "F-16_Tank_370_NM",		            true};
-	{"F_16_Tank_370", ROUGHNESS_METALLIC,	        "F-16_Tank_370_diff_RoughMet",	    true};
+	{"F_16_Tank_370", 0,	                        "Fuel_Tank_370Gal_diff",		        true};
+	{"F_16_Tank_370", 1,	                        "Fuel_Tank_370Gal_NM",		            true};
+	{"F_16_Tank_370", ROUGHNESS_METALLIC,	        "Fuel_Tank_370Gal_diff_RoughMet",	    true}
 	
 
 
