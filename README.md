@@ -21,8 +21,8 @@ A collection of:
   - Mushyboy | [389] "Mushy" -> "Ashbringer" (not complete yet, but taken)
   - Klokwork | [389] "Rodeo" -> "Pheonix" (not complete yet, but taken)
 - F-16C
+  - USAF 389th Thunderbolts F-16 HIGH VIS 
   - USAF 389th Thunderbolts F-16 LOW VIS
-  - USAF 389th Thunderbolts F-16 HIGH VIS
   - Derpymemeo | [389] "Derpy"
   - Jayson | [389] "flyingdutchman"
   - Extra | [389] "Saber"
