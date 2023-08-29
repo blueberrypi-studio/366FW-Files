@@ -142,7 +142,7 @@ _SETTINGS:SetA2A_BRAA()
 
 --Static Declaration should you need them later--THESE COULD BE TARGETS FOR SCORING LATER>BUT KEEP IN MIND WILL BRING MISSION TO A HALT FOR THE RELATIVE SIDE
 
---blueHQ = STATIC:FindByName("BLUEHQ")
+blueHQ = STATIC:FindByName("BLUEHQ")
 redHQ = STATIC:FindByName("REDHQ")
 
 ---COMMANDCENTERS
@@ -150,7 +150,7 @@ redHQ = STATIC:FindByName("REDHQ")
 --RED
 
 RU_CC = COMMANDCENTER:New( GROUP:FindByName( "REDCC" ), "Russian Command" )
---US_CC = COMMANDCENTER:New( GROUP:FindByName( "BLUECC" ), "Allied Command")
+US_CC = COMMANDCENTER:New( GROUP:FindByName( "BLUECC" ), "Allied Command")
 
 
 
@@ -293,7 +293,7 @@ local AwacsEscortsRed = SQUADRON:New("✈ MIG29ESCORT",4,"✈ MIG29ESCORT")
   AwacsRed:NewPayload("✈ MIG29ESCORT",-1,{AUFTRAG.Type.ESCORT},100)
 
 
-local RedAwacs = AWACS:New("Awacs-Red", AwacsRed, "red", AIRBASE.PersianGulf.Bandar_Abbas_Intl, "REDAWACSORBIT", ZONE:FindByName("FEZ"), "Qeshm_Island", 275, radio.modulation.AM )
+local RedAwacs = AWACS:New("Awacs-Red", AwacsRed, "red", AIRBASE.PersianGulf.Bandar_Abbas_Intl, "REDAWACSORBIT", ZONE:FindByName("FEZ"), AIRBASE.PersianGulf.Bandar_Abbas_Intl, 275, radio.modulation.AM )
 
   RedAwacs:SetEscort(2)
   RedAwacs:SetAwacsDetails(CALLSIGN.AWACS.Magic,1,30,280,88,25)
@@ -349,14 +349,14 @@ end
 -- TODO AMPHIBIOUS LANDING
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-local redSupplyShip = GROUP:FindByName("RedSupplyShip")
-
-local redArmorZones = { ZONE:New("RA1"), ZONE:New("RA2")}
-local redArmorTemplates = { "REDFOR APC", "REDFOR BMP", "REDFOR T80", "REDFOR SHILKA"}
-
-local redArmorGroupAlpha = ARMYGROUP:New("Red Armor Group Alpha")
-local redArmorGroupBravo = ARMYGROUP:New("Red Armor Group Bravo")
-local redArmorGroupCharlie = ARMYGROUP:New("Red Armor Group Charlie")
+--local redSupplyShip = GROUP:FindByName("RedSupplyShip")
+--
+--local redArmorZones = { ZONE:New("RA1"), ZONE:New("RA2")}
+--local redArmorTemplates = { "REDFOR APC", "REDFOR BMP", "REDFOR T80", "REDFOR SHILKA"}
+--
+--local redArmorGroupAlpha = ARMYGROUP:New("Red Armor Group Alpha")
+--local redArmorGroupBravo = ARMYGROUP:New("Red Armor Group Bravo")
+--local redArmorGroupCharlie = ARMYGROUP:New("Red Armor Group Charlie")
 
 
 --[[
@@ -531,7 +531,7 @@ end
 -- TODO ZONE CAPTURE
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-local CaptureZoneAlpha = ZONE_AIRBASE:New(AIRBASE.PersianGulf.Khasab, 5000)
+local CaptureZoneAlpha = ZONE_AIRBASE:New(AIRBASE.PersianGulf.Khasab, 5000):DrawZone(0)
 
 local ZoneCaptureCoalitionOne = ZONE_CAPTURE_COALITION:New( CaptureZoneAlpha, coalition.side.RED ) 
 
