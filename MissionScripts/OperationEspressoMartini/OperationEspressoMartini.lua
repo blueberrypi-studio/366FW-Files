@@ -14,8 +14,40 @@ Client Slots
 
 Blue support forces: CAP, and Helo Escorts
 
+Distribute scaled based scoring
+
+SETUP ME TEMPLATES FOR:
+
+Awacs
+Tankers
+Escorts
 
 
+Assemble Khasab with dead and broken blue armor units and sam sites.
+Distribute initial armor for redfor at khasab
+
+assemble small representation of flotilla
+
+
+assemble bluefor flotilla
+
+UPDATE SOUNDS
+
+
+
+SET MISSION and MISSION STAGES
+
+Destruction of Qeshm Island and Larak Island CommandCenters and Bunkers  (this will shutdown spawns of helo troops, and cap)
+
+Destruction of Redfor Armor Landing Supply Vessel
+
+Elimination of Redfor Forces at Khasab
+
+Construction of FOB by Huey CTLD at Khasab
+
+
+
+SPLASH DAMAGE SCRIPT IS ALL KINDS OF FUCKED.  Fix it.
 
 
 ]]--
@@ -194,6 +226,10 @@ redMantis:Start()
 -- TODO BLUE REAPER DRONE
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+--NO REAPER DRONE.  USE CTLD DROPPED JTAC INSTEAD.
+
+--OR REAPER DRONE.  WHO TF KNOWS?
+
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- TODO Sounds for Client
@@ -202,6 +238,10 @@ redMantis:Start()
 ClientSet:HandleEvent(EVENTS.Hit)
 ClientSet:HandleEvent(EVENTS.Dead)
 ClientSet:HandleEvent(EVENTS.Land)
+
+
+--UPDATE SOUNDS--
+
 
 function ClientSet:OnEventDead(EventData)
   local file = "Oh Jesus.ogg"
@@ -491,7 +531,7 @@ end
 -- TODO ZONE CAPTURE
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-local CaptureZoneAlpha = ZONE_AIRBASE:New(AIRBASE.PersianGulf.Khasab, 10000)
+local CaptureZoneAlpha = ZONE_AIRBASE:New(AIRBASE.PersianGulf.Khasab, 5000)
 
 local ZoneCaptureCoalitionOne = ZONE_CAPTURE_COALITION:New( CaptureZoneAlpha, coalition.side.RED ) 
 

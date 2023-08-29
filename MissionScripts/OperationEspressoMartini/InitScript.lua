@@ -10,7 +10,7 @@ env.info("Mist Loaded")
 dofile(lfs.writedir()..'/Missions/DCS Scripts/MY_MISSIONS/OperationEspressoMartini/OperationEspressoMartini.lua')
 env.info("Mission Script Loaded")
 
-dofile(lfs.writedir()..'/Missions/DCS Scripts/MY_MISSIONS/OperationEspressoMartini/CTLD.lua')
+dofile(lfs.writedir()..'/Missions/DCS Scripts/MY_MISSIONS/OperationEspressoMartini/CTLD(OEM).lua')
 env.info("CTLD Loaded")
 
 dofile(lfs.writedir()..'/Missions/DCS Scripts/MY_MISSIONS/OperationEspressoMartini/SplashDamage.lua')
