@@ -4,19 +4,19 @@ env.info("Moose Loaded")
 --dofile(lfs.writedir()..'/Missions/DCS Scripts/MY_MISSIONS/Moose.lua')
 --env.info("Mission Script Loaded")
 
-dofile(lfs.writedir()..'/Missions/DCS Scripts/MY_MISSIONS/OperationEspressoMartini/mist_4_5_107.lua')
+dofile(lfs.writedir()..'/Missions/DCS Scripts/MY_MISSIONS/MissionScripts/OperationEspressoMartini/mist_4_5_107.lua')
 env.info("Mist Loaded")
 
-dofile(lfs.writedir()..'/Missions/DCS Scripts/MY_MISSIONS/OperationEspressoMartini/OperationEspressoMartini.lua')
+dofile(lfs.writedir()..'/Missions/DCS Scripts/MY_MISSIONS/MissionScripts/OperationEspressoMartini/OperationEspressoMartini.lua')
 env.info("Mission Script Loaded")
 
-dofile(lfs.writedir()..'/Missions/DCS Scripts/MY_MISSIONS/OperationEspressoMartini/CTLD(OEM).lua')
+dofile(lfs.writedir()..'/Missions/DCS Scripts/MY_MISSIONS/MissionScripts/OperationEspressoMartini/CTLD.lua')
 env.info("CTLD Loaded")
 
-dofile(lfs.writedir()..'/Missions/DCS Scripts/MY_MISSIONS/OperationEspressoMartini/SplashDamage.lua')
+dofile(lfs.writedir()..'/Missions/DCS Scripts/MY_MISSIONS/MissionScripts/OperationEspressoMartini/SplashDamage.lua')
 env.info("Splash Damage Loaded")
 
-dofile(lfs.writedir()..'/Missions/DCS Scripts/MY_MISSIONS/OperationEspressoMartini/Hercules_Cargo_CTLD.lua')
+dofile(lfs.writedir()..'/Missions/DCS Scripts/MY_MISSIONS/MissionScripts/OperationEspressoMartini/Hercules_Cargo_CTLD.lua')
 env.info("Herc CTLD Loaded")
 
 --Put this line in the trigger in Mission Editor
