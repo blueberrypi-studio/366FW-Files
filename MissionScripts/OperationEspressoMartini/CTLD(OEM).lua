@@ -215,15 +215,15 @@ ctld.dropOffZones = {
 
 --wpZones = { "Zone name", "smoke color",  "ACTIVE (yes/no)", "side (0 = Both sides / 1 = Red / 2 = Blue )", }
 ctld.wpZones = {
-    { "wpzone1", "green","yes", 2 },
-    { "wpzone2", "blue","yes", 2 },
-    { "wpzone3", "orange","yes", 2 },
+    { "wpzone1", "none","yes", 2 },
+    { "wpzone2", "none","yes", 2 },
+    { "wpzone3", "none","yes", 2 },
     { "wpzone4", "none","yes", 2 },
     { "wpzone5", "none","yes", 2 },
-    { "wpzone6", "none","yes", 1 },
-    { "wpzone7", "none","yes", 1 },
-    { "wpzone8", "none","yes", 1 },
-    { "wpzone9", "none","yes", 1 },
+    { "wpzone6", "none","yes", 2 },
+    { "wpzone7", "none","yes", 2 },
+    { "wpzone8", "none","yes", 2 },
+    { "wpzone9", "none","yes", 2 },
     { "wpzone10", "none","no", 0 }, -- Both sides as its set to 0
 }
 
