@@ -1,59 +1,60 @@
 # 366FW-Files
-A collection of Liveries (Made by Coffee :coffee:) kneeboards, and other useful stuff
+A collection of:
+- Liveries (Made by Coffee :coffee:) 
+- Kneeboards (Made by Hayds_93)
+- Missions (Made by TheDude1134)
 
-![BackGround-F-15ESE](https://github.com/blueberrypi-studio/366FW-Assets/assets/75970722/fd428bcb-38dd-43ad-9a79-17be1eb86f96)
 
-### Done Liveries:
+# Done Liveries:
 ## 389th Fighter Squadron
 - F-15E
- - Hayds_93 | [389] "Check" & Shinichi | [391] "Canopy" Flagship -> "Point N Shoot"
- - TOGG | [389] "A.J." & Kumkacz | [389] "Hussar" -> "Alpha Omega"
- - JMX | [389] "Bouttabus" & Hayds_93 | [389] "Check" -> "boogeyman"
- - TheDude | [389] "WingRipper" & Audible | [389] "Sleeping Audible" -> "Double Deuce V1"
- - Chazz | [389] "Cerberus" -> "Cerberus"
- - Monkey | [389] "Teaser" -> "Jenny"
- - Sweatermat | [389] "Zeus" -> "Wyatt Earp"
- - Juxi | [389] "Rider" -> "Double Deuce V2"
- - Mushyboy | [389] "Mushy" -> "Ashbringer" (not complete yet, but taken)
- - Klokwork | [389] "Rodeo" -> "Pheonix" (not complete yet, but taken)
-
+  - Hayds_93 | [389] "Check" & Shinichi | [391] "Canopy" Flagship -> "Point N Shoot"
+  - TOGG | [389] "A.J." & Kumkacz | [389] "Hussar" -> "Alpha Omega"
+  - JMX | [389] "Bouttabus" & Hayds_93 | [389] "Check" -> "boogeyman"
+  - TheDude | [389] "WingRipper" & Audible | [389] "Sleeping Audible" -> "Double Deuce V1"
+  - Chazz | [389] "Cerberus" -> "Cerberus"
+  - Monkey | [389] "Teaser" -> "Jenny"
+  - Sweatermat | [389] "Zeus" -> "Wyatt Earp"
+  - Juxi | [389] "Rider" -> "Double Deuce V2"
+  - Mushyboy | [389] "Mushy" -> "Ashbringer" (not complete yet, but taken)
+  - Klokwork | [389] "Rodeo" -> "Pheonix" (not complete yet, but taken)
 - F-16C
- - USAF 389th Thunderbolts F-16 LOW VIS
- - USAF 389th Thunderbolts F-16 HIGH VIS
- - Derpymemeo | [389] "Derpy"
- - Jayson | [389] "flyingdutchman"
- - Extra | [389] "Saber"
- - RussD | [389] "Toruk"
- - Mushyboy | [389] "Mushy"
+  - USAF 389th Thunderbolts F-16 LOW VIS
+  - USAF 389th Thunderbolts F-16 HIGH VIS
+  - Derpymemeo | [389] "Derpy"
+  - Jayson | [389] "flyingdutchman"
+  - Extra | [389] "Saber"
+  - RussD | [389] "Toruk"
+  - Mushyboy | [389] "Mushy"
 
 ## 391st Fighter Squadron
 - F-15E
- - Vasy | [391] "Coffee" & Hayds_93 | [389] "Check" Flagship -> "Sable (2022)"
- - Vasy | [391] "Coffee" & Hayds_93 | [389] "Check" 
- - Knockd | [391] “Splinter” & mr.jimjam | [391] "Valkyrie" -> "Ghost Rider"
- - mr.jimjam | [391] "Valkyrie" &  Knockd | [391] “Splinter” -> "Ares"
- - Maple | [391] "Crab" -> "Kraken"
- - Rogue Guy | [391] "Amish" -> "Doc Holiday"
- - Floppa | [391] SEADgle -> "Valkyrie"
+  - Vasy | [391] "Coffee" & Hayds_93 | [389] "Check" Flagship -> "Sable (2022)"
+  - Vasy | [391] "Coffee" & Hayds_93 | [389] "Check" 
+  - Knockd | [391] “Splinter” & mr.jimjam | [391] "Valkyrie" -> "Ghost Rider"
+  - mr.jimjam | [391] "Valkyrie" &  Knockd | [391] “Splinter” -> "Ares"
+  - Maple | [391] "Crab" -> "Kraken"
+  - Rogue Guy | [391] "Amish" -> "Doc Holiday"
+  - Floppa | [391] SEADgle -> "Valkyrie"
 
 ## 428th Fighter Squadron
 - F-15E
- - FrankTwitch_ | [428] "Twitch" & Tom | [428] "Kachow"
+  - FrankTwitch_ | [428] "Twitch" & Tom | [428] "Kachow"
 
 ## 390th Electronic Combat Squadron
 - F-15C
- - Blank 390th F-15C Flagship
- - Blank 390th F-15C
+  - Blank 390th F-15C Flagship
+  - Blank 390th F-15C
 - F/A-18C
- - Rigsters | [390] "Guardian"
+  - Rigsters | [390] "Guardian"
 
 ## 190th Air National Guard
 - A-10C
- - Blank 190th FS Red Tail Clean
- - Eretaloma | [190] "Pitbull"
- - Vondalo | [190] "Fatface"
- - Bast | [190] "B-Rabbit"
- - DVG | [190] "Diesel" -> "F/A-10"
+    - Blank 190th FS Red Tail Clean
+    - Eretaloma | [190] "Pitbull"
+    - Vondalo | [190] "Fatface"
+    - Bast | [190] "B-Rabbit"
+    - DVG | [190] "Diesel" -> "F/A-10"
  
 ## AI Liveries
 - KC-135
