@@ -72,11 +72,6 @@ local bPlaneParkingSharjah = ({})--transport plane parking
 -- TODO TABLES / ARRAYS
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-local redAirCapEasyTemplates = {"MIG29A", "MIG31", "SU30"}
-local redAirCapHardTemplates = {"M2000", "M2000C"}
-
-local redCapZoneTable = { ZONE:New("RCAP1"), ZONE:New("RCAP2"), ZONE:New("RCAP3"), ZONE:New("RCAP4") }
-
 local redCAPzone = ZONE:New("REDCAPZONE")
 
 local redLarakFarp1 = STATIC:FindByName("LARAK-RED-FARP-1")
@@ -131,14 +126,6 @@ RU_CC = COMMANDCENTER:New( GROUP:FindByName( "REDCC" ), "Russian Command" )
 -- TODO DETECTION
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
---BLUE
-
---DetectionSetGroupBlue = SET_GROUP:New()
---DetectionSetGroupBlue:FilterPrefixes( { "EWRBLUE", "AWACSBLUE", "FACBLUE", "JTACBLUE", "366th" } )
---DetectionSetGroupBlue:FilterStart()
---
---DetectionBlue = DETECTION_AREAS:New( DetectionSetGroupBlue, 30000 )
-
 --RED
 DetectionSetGroupRed = SET_GROUP:New()
 DetectionSetGroupRed:FilterPrefixes({ "EWRRED", "AWACSRED", "FACRED", "JTACRED" })
@@ -162,30 +149,9 @@ Scoring = SCORING:New("Operation Espresso Martini")
 Scoring:SetScaleDestroyScore( 10 )
 Scoring:SetScaleDestroyPenalty( 40 )
 
-
---Add Scoring Groups
-
-
-
---Add Static Scoring
---Scoring:AddStaticScore(STATIC:FindByName("WarehouseRedAlphaBrigade"), 200)
---Scoring:AddStaticScore(STATIC:FindByName("WarehouseRedBravoBrigade"), 200)
---Scoring:AddStaticScore(STATIC:FindByName("WarehouseRedAlphaAirBrigade"), 200)
---Scoring:AddStaticScore(STATIC:FindByName("WarehouseRedBravoAirBrigade"), 200)
-
-
-
 Scoring:SetMessagesHit(false)
 Scoring:SetMessagesDestroy(true)
 Scoring:SetMessagesScore(true)
-
-
---Add Zone Scoring
-
---Set the Zone scoring multiplier to award a higher score for kills inside the engagement zone of the air defenses.
-
---ScoringMultiplierZone = ZONE:New( "DoubleScoreZone" )
---Scoring:AddZoneScore( ScoringMultiplierZone, 100 )
 
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -208,11 +174,6 @@ local samredSET = SET_GROUP:New():FilterPrefixes("SAMRED"):FilterCoalitions("red
 redShorad = SHORAD:New("RedShorad", "Red SHORAD", samredSET, 22000, 600, "red")
 
 
---BLUE SHORAD
---local samblueSET = SET_GROUP:New():FilterPrefixes("SAMBLUE"):FilterCoalitions("blue"):FilterStart()
--- usage: SHORAD:New(name, prefix, samset, radius, time, coalition)
---blueShorad = SHORAD:New("BlueShorad", "Blue SHORAD", samblueSET, 22000, 600, "blue")
-
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- TODO SETUP MANTIS
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -228,17 +189,6 @@ redMantis:Debug(on)
 end
 
 redMantis:Start()
-
---BLUE MANTIS
---blueMantis = MANTIS:New( "Blue MANTIS", "SAMBLUE", "EWRBLUE", "BLUEHQ", "blue", true, "AWACSBLUE" )
---blueMantis:AddShorad(blueShorad, 720)
-
---if DEBUG then
---blueMantis:Debug(on)
---end
-
---blueMantis:Start()
-
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- TODO BLUE REAPER DRONE
@@ -267,27 +217,10 @@ end
 
 
 
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- TODO HELO TRANSPORT
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-
-
-
-
-
-
---AI TROOP TRANSPORT
-
-
-
-
-
---[[
-
-    RED TROOP TRANSPORT SPAWN
-
-]]--
-
-
---local cargoInfantryTemplates = {"RedInfantry", "RedInfantryManpad"}
 local larakHQ = STATIC:FindByName("LarakHQ")
 local heloPickupZone = ZONE:New("RedTroopPickupZone")
 local redInfantryDeployZone = ZONE:New("RedTroopLandingZone")
@@ -327,103 +260,9 @@ else
 return
 end
 
---[[
---AMPHIBIOUS LANDING RED
-
-local redCommandShip = GROUP:FindByName("RedCommandShip")
-
--- Zones.
-local zoneRedSupplyShip=ZONE_GROUP:New("RedFor Supply Ship", GROUP:FindByName("RedSupplyShip"), 1000)
-local zoneDeploy=ZONE:New("RedZoneSurf"):DrawZone()
-local zoneBravo=ZONE:New("RedPatrolZone"):DrawZone()
-
--- USS Tarawa carrier.
-local redSupplyShip=NAVYGROUP:New("RedSupplyShip")
-redSupplyShip:SetPatrolAdInfinitum(false)
-redSupplyShip:SetCarrierUnloaderBack(50, 40)
-redSupplyShip:Activate()
-
--- Tansport assignment. The cargo groups are added later when we spawn them.
-local transport=OPSTRANSPORT:New(nil, zoneRedSupplyShip, zoneDeploy)
-
--- Assign transport to Tarawa.
-redSupplyShip:AddOpsTransport(transport)
-
--- Create a SPAWN object that will spawn late activated AAV-7, which are amphibious.
-local spawnAPC=SPAWN:New("APC AAV-7 REDFOR"):InitLateActivated(true)
-
--- Create a SPAWN object that will spawn late activated Infantry.
-local spawnInf=SPAWN:New("RIAPC"):InitLateActivated(true)
-
-
-if redCommandShip:IsAlive() then
-
-local shipTransportScheduler = SCHEDULER:New( nil,
-
-  function()
-
-  
-  -- Spawn 5 APCs, create ARMYGROUPs, add each as cargo and load directly into the Tarawa.
-    for i=1,5 do
-
-    -- Create ARMYGROUP from spawned APC, add as cargo and load directly into the Tarawa.
-    local apc=ARMYGROUP:New(spawnAPC:Spawn())
-    transport:AddCargoGroups(apc)
-    redSupplyShip:Load(apc)
-  
-    -- Create ARMYGROUP from spawned APC and load directly into the APC.
-    local infgroup=ARMYGROUP:New(spawnInf:Spawn())
-    apc:Load(infgroup)
-    end
-
-
-
-  end,{}, 10, 300, 0)
-else 
-return
-end
-
-
-    -- Mission to patrol zone bravo.
-    local mission=AUFTRAG:NewPATROLZONE(zoneBravo)
-
-    --- Function called when a cargo group is unloaded from a carrier.
-function transport:OnAfterUnloaded(From, Event, To, OpsGroupCargo, OpsGroupCarrier)
-  local apc=OpsGroupCargo --Ops.ArmyGroup#ARMYGROUP
-  
-  -- Add random waypoint in zone Bravo.
-  local wp1=apc:AddWaypoint(zoneBravo:GetRandomCoordinate())
-  
-  -- Give cruise command.
-  apc:__Cruise(5)
-  
-  --- Function called when the group passed a waypoint.
-  function apc:OnAfterPassingWaypoint(From, Event, To, Waypoint)
-    local waypoint=Waypoint --Ops.OpsGroup#OPSGROUP.Waypoint
-    
-    if waypoint.uid==wp1.uid then
-    
-      -- Get all cargo groups.
-      local cargos=apc:GetCargoOpsGroups()
-      
-      for _,_infantrygroup in pairs(cargos) do
-        local infantrygroup=_infantrygroup --Ops.ArmyGroup#ARMYGROUP
-        
-        -- Unload infantry near the carrier
-        local Coordinate=apc:GetCoordinate():Translate(math.random(50, 100), math.random(0,360))          
-        apc:Unload(infantrygroup, Coordinate, true)
-        
-        -- Assign patrol mission to infantry group.
-        infantrygroup:AddMission(mission)
-      end
-      
-    end
-  end
-  
-end
-]]
-
---Amphibious Rework
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- TODO AMPHIBIOUS LANDING
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 local redSupplyShip = GROUP:FindByName("RedSupplyShip")
 
@@ -448,12 +287,15 @@ local redArmorMission = AUFTRAG:NewCAPTUREZONE()
 
 ]]
 
---RED FLIGHTGROUPS
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- TODO REDFOR FLIGHTGROUPS
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --✈
---Red Squadrons
 
---CAP
+
+--CAP SQUADRONS
+
 local redCapOne=SQUADRON:New("✈ MIG29S", 16, "✈ MIG29S") --Ops.Squadron#SQUADRON
 redCapOne:AddMissionCapability(AUFTRAG.Type.CAP)
 redCapOne:SetGrouping(2)
@@ -487,17 +329,11 @@ redAirwingOne:NewPayload("✈ MIG29S", 99, AUFTRAG.Type.CAP, 100)
 redAirwingOne:NewPayload("✈ SU33", 99, AUFTRAG.Type.CAP, 100)
 redAirwingOne:NewPayload("✈ MIRAGE2000", 99, AUFTRAG.Type.CAP, 100)
 
-redAirwingOne:AddPatrolPointCAP(ZONE:New("REDCAPZONE"):GetCoordinate(),math.random(15000, 25000),math.random(300, 450),math.random(1,360),math.random(20, 50))
---redAirwing:SetAirbase(AIRBASE.Caucasus.Novorossiysk)
-
 redAirwingOne:AddSquadron(redCapOne)
 redAirwingOne:AddSquadron(redCapTwo)
 redAirwingOne:AddSquadron(redCapThree)
 
-redAirwingOne:Start()
 
-redAirwingOne:SetTakeoffAir()
-redAirwingOne:SetNumberCAP(2)
 
 
 local missionRedCAPzone = AUFTRAG:NewCAP(redCAPzone, 15000, 350, nil, 90, 20, {"Air"})
@@ -506,3 +342,18 @@ missionRedCAPzone:SetRepeatOnFailure(16)
 missionRedCAPzone:SetROE(ENUMS.ROE.OpenFire)
 
 redAirwingOne:AddMission(missionRedCAPzone)
+
+redAirwingOne:AddPatrolPointCAP(ZONE:New("REDCAPZONE"):GetCoordinate(),math.random(15000, 25000),math.random(300, 450),math.random(1,360),math.random(20, 50))
+redAirwingOne:SetTakeoffAir()
+redAirwingOne:SetNumberCAP(2)
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- TODO REDFOR COMMANDER TO HANDLE FLIGHTGROUP RESPONSE
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+local redforCommander = COMMANDER:New(coalition.side.RED)
+
+  redforCommander:AddAirwing(redAirwingOne)
+
+  redforCommander:__Start(3)
