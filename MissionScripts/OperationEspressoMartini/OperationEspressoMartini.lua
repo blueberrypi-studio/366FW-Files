@@ -59,7 +59,7 @@ AWACS IS BROKEN>>>>MUST FIX LINK TO SRS TO MAKE WORK
 
 
 local DEBUG = true
-local DEBUG_PARKING = true
+local DEBUG_PARKING = false
 
 
 
@@ -503,7 +503,7 @@ local ZonePointBoom=ZONE:FindByName("Point Boom")
 local ZonePointProbe=ZONE:FindByName("Point Probe")
 
 -- KC-135 squadron, callsign "Arco".
-local kc135=SQUADRON:New("✈ KC135", 5, "✈ KC135") --Ops.Squadron#SQUADRON
+local kc135=SQUADRON:New("KC135", 5, "KC135") --Ops.Squadron#SQUADRON
   kc135:SetModex(100)
   kc135:SetCallsign(CALLSIGN.Tanker.Arco)
   kc135:SetRadio(260)
@@ -512,7 +512,7 @@ local kc135=SQUADRON:New("✈ KC135", 5, "✈ KC135") --Ops.Squadron#SQUADRON
   kc135:AddTacanChannel(70, 75)
 
 -- KC-130 squadron, callsign "Texaco".
-local kc130=SQUADRON:New("✈ KC130", 5, "✈ KC130") --Ops.Squadron#SQUADRON
+local kc130=SQUADRON:New("KC130", 5, "KC130") --Ops.Squadron#SQUADRON
   kc130:SetModex(200)
   kc130:SetCallsign(CALLSIGN.Tanker.Texaco)
   kc130:SetRadio(261)
@@ -722,14 +722,32 @@ local operationTargets = {
   [2] = {       
     TargetName = "EWRRED Qeshm Island",
     TargetStatic = false,
-    TargetBriefing = "Destroy the Early Warning Radar located on Tunb Island",
+    TargetBriefing = "Destroy the Early Warning Radar located on Qeshm Island",
     TargetAuftrag = AUFTRAG.Type.SEAD,
   },
   [3] = {       
+    TargetName = "Qeshm Command Center",
+    TargetStatic = true,
+    TargetBriefing = "Destroy the Command Center located on Qeshm Island",
+    TargetAuftrag = AUFTRAG.Type.STRIKE,
+  },
+  [4] = {       
     TargetName = "EWRRED Larak Island",
     TargetStatic = false,
-    TargetBriefing = "Destroy the Early Warning Radar located on Tunb Island",
+    TargetBriefing = "Destroy the Early Warning Radar located on Larak Island",
     TargetAuftrag = AUFTRAG.Type.SEAD,
+  },
+  [5] = {       
+    TargetName = "Larak Comand Center",
+    TargetStatic = true,
+    TargetBriefing = "Destroy the Command Center located on Larak Island",
+    TargetAuftrag = AUFTRAG.Type.STRIKE,
+  },
+  [6] = {       
+    TargetName = "Red Armor Group",
+    TargetStatic = false,
+    TargetBriefing = "Destroy Redfor Armor Units attacking Khasab Airbase",
+    TargetAuftrag = AUFTRAG.Type.GROUNDATTACK,
   },
   }
   --FINISH ADDING TARGETS HERE
@@ -737,7 +755,7 @@ local operationTargets = {
 --Create TARGET objects
 
 local BlueTargets = {}
-for i=1,3 do
+for i=1,6 do
   if operationTargets[i].TargetStatic then
     -- static
     BlueTargets[i] = TARGET:New(STATIC:FindByName(operationTargets[i].TargetName))
@@ -758,7 +776,7 @@ end
 
 
 --Add Operation Phases
-for i=1,3 do
+for i=1,6 do
   
   local phase = operation:AddPhase(i)
   
