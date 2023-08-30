@@ -7,35 +7,32 @@ by: TheDude
 
 TODO
 
-Armor Spawns Balanced
-CTLD Tested
-Waypoints for CTLD implemented (Make a mission specific Copy of CTLD Script)
-Client Slots
+Armor Spawns Balanced--STATIC
+CTLD Tested--NEEDED
+Waypoints for CTLD implemented (Make a mission specific Copy of CTLD Script)--DONE
+Client Slots--DONE
 
-Blue support forces: CAP, and Helo Escorts
+Blue support forces: CAP, and Helo Escorts--MAYBE
 
 Distribute scaled based scoring
 
-SETUP ME TEMPLATES FOR:
 
-Awacs
-Tankers
-Escorts
+Distribute initial armor for redfor at khasab--DONE
 
+assemble small representation of flotilla--TEST
 
-Assemble Khasab with dead and broken blue armor units and sam sites.
-Distribute initial armor for redfor at khasab
-
-assemble small representation of flotilla
+assemble bluefor flotilla--carrier done, two assault ships, two tarawas (1 for hueys cargo and 1 for apaches)
 
 
-assemble bluefor flotilla
 
 UPDATE SOUNDS
+  Need to add to mission file
+  add CTLD beacon sounds also
 
 
+SET MISSION and MISSION STAGES--in progress
 
-SET MISSION and MISSION STAGES
+
 
 Destruction of Qeshm Island and Larak Island CommandCenters and Bunkers  (this will shutdown spawns of helo troops, and cap)
 
@@ -47,7 +44,7 @@ Construction of FOB by Huey CTLD at Khasab
 
 
 
-SPLASH DAMAGE SCRIPT IS ALL KINDS OF FUCKED.  Fix it.
+SPLASH DAMAGE SCRIPT IS ALL KINDS OF FUCKED.  Fix it.  <---still no clue
 
 
 ]]--
@@ -258,7 +255,7 @@ end
 
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
--- TODO REDFOR AWACS
+-- TODO AWACS
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
@@ -293,12 +290,51 @@ local AwacsEscortsRed = SQUADRON:New("✈ MIG29ESCORT",4,"✈ MIG29ESCORT")
   AwacsRed:NewPayload("✈ MIG29ESCORT",-1,{AUFTRAG.Type.ESCORT},100)
 
 
-local RedAwacs = AWACS:New("Awacs-Red", AwacsRed, "red", AIRBASE.PersianGulf.Bandar_Abbas_Intl, "REDAWACSORBIT", ZONE:FindByName("FEZ"), AIRBASE.PersianGulf.Bandar_Abbas_Intl, 275, radio.modulation.AM )
+local RedAwacs = AWACS:New("Awacs-Red", AwacsRed, "red", AIRBASE.PersianGulf.Bandar_Abbas_Intl, "REDAWACSORBIT", ZONE:FindByName("FEZ"), "AWACSREDCAPZONE", 275, radio.modulation.AM )
 
   RedAwacs:SetEscort(2)
   RedAwacs:SetAwacsDetails(CALLSIGN.AWACS.Magic,1,30,280,88,25)
 
   RedAwacs:__Start(5)
+
+-- We need an AirWing
+local AwacsBlue = AIRWING:New("WarehouseAkrotiri", "AWACSBLUE")
+AwacsBlue:SetMarker(false)
+AwacsBlue:SetAirbase(AIRBASE:FindByName(AIRBASE.PersianGulf.Sharjah_Intl))
+AwacsBlue:SetRespawnAfterDestroyed(900)
+AwacsBlue:SetTakeoffAir()
+AwacsBlue:__Start(2)
+
+-- AWACS itself
+local AwacsBlueSquadron = SQUADRON:New("AWACSBLUE", 2, "AWACSBLUE")
+AwacsBlueSquadron:AddMissionCapability({AUFTRAG.Type.ORBIT},100)
+AwacsBlueSquadron:SetFuelLowRefuel(true)
+AwacsBlueSquadron:SetFuelLowThreshold(0.2)
+AwacsBlueSquadron:SetTurnoverTime(10,20)
+AwacsBlue:AddSquadron(AwacsBlueSquadron)
+AwacsBlue:NewPayload("AWACSBLUE",-1,{AUFTRAG.Type.ORBIT},100)
+
+
+
+-- Escorts
+local AwacsEscortsRed = SQUADRON:New("AWACSBLUEESCORT",4,"Awacs Blue Escorts")
+AwacsEscortsRed:AddMissionCapability({AUFTRAG.Type.ESCORT})
+AwacsEscortsRed:SetFuelLowRefuel(true)
+AwacsEscortsRed:SetFuelLowThreshold(0.3)
+AwacsEscortsRed:SetTurnoverTime(10,20)
+AwacsEscortsRed:SetTakeoffAir()
+AwacsEscortsRed:SetRadio(275,radio.modulation.AM)
+AwacsBlue:AddSquadron(AwacsEscortsRed)
+AwacsBlue:NewPayload("AWACSBLUEESCORT",-1,{AUFTRAG.Type.ESCORT},100)
+
+--ZONE:FindByName() may need to be just the string name of the zone.  Fix this here if errors during testing
+local AwacsBlue = AWACS:New("Awacs-Blue", AwacsBlue, "blue", AIRBASE.PersianGulf.Sharjah_Intl, "AWACSBLUEORBIT", ZONE:FindByName("FEZ"), "AWACSBLUECAPZONE", 264, radio.modulation.AM )
+
+AwacsBlue:SetEscort(2)
+AwacsBlue:SetAwacsDetails(CALLSIGN.AWACS.Darkstar,1,30,280,88,25)
+AwacsBlue:SetTOS(4, 4)
+
+AwacsBlue:__Start(5)
 
 
 
@@ -596,3 +632,165 @@ end
 ZoneCaptureCoalitionOne:__Guard( 1 )
   
 ZoneCaptureCoalitionOne:Start( 30, 120 )
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- TODO OPERATION PHASES
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+--Operation Messages
+local opStartMessage = MESSAGE:New("Welcome to Operation Espresso Martini",10)
+
+--Define Operation Targets
+
+local target1 = TARGET:New(TargetObject)
+local target2 = TARGET:New(TargetObject)
+local target3 = TARGET:New(TargetObject)
+local target4 = TARGET:New(TargetObject)
+
+
+
+--Define Operation
+
+local operationTargets = { 
+  [1] = {       
+    TargetName = "Qeshm Island HQ",
+    TargetStatic = true,
+    TargetBriefing = "",
+    TargetAuftrag = AUFTRAG.Type.STRIKE,
+  },
+  [2] = {       
+    TargetName = "",
+    TargetStatic = false,
+    TargetBriefing = "",
+    TargetAuftrag = AUFTRAG.Type.STRIKE,
+  },
+  }
+  --FINISH ADDING TARGETS HERE
+  
+--Create TARGET objects
+
+local BlueTargets = {}
+for i=1,5 do
+  if operationTargets[i].TargetStatic then
+    -- static
+    BlueTargets[i] = TARGET:New(STATIC:FindByName(operationTargets[i].TargetName))
+  else
+    -- group
+    BlueTargets[i] = TARGET:New(GROUP:FindByName(operationTargets[i].TargetName))
+  end
+end
+
+
+--Setup Operation
+local operation = OPERATION:New("Operation Espresso Martini")
+
+
+if DEBUG then
+  operation.verbose = 1
+end
+
+
+--Add Operation Phases
+for i=1,5 do
+  
+  local phase = operation:AddPhase(i)
+  
+  --add completion
+  operation:AddPhaseConditonOverAll(phase,
+  function(target)
+    local Target = target -- Ops.Target#TARGET
+    if Target:IsDead() or Target:IsDestroyed() or Target:CountTargets() == 0 then
+      return true
+    else
+     return false
+    end 
+  end,BlueTargets[i])
+end  
+
+
+--Start Operation
+operation:__Start(30)
+
+
+--Operation Start Sound
+function InitialSound()
+  local file = string.format("Korean War %d.ogg",ogg)
+  local radio = USERSOUND:New(file):ToCoalition(coalition.side.BLUE)
+end
+
+local Stimer = TIMER:New(InitialSound)
+Stimer:Start(11)
+
+  
+
+--function called at start of operation  
+function operation:OnAfterStart(From,Event,To)
+  opStartMessage:ToBlue()
+end
+
+
+
+--function called on phase change
+  
+-- next phase
+function operation:OnAfterPhaseChange(From,Event,To,Phase)
+  -- Next phase, this is Phase done
+  local phase = operation:GetPhaseActive()
+  local ind = phase.name
+  local type = operationTargets[ind].TargetAuftrag
+  local brief = operationTargets[ind].TargetBriefing
+  if DEBUG then
+    BlueTargets[ind].verbose = 3
+  end
+  local task = PLAYERTASK:New(type,BlueTargets[ind],true,99,type)
+  task:AddFreetext(brief)
+  if DEBUG then
+    task.verbose = true
+  end
+  taskmanager:AddPlayerTaskToQueue(task)
+  local file = "That Is Our Target.ogg"
+  local radio = USERSOUND:New(file):ToCoalition(coalition.side.BLUE)
+end 
+  
+  
+-- Operation finished
+function operation:OnAfterOver(From,Event,To,Phase)
+  MESSAGE:New("Operation Espresso Martini Victory!!",15):ToBlue()
+  local file = "campaignvictory.ogg"
+  local radio = USERSOUND:New(file):ToCoalition(coalition.side.BLUE)
+end  
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
