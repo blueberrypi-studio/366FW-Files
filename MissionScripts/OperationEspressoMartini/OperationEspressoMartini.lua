@@ -132,7 +132,9 @@ _SETTINGS:SetA2A_BRAA()
 -- TODO SETUP SRS
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-
+local hereSRSPath = mySRSPath or "C:\\Program Files\\DCS-SimpleRadio-Standalone"
+local hereSRSPort = mySRSPort or 5002
+local hereSRSGoogle = mySRSGKey --or "C:\\Program Files\\DCS-SimpleRadio-Standalone\\yourkey.json"
 
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -341,7 +343,14 @@ local BlueAwacs = AWACS:New("Awacs-Blue", AwacsBlue, "blue", AIRBASE.PersianGulf
 
   BlueAwacs:__Start(5)
 
-
+-- Set up SRS
+--if hereSRSGoogle then
+--  -- use Google
+--  AwacsBlue:SetSRS(hereSRSPath,"female","en-US",hereSRSPort,"en-US-Wavenet-F",0.9,hereSRSGoogle)
+--else
+   --use Windows
+  BlueAwacs:SetSRS(hereSRSPath,"male","en-US",hereSRSPort, nil, 0.9)
+--end
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- TODO HELO TRANSPORT
