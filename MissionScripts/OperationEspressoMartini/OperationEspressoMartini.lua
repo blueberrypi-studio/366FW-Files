@@ -47,6 +47,8 @@ Construction of FOB by Huey CTLD at Khasab
 SPLASH DAMAGE SCRIPT IS ALL KINDS OF FUCKED.  Fix it.  <---still no clue
 
 
+
+AWACS IS BROKEN>>>>MUST FIX LINK TO SRS TO MAKE WORK
 ]]--
 
 
@@ -258,7 +260,7 @@ end
 -- TODO AWACS
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-
+--RED AWACS
 local AwacsRed = AIRWING:New("WarehouseBandar", "AWACSRED")
   AwacsRed:SetReportOn()
   AwacsRed:SetMarker(false)
@@ -297,44 +299,47 @@ local RedAwacs = AWACS:New("Awacs-Red", AwacsRed, "red", AIRBASE.PersianGulf.Ban
 
   RedAwacs:__Start(5)
 
+
+--BLUE AWACS
 -- We need an AirWing
-local AwacsBlue = AIRWING:New("WarehouseAkrotiri", "AWACSBLUE")
-AwacsBlue:SetMarker(false)
-AwacsBlue:SetAirbase(AIRBASE:FindByName(AIRBASE.PersianGulf.Sharjah_Intl))
-AwacsBlue:SetRespawnAfterDestroyed(900)
-AwacsBlue:SetTakeoffAir()
-AwacsBlue:__Start(2)
+local AwacsBlue = AIRWING:New("WarehouseSharjahAwacs", "AWACSBLUE")
+  AwacsBlue:SetMarker(false)
+  AwacsBlue:SetAirbase(AIRBASE:FindByName(AIRBASE.PersianGulf.Sharjah_Intl))
+  AwacsBlue:SetRespawnAfterDestroyed(900)
+  AwacsBlue:SetTakeoffAir()
+  AwacsBlue:__Start(2)
 
 -- AWACS itself
 local AwacsBlueSquadron = SQUADRON:New("AWACSBLUE", 2, "AWACSBLUE")
-AwacsBlueSquadron:AddMissionCapability({AUFTRAG.Type.ORBIT},100)
-AwacsBlueSquadron:SetFuelLowRefuel(true)
-AwacsBlueSquadron:SetFuelLowThreshold(0.2)
-AwacsBlueSquadron:SetTurnoverTime(10,20)
-AwacsBlue:AddSquadron(AwacsBlueSquadron)
-AwacsBlue:NewPayload("AWACSBLUE",-1,{AUFTRAG.Type.ORBIT},100)
+  AwacsBlueSquadron:AddMissionCapability({AUFTRAG.Type.ORBIT},100)
+  AwacsBlueSquadron:SetFuelLowRefuel(true)
+  AwacsBlueSquadron:SetFuelLowThreshold(0.2)
+  AwacsBlueSquadron:SetTurnoverTime(10,20)
+  AwacsBlue:AddSquadron(AwacsBlueSquadron)
+  AwacsBlue:NewPayload("AWACSBLUE",-1,{AUFTRAG.Type.ORBIT},100)
 
 
 
 -- Escorts
-local AwacsEscortsRed = SQUADRON:New("AWACSBLUEESCORT",4,"Awacs Blue Escorts")
-AwacsEscortsRed:AddMissionCapability({AUFTRAG.Type.ESCORT})
-AwacsEscortsRed:SetFuelLowRefuel(true)
-AwacsEscortsRed:SetFuelLowThreshold(0.3)
-AwacsEscortsRed:SetTurnoverTime(10,20)
-AwacsEscortsRed:SetTakeoffAir()
-AwacsEscortsRed:SetRadio(275,radio.modulation.AM)
-AwacsBlue:AddSquadron(AwacsEscortsRed)
-AwacsBlue:NewPayload("AWACSBLUEESCORT",-1,{AUFTRAG.Type.ESCORT},100)
+-- it really sucks when your drinking a glass of tea and you cough.  and tea shoots out of your nose.  burns.  a alot.  
+local AwacsEscortsBlue = SQUADRON:New("AWACSBLUEESCORT",4,"Whiskey on the Rocks")
+  AwacsEscortsBlue:AddMissionCapability({AUFTRAG.Type.ESCORT})
+  AwacsEscortsBlue:SetFuelLowRefuel(true)
+  AwacsEscortsBlue:SetFuelLowThreshold(0.3)
+  AwacsEscortsBlue:SetTurnoverTime(10,20)
+  AwacsEscortsBlue:SetTakeoffAir()
+  AwacsEscortsBlue:SetRadio(275,radio.modulation.AM)
+  AwacsBlue:AddSquadron(AwacsEscortsBlue)
+  AwacsBlue:NewPayload("AWACSBLUEESCORT",-1,{AUFTRAG.Type.ESCORT},100)
 
 --ZONE:FindByName() may need to be just the string name of the zone.  Fix this here if errors during testing
-local AwacsBlue = AWACS:New("Awacs-Blue", AwacsBlue, "blue", AIRBASE.PersianGulf.Sharjah_Intl, "AWACSBLUEORBIT", ZONE:FindByName("FEZ"), "AWACSBLUECAPZONE", 264, radio.modulation.AM )
+local BlueAwacs = AWACS:New("Awacs-Blue", AwacsBlue, "blue", AIRBASE.PersianGulf.Sharjah_Intl, "AWACSBLUEORBIT", ZONE:FindByName("FEZ"), "AWACSBLUECAPZONE", 264, radio.modulation.AM )
 
-AwacsBlue:SetEscort(2)
-AwacsBlue:SetAwacsDetails(CALLSIGN.AWACS.Darkstar,1,30,280,88,25)
-AwacsBlue:SetTOS(4, 4)
+  BlueAwacs:SetEscort(2)
+  BlueAwacs:SetAwacsDetails(CALLSIGN.AWACS.Darkstar,1,30,280,88,25)
+  BlueAwacs:SetTOS(4, 4)
 
-AwacsBlue:__Start(5)
+  BlueAwacs:__Start(5)
 
 
 
@@ -507,7 +512,7 @@ local kc130=SQUADRON:New("✈ KC130", 5, "✈ KC130") --Ops.Squadron#SQUADRON
   kc130:AddTacanChannel(80, 85)
 
 
-local blueTankerWing=AIRWING:New("WarehouseSharjah", "Need Gas?") --Ops.AirWing#AIRWING
+local blueTankerWing=AIRWING:New("WarehouseSharjahTankers", "Need Gas?") --Ops.AirWing#AIRWING
   blueTankerWing:AddPatrolPointTANKER(ZonePointBoom, 20000, 350, 180, 30, Unit.RefuelingSystem.BOOM_AND_RECEPTACLE)
   blueTankerWing:AddPatrolPointTANKER(ZonePointProbe, 20000, 350, 0, 30, Unit.RefuelingSystem.PROBE_AND_DROGUE)
   blueTankerWing:SetNumberTankerBoom(1)
@@ -635,6 +640,49 @@ ZoneCaptureCoalitionOne:Start( 30, 120 )
 
 
 
+----------------------------------------------------------------
+-- TODO Task Controller
+----------------------------------------------------------------
+local menu = MENU_COALITION:New(coalition.side.BLUE,"Ops Menu")
+
+
+-- Set up A2G task controller for the blue side named "82nd Airborne"
+local taskmanager = PLAYERTASKCONTROLLER:New("366th Airwing",coalition.side.BLUE,PLAYERTASKCONTROLLER.Type.A2G)
+taskmanager:DisableTaskInfoMenu()
+taskmanager:EnableTaskInfoMenu()
+--taskmanager:SetMenuOptions(true,5,45)
+taskmanager:SetAllowFlashDirection(true)
+taskmanager:SetCallSignOptions(true,true,{Ford="Yankee"})
+-- set locale
+taskmanager:SetLocale("en")
+taskmanager:SetMenuName("Martini")
+-- Set up using SRS
+--taskmanager:SetSRS({130,255},{radio.modulation.AM,radio.modulation.AM},hereSRSPath,"female","en-US",hereSRSPort,"Microsoft Hazel Desktop",0.7,hereSRSGoogle)
+-- Controller will announce itself under these broadcast frequencies
+--taskmanager:SetSRSBroadcast({127.5,305},{radio.modulation.AM,radio.modulation.AM})
+-- Set target radius
+taskmanager:SetTargetRadius(750)
+taskmanager:SetParentMenu(menu)
+
+
+----------------------------------------------------------------
+-- TODO Sounds for Smoke and Mirrors
+----------------------------------------------------------------
+function taskmanager:OnAfterTaskTargetSmoked(From,Event,To,Task)
+  local file = "Target Smoke.ogg"
+  local radio = USERSOUND:New(file):ToCoalition(coalition.side.BLUE)
+end
+
+function taskmanager:OnAfterTaskTargetFlared(From,Event,To,Task)
+  local file = "Target Smoke.ogg"
+  local radio = USERSOUND:New(file):ToCoalition(coalition.side.BLUE)
+end
+
+function taskmanager:OnAfterTaskTargetIlluminated(From,Event,To,Task)
+  local file = "Target Smoke.ogg"
+  local radio = USERSOUND:New(file):ToCoalition(coalition.side.BLUE)
+end
+
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- TODO OPERATION PHASES
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -642,29 +690,37 @@ ZoneCaptureCoalitionOne:Start( 30, 120 )
 --Operation Messages
 local opStartMessage = MESSAGE:New("Welcome to Operation Espresso Martini",10)
 
+
+
 --Define Operation Targets
 
-local target1 = TARGET:New(TargetObject)
-local target2 = TARGET:New(TargetObject)
-local target3 = TARGET:New(TargetObject)
-local target4 = TARGET:New(TargetObject)
+--target groups for use later
+
+local ewrTunb = GROUP:FindByName("EWRRED Tunb Island")
+local ewrQeshm = GROUP:FindByName("EWRRED Qeshm Island")
+local ewrLarak = GROUP:FindByName("EWRRED Larak Island")
 
 
 
---Define Operation
 
 local operationTargets = { 
   [1] = {       
-    TargetName = "Qeshm Island HQ",
-    TargetStatic = true,
-    TargetBriefing = "",
-    TargetAuftrag = AUFTRAG.Type.STRIKE,
+    TargetName = "EWRRED Tunb Island",
+    TargetStatic = false,
+    TargetBriefing = "Destroy the Early Warning Radar located on Tunb Island",
+    TargetAuftrag = AUFTRAG.Type.SEAD,
   },
   [2] = {       
-    TargetName = "",
+    TargetName = "EWRRED Qeshm Island",
     TargetStatic = false,
-    TargetBriefing = "",
-    TargetAuftrag = AUFTRAG.Type.STRIKE,
+    TargetBriefing = "Destroy the Early Warning Radar located on Tunb Island",
+    TargetAuftrag = AUFTRAG.Type.SEAD,
+  },
+  [3] = {       
+    TargetName = "EWRRED Larak Island",
+    TargetStatic = false,
+    TargetBriefing = "Destroy the Early Warning Radar located on Tunb Island",
+    TargetAuftrag = AUFTRAG.Type.SEAD,
   },
   }
   --FINISH ADDING TARGETS HERE
@@ -672,7 +728,7 @@ local operationTargets = {
 --Create TARGET objects
 
 local BlueTargets = {}
-for i=1,5 do
+for i=1,3 do
   if operationTargets[i].TargetStatic then
     -- static
     BlueTargets[i] = TARGET:New(STATIC:FindByName(operationTargets[i].TargetName))
@@ -693,7 +749,7 @@ end
 
 
 --Add Operation Phases
-for i=1,5 do
+for i=1,3 do
   
   local phase = operation:AddPhase(i)
   
@@ -714,14 +770,14 @@ end
 operation:__Start(30)
 
 
---Operation Start Sound
-function InitialSound()
-  local file = string.format("Korean War %d.ogg",ogg)
-  local radio = USERSOUND:New(file):ToCoalition(coalition.side.BLUE)
-end
-
-local Stimer = TIMER:New(InitialSound)
-Stimer:Start(11)
+----Operation Start Sound
+--function InitialSound()
+--  local file = string.format("Korean War %d.ogg",ogg)
+--  local radio = USERSOUND:New(file):ToCoalition(coalition.side.BLUE)
+--end
+--
+--local Stimer = TIMER:New(InitialSound)
+--Stimer:Start(11)
 
   
 
