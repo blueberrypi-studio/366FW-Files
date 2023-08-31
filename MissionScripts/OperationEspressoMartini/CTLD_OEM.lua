@@ -203,7 +203,7 @@ ctld.dropOffZones = {
     { "dropzone1", "green", 2 },
     { "dropzone2", "blue", 2 },
     { "dropzone3", "orange", 2 },
-    { "dropzone4", "none", 2 },
+    { "ArmorDropZone", "blue", 2 },
     { "dropzone5", "none", 1 },
     { "dropzone6", "none", 1 },
     { "dropzone7", "none", 1 },

@@ -106,7 +106,8 @@ end
 -- TODO ZONES
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-
+local armorDropZoneCTLD = ZONE:New("ArmorDropZone"):MarkZone(180)
+local FOBBuildZone = ZONE:New("FOBBuildZone"):GetCoordinate():SmokeGreen()
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- TODO PARKING
@@ -121,9 +122,9 @@ end
 
 --Sharjah
 
-local heloParkingSharjah = ({45, 46, 47, 48, 49})--troop transport helos
-local fPlaneParkingSharjah = ({})--fighters,escorts,smallplane parking
-local bPlaneParkingSharjah = ({})--transport plane parking
+--local heloParkingSharjah = ({45, 46, 47, 48, 49})--troop transport helos
+--local fPlaneParkingSharjah = ({})--fighters,escorts,smallplane parking
+--local bPlaneParkingSharjah = ({})--transport plane parking
 
 
 
@@ -384,6 +385,10 @@ local BlueAwacs = AWACS:New("Awacs-Blue", AwacsBlue, "blue", AIRBASE.PersianGulf
 -- TODO HELO TRANSPORT
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+--[[
+THIS ENTIRE THING IS BROKEN NOW WITH THE NEW MOOSE UPDATE.  WILL PROBABLY HAVE TO REWRITE THIS AND LET THE COMMANDER HANDLE IT.  OR SCRUB THE ENTIRE IDEA.
+]]
+
 local larakHQ = STATIC:FindByName("Larak Command Center")
 local heloPickupZone = ZONE:New("RedTroopPickupZone")
 local redInfantryDeployZone = ZONE:New("RedTroopLandingZone")
@@ -416,12 +421,13 @@ if larakHQ:IsAlive() then
     redHelo3:AddOpsTransport(redOpsTransport)
     redHelo4:AddOpsTransport(redOpsTransport)
 
-  end):Start(60,600)
+  end):Start(60,600,.5)
 
 
 else
 return
 end
+
 
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -492,6 +498,9 @@ local missionRedCAPzone = AUFTRAG:NewCAP(redCAPzone, 15000, 350, nil, 90, 20, {"
 local redforCommander = COMMANDER:New(coalition.side.RED)
 
   redforCommander:AddAirwing(redAirwingOne)
+--  redforCommander:AddAirwing(redHeloAirwing)
+--  
+--  redforCommander:AddOpsTransport(redOpsTransport)
 
   redforCommander:__Start(3)
   

@@ -1,8 +1,8 @@
-dofile(lfs.writedir()..'/Missions/DCS Scripts/MY_MISSIONS/Moose DEVELOPMENT - UPDATED/MOOSE-develop/MOOSE_INCLUDE/Moose_Include_Static/Moose.lua')
-env.info("Moose Loaded")
+--dofile(lfs.writedir()..'/Missions/DCS Scripts/MY_MISSIONS/Moose DEVELOPMENT - UPDATED/MOOSE-develop/MOOSE_INCLUDE/Moose_Include_Static/Moose.lua')
+--env.info("Moose Loaded")
 
---dofile(lfs.writedir()..'/Missions/DCS Scripts/MY_MISSIONS/Moose.lua')
---env.info("Mission Script Loaded")
+dofile(lfs.writedir()..'/Missions/DCS Scripts/MY_MISSIONS/Moose.lua')
+env.info("Mission Script Loaded")
 
 dofile(lfs.writedir()..'/Missions/DCS Scripts/MY_MISSIONS/MissionScripts/OperationEspressoMartini/mist_4_5_107.lua')
 env.info("Mist Loaded")
