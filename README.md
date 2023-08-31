@@ -19,7 +19,7 @@ A collection of:
   - Sweatermat | [389] "Zeus" -> "Wyatt Earp"
   - Juxi | [389] "Rider" -> "Double Deuce V2"
   - Mushyboy | [389] "Mushy" -> "Ashbringer" (not complete yet, but taken)
-  - Klokwork | [389] "Rodeo" -> "Pheonix" (not complete yet, but taken)
+  - Klokwork | [389] "Rodeo" -> "Phoenix" (not complete yet, but taken)
 - F-16C
   - USAF 389th Thunderbolts F-16 HIGH VIS 
   - USAF 389th Thunderbolts F-16 LOW VIS
