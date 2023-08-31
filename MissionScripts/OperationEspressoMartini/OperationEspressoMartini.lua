@@ -5,23 +5,51 @@ OPERATION ESPRESSO MARTINI
 
 by: TheDude
 
+Mission Briefting:
+
+**Mission Briefing: Operation Espresso Martini**
+
+Ladies and gentlemen, distinguished pilots and strategists, welcome to the high-octane world of Operation Espresso Martini. The fate of Khasab Airbase in the Persian Gulf hangs in the balance, and it's up to Bluefor to channel their inner James Bond meets Top Gun and save the day.
+
+**Mission Name:** Operation Espresso Martini
+
+**Situation:**
+Redfor, apparently fueled by their excessive caffeine intake, has hatched a master plan to invade Khasab Airbase from all possible directions – land, sea, and air. They've even ordered armored divisions and infantry for home delivery. Clearly, their ambitions know no bounds, or limits, or decaf options.
+
+**Objective 1: Caffeine Chaos**
+Redfor's transport madness must be halted. Your mission, should you choose to accept it (which you have no choice but to), is to intercept these transport vessels and armor columns. No half-caf lattes for them – just a whole latte trouble.
+
+**Objective 2: Defending Khasab**
+Our beloved Khasab Airbase needs a serious pep talk – and by "pep talk," we mean reinforcements. Rearm, refuel, and refurbish the base's defenses like it's a coffee shop on its grand reopening day. Make it a stronghold that even the strongest brew couldn't penetrate.
+
+**Objective 3: Double Shot Airstrike**
+To add a dash of excitement to the mix, we've concocted a double shot airstrike plan. Target the red airbase headquarters on Qeshm Island and Tarak Island. They won't know what hit them – other than a payload of strategic devastation and a hint of caramel flavoring.
+
+**Execution:**
+Strap in, pilots, and prepare for a rollercoaster of a mission. Keep an eye on the caffeine-crazed transports, secure Khasab Airbase like your morning cup of joe, and deliver those airstrikes with precision – the kind of precision one needs to extract the last drop of creamer from a tiny packet.
+
+**Commander's Intent:**
+Remember, we're not just defending Khasab; we're defending the honor of well-balanced beverages everywhere. Do your duty, and do it with style. Fly like you're in a Hollywood blockbuster, fight like your espresso machine's on the line, and bring victory home in a cup labeled "Bluefor Blend."
+
+**Remarks:**
+Expect turbulence, expect caffeine-induced chaos, and expect to have more fun than a barista crafting latte art. This is Operation Espresso Martini, where the stakes are high and the energy levels are higher.
+
+Dismissed and caffeinated!
+
+*Disclaimer: This mission briefing is intended for satirical purposes only. No actual espresso martinis were harmed in the making of this briefing. Remember, safety first – both in the skies and at the coffee machine.*
+
+^^^you were too high when you wrote this.
+
+
 TODO
 
-Armor Spawns Balanced--STATIC
+Armor Spawns Balanced--STATIC  <<<  THIS LOOKS STUPID AF MAKE THEM BETTER
 CTLD Tested--NEEDED
-Waypoints for CTLD implemented (Make a mission specific Copy of CTLD Script)--DONE
-Client Slots--DONE
 
-Blue support forces: CAP, and Helo Escorts--MAYBE
-
-Distribute scaled based scoring
-
-
-Distribute initial armor for redfor at khasab--DONE
 
 assemble small representation of flotilla--TEST
 
-assemble bluefor flotilla--carrier done, two assault ships, two tarawas (1 for hueys cargo and 1 for apaches)
+assemble bluefor flotilla--carrier done, two assault ships, two tarawas (1 for hueys cargo and 1 for apaches)--DONE
 
 
 
@@ -49,7 +77,7 @@ SPLASH DAMAGE SCRIPT IS ALL KINDS OF FUCKED.  Fix it.  <---still no clue
 
 
 AWACS IS BROKEN>>>>MUST FIX LINK TO SRS TO MAKE WORK
-]]--
+]]
 
 
 
@@ -395,29 +423,6 @@ else
 return
 end
 
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
--- TODO AMPHIBIOUS LANDING
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
---local redSupplyShip = GROUP:FindByName("RedSupplyShip")
---
---local redArmorZones = { ZONE:New("RA1"), ZONE:New("RA2")}
---local redArmorTemplates = { "REDFOR APC", "REDFOR BMP", "REDFOR T80", "REDFOR SHILKA"}
---
---local redArmorGroupAlpha = ARMYGROUP:New("Red Armor Group Alpha")
---local redArmorGroupBravo = ARMYGROUP:New("Red Armor Group Bravo")
---local redArmorGroupCharlie = ARMYGROUP:New("Red Armor Group Charlie")
-
-
---[[
-
-
-
-
-
-
-
-]]
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- TODO REDFOR FLIGHTGROUPS
