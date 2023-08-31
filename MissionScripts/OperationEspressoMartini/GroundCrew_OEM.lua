@@ -156,6 +156,12 @@ planeClientSet:ForEachClient(function(_client)
 
 --Fuel Truck
   local spawnFT = SPAWN:NewWithAlias( "FT", "Fuel" )
+  
+    spawnFT:OnSpawnGroup(
+      function(SpawnGroup)
+        planeFT = SpawnGroup
+      end)
+      
     spawnFT:InitHeading(planeFTFacing)
     spawnFT:InitCountry(coalitionClient)
     spawnFT:SpawnFromCoordinate(planeFTPosition)
@@ -196,8 +202,8 @@ planeClientSet:ForEachClient(function(_client)
   
     planeGC1:Destroy(nil,0)
     planeGC2:Destroy(nil,0)
-    planeGS1:Destroy(nil,0)
-    planeGS2:Destroy(nil,0)
+    spawnGS1:Destroy(nil,0)
+    spawnGS2:Destroy(nil,0)
     planeFT:Destroy(nil,0)
     
     unitClient:UnhandleEvent( EVENTS.PlayerLeaveUnit )
@@ -327,7 +333,7 @@ heloClientSet:ForEachClient(function(_client)
   
     spawnHeloGC1:OnSpawnGroup(
       function( SpawnGroup )
-        heloGC1 = SpawnGroup --groupdeclare for further use
+        heloGC1 = SpawnGroup 
       end)
     
     spawnHeloGC1:InitHeading( heloGC1Facing )
