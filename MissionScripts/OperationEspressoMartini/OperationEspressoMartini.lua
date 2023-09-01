@@ -119,10 +119,7 @@ local FOBBuildZone = ZONE:New("FOBBuildZone"):GetCoordinate():SmokeGreen()
 --
 if DEBUG_PARKING then
 AIRBASE:FindByName(AIRBASE.PersianGulf.Sharjah_Intl):MarkParkingSpots()
-AIRBASE:FindByName("LARAK-RED-FARP-1"):MarkParkingSpots()
-AIRBASE:FindByName("LARAK-RED-FARP-2"):MarkParkingSpots()
-AIRBASE:FindByName("LARAK-RED-FARP-3"):MarkParkingSpots()
-AIRBASE:FindByName("LARAK-RED-FARP-4"):MarkParkingSpots()
+AIRBASE:FindByName(AIRBASE.PersianGulf.Qeshm_Island):MarkParkingSpots()
 end
 
 --Sharjah
@@ -139,10 +136,10 @@ end
 
 local redCAPzone = ZONE:New("REDCAPZONE")
 
-local redLarakFarp1 = STATIC:FindByName("LARAK-RED-FARP-1")
-local redLarakFarp2 = STATIC:FindByName("LARAK-RED-FARP-2")
-local redLarakFarp3 = STATIC:FindByName("LARAK-RED-FARP-3")
-local redLarakFarp4 = STATIC:FindByName("LARAK-RED-FARP-4")
+--local redLarakFarp1 = STATIC:FindByName("LARAK-RED-FARP-1")
+--local redLarakFarp2 = STATIC:FindByName("LARAK-RED-FARP-2")
+--local redLarakFarp3 = STATIC:FindByName("LARAK-RED-FARP-3")
+--local redLarakFarp4 = STATIC:FindByName("LARAK-RED-FARP-4")
 
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -417,7 +414,7 @@ local redHeloSquadron = SQUADRON:New("RedTransportHelo",15,"Cream Slingers")
   redHeloSquadron:SetGrouping(1)
   redHeloSquadron:SetModex(100)
   redHeloSquadron:SetSkill(AI.Skill.ACE)
-  redHeloSquadron:SetParkingIDs()
+
 
   
   
@@ -430,13 +427,14 @@ local redHeloAirwing = AIRWING:New("WarehouseAirwing", "Mocha Caramel")
 
 --THIS NEEDS A FREAKING AIRBASE!!!  WHY>  WHY>  WHY>  IT HAD A FARP BUT NOOOOOOOOO, MI8s are TOOOO GOOD FOR A FARP.  
 
-  redHeloAirwing:SetAirbase(AIRBASE:FindByName("LARAK-RED-FARP-1"))
-  redHeloAirwing:SetAirbase(AIRBASE:FindByName("LARAK-RED-FARP-2"))
---  redHeloAirwing:SetSpawnZone(ZONE:New("RedTroopPickupZone"))
+  redHeloAirwing:SetAirbase(AIRBASE:FindByName(AIRBASE.PersianGulf.Qeshm_Island))
+
+
 
   redHeloAirwing:NewPayload("RedTransportHelo", -1, AUFTRAG.Type.OPSTRANSPORT, 100)
   
-  redHeloAirwing:SetTakeoffAir()
+
+  redHeloAirwing:SetTakeoffCold()
 
   
   redHeloAirwing:AddSquadron(redHeloSquadron)
@@ -528,8 +526,8 @@ local missionRedCAPzone = AUFTRAG:NewCAP(redCAPzone, 15000, 350, nil, 90, 20, {"
 local zonePatrol = ZONE:New("RedTroopLandingZone"):DrawZone()
 
 local missionPatrol = AUFTRAG:NewPATROLZONE(zonePatrol)
-  missionPatrol:SetRequiredAssets(4)
-  missionPatrol:SetRequiredTransport(zonePatrol, 1, 5)
+  missionPatrol:SetRequiredAssets(8)
+  missionPatrol:SetRequiredTransport(zonePatrol, 4, 6)
   
 
 local redforCommander = COMMANDER:New(coalition.side.RED)
