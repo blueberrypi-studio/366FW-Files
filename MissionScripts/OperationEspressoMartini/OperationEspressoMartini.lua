@@ -97,6 +97,7 @@ BASE:TraceClass("SPAWN")
 BASE:TraceClass("ARMYGROUP")
 BASE:TraceClass("AI_CARGO")
 BASE:TraceClass("AI_CARGO_HELICOPTER")
+BASE:TraceClass("COMMANDER")
 BASE:TraceOn()
 
 end
@@ -385,48 +386,65 @@ local BlueAwacs = AWACS:New("Awacs-Blue", AwacsBlue, "blue", AIRBASE.PersianGulf
 -- TODO HELO TRANSPORT
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
---[[
-THIS ENTIRE THING IS BROKEN NOW WITH THE NEW MOOSE UPDATE.  WILL PROBABLY HAVE TO REWRITE THIS AND LET THE COMMANDER HANDLE IT.  OR SCRUB THE ENTIRE IDEA.
-]]
-
-local larakHQ = STATIC:FindByName("Larak Command Center")
-local heloPickupZone = ZONE:New("RedTroopPickupZone")
-local redInfantryDeployZone = ZONE:New("RedTroopLandingZone")
+--local redInfantrySet = SET_GROUP:New():FilterPrefixes("Red Infantry Group"):FilterStart()
+--local troopPickupCoord = ZONE:New("PickupZone"):GetCoordinate()
+--local troopDropCoord = ZONE:New("DropZone"):GetCoordinate()
 
 
-if larakHQ:IsAlive() then
 
-  TIMER:New(function()
+--Platoon
+
+local redInfantryPlatoon = PLATOON:New("Red Infantry", 10, "Red Infantry")
+  redInfantryPlatoon:AddMissionCapability(AUFTRAG.Type.PATROLZONE,100)
   
-  local redInfantrySet = SET_GROUP:New():FilterPrefixes("RedInfantry"):FilterOnce()
-    :Activate()
-    
-  local redOpsTransport = OPSTRANSPORT:New(redInfantrySet,heloPickupZone,redInfantryDeployZone)
+--Brigade
+local redInfantryBrigade = BRIGADE:New("WarehouseInfantryBrigade", "Creamers")
+
+--Set Spawn
+  redInfantryBrigade:SetSpawnZone(ZONE:New("RedTroopPickupZone"))
+  
+  redInfantryBrigade:AddPlatoon(redInfantryPlatoon)
+
+
+--Squadron
+
+local redHeloSquadron = SQUADRON:New("RedTransportHelo",15,"Cream Slingers")
+  redHeloSquadron:AddMissionCapability(AUFTRAG.Type.OPSTRANSPORT,100)
+  redHeloSquadron:SetGrouping(1)
+  redHeloSquadron:SetModex(100)
+  redHeloSquadron:SetSkill(AI.Skill.ACE)
 
   
-  local redHelo1 = FLIGHTGROUP:New("RedTransportHelo")
-    :Activate(5)
-    
-  local redHelo2 = FLIGHTGROUP:New("RedTransportHelo2")
-    :Activate(15)
-    
-  local redHelo3 = FLIGHTGROUP:New("RedTransportHelo3")
-    :Activate(25)
-    
-  local redHelo4 = FLIGHTGROUP:New("RedTransportHelo4")
-    :Activate(35)
+  
+--Airwing
 
-    redHelo1:AddOpsTransport(redOpsTransport)
-    redHelo2:AddOpsTransport(redOpsTransport)
-    redHelo3:AddOpsTransport(redOpsTransport)
-    redHelo4:AddOpsTransport(redOpsTransport)
+local redHeloAirwing = AIRWING:New("WarehouseAirwing", "Mocha Caramel")
+--  redHeloAirwing:SetAirbase(AIRBASE:FindByName({"LARAK-RED-FARP-1", "LARAK-RED-FARP-2", "LARAK-RED-FARP-3", "LARAK-RED-FARP-4"}))
+  redHeloAirwing:SetSpawnZone(ZONE:New("RedTroopPickupZone"))
 
-  end):Start(60,600,.5)
+  redHeloAirwing:NewPayload("RedTransportHelo", -1, AUFTRAG.Type.OPSTRANSPORT, 100)
+  
+  redHeloAirwing:SetTakeoffAir()
+
+  
+  redHeloAirwing:AddSquadron(redHeloSquadron)
+  
+  
 
 
-else
-return
-end
+
+----- Function called each time and OPS group is send on a mission.
+--function redCommander:onafterOpsOnMission(From, Event, To, OpsGroup, Mission)
+--  local opsgroup=OpsGroup --Ops.OpsGroup#OPSGROUP
+--  local mission=Mission   --Ops.Auftrag#AUFTRAG
+--  
+--  -- Info message.
+--  local text=string.format("Group %s is on %s mission %s", opsgroup:GetName(), mission:GetType(), mission:GetName())
+--  MESSAGE:New(text, 360):ToAll()
+--  env.info(text)
+--end  
+
+
 
 
 
@@ -495,16 +513,27 @@ local missionRedCAPzone = AUFTRAG:NewCAP(redCAPzone, 15000, 350, nil, 90, 20, {"
 -- TODO REDFOR COMMANDER TO HANDLE FLIGHTGROUP RESPONSE
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+local zonePatrol = ZONE:New("RedTroopLandingZone"):DrawZone()
+
+local missionPatrol = AUFTRAG:NewPATROLZONE(zonePatrol)
+  missionPatrol:SetRequiredAssets(4)
+  missionPatrol:SetRequiredTransport(zonePatrol, 1, 5)
+  
+
 local redforCommander = COMMANDER:New(coalition.side.RED)
 
   redforCommander:AddAirwing(redAirwingOne)
+  
+  redforCommander:AddLegion(redHeloAirwing)
+
+  redforCommander:AddLegion(redInfantryBrigade)
 --  redforCommander:AddAirwing(redHeloAirwing)
 --  
 --  redforCommander:AddOpsTransport(redOpsTransport)
 
   redforCommander:__Start(3)
   
-  
+  redforCommander:AddMission(missionPatrol)
   
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
