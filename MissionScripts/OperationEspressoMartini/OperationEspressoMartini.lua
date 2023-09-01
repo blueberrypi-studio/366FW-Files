@@ -87,7 +87,7 @@ AWACS IS BROKEN>>>>MUST FIX LINK TO SRS TO MAKE WORK
 
 
 local DEBUG = true
-local DEBUG_PARKING = false
+local DEBUG_PARKING = true
 
 
 
@@ -119,6 +119,10 @@ local FOBBuildZone = ZONE:New("FOBBuildZone"):GetCoordinate():SmokeGreen()
 --
 if DEBUG_PARKING then
 AIRBASE:FindByName(AIRBASE.PersianGulf.Sharjah_Intl):MarkParkingSpots()
+AIRBASE:FindByName("LARAK-RED-FARP-1"):MarkParkingSpots()
+AIRBASE:FindByName("LARAK-RED-FARP-2"):MarkParkingSpots()
+AIRBASE:FindByName("LARAK-RED-FARP-3"):MarkParkingSpots()
+AIRBASE:FindByName("LARAK-RED-FARP-4"):MarkParkingSpots()
 end
 
 --Sharjah
@@ -413,14 +417,22 @@ local redHeloSquadron = SQUADRON:New("RedTransportHelo",15,"Cream Slingers")
   redHeloSquadron:SetGrouping(1)
   redHeloSquadron:SetModex(100)
   redHeloSquadron:SetSkill(AI.Skill.ACE)
+  redHeloSquadron:SetParkingIDs()
 
   
   
 --Airwing
 
 local redHeloAirwing = AIRWING:New("WarehouseAirwing", "Mocha Caramel")
---  redHeloAirwing:SetAirbase(AIRBASE:FindByName({"LARAK-RED-FARP-1", "LARAK-RED-FARP-2", "LARAK-RED-FARP-3", "LARAK-RED-FARP-4"}))
-  redHeloAirwing:SetSpawnZone(ZONE:New("RedTroopPickupZone"))
+
+--THIS COULD CHANGE TO A SHIP???  this would lessen the flight time and increase the urgency of shooting these down.
+
+
+--THIS NEEDS A FREAKING AIRBASE!!!  WHY>  WHY>  WHY>  IT HAD A FARP BUT NOOOOOOOOO, MI8s are TOOOO GOOD FOR A FARP.  
+
+  redHeloAirwing:SetAirbase(AIRBASE:FindByName("LARAK-RED-FARP-1"))
+  redHeloAirwing:SetAirbase(AIRBASE:FindByName("LARAK-RED-FARP-2"))
+--  redHeloAirwing:SetSpawnZone(ZONE:New("RedTroopPickupZone"))
 
   redHeloAirwing:NewPayload("RedTransportHelo", -1, AUFTRAG.Type.OPSTRANSPORT, 100)
   
