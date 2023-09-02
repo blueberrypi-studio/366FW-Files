@@ -201,7 +201,7 @@ Scoring:SetMessagesScore(true)
 
 -- Function to check and cleanup stuck aircraft
 
---CleanUpAirports = CLEANUP_AIRBASE:New( { AIRBASE.Caucasus.Sochi_Adler, AIRBASE.Caucasus.Novorossiysk } )
+CleanUpAirports = CLEANUP_AIRBASE:New(AIRBASE.PersianGulf.Qeshm_Island)
 
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -209,26 +209,81 @@ Scoring:SetMessagesScore(true)
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --RED SHORAD
-local samredSET = SET_GROUP:New():FilterPrefixes("SAMRED"):FilterCoalitions("red"):FilterStart()
--- usage: SHORAD:New(name, prefix, samset, radius, time, coalition)
-redShorad = SHORAD:New("RedShorad", "Red SHORAD", samredSET, 22000, 600, "red")
 
+local samredSET = SET_GROUP:New():FilterPrefixes("SR"):FilterCoalitions("red"):FilterStart()
+-- usage: SHORAD:New(name, prefix, samset, radius, time, coalition)
+local redShorad = SHORAD:New("RedShorad", "SR SA15", samredSET, 12000, 600, "red", false)
+  redShorad:SetDefenseLimits(80, 95)
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- TODO SETUP MANTIS
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --RED MANTIS
-redMantis = MANTIS:New( "Red MANTIS", "SAMRED", "EWRRED", "REDHQ", "red", true, "AWACSRED" )
+
+--well this is just mean as fuck
+--system will try to use SA15s and AAA when needed to protect SAM sites.
+
+
+local redAAAMantis = MANTIS:New( "Red AAA MANTIS", "SR AAA", "EWRRED", "REDHQ", "red", false, "AWACSRED" )
 --can customize mantis further here
-redMantis:AddShorad( redShorad, 720 )
+  redAAAMantis:AddShorad( redShorad, 720 )
+  redAAAMantis:Start()
+  
+local redSA15Mantis = MANTIS:New( "SA 15 MANTIS", "SR SA15", "EWRRED", "REDHQ", "red", false, "AWACSRED" )
+  redSA15Mantis:SetSAMRadius(UTILS.NMToMeters(5))--radius in which sam will turn itself on/off
+  redSA15Mantis:SetSAMRange(100)--sets sam firing range
+  redSA15Mantis:SetAutoRelocate(false,false)--set to autorelocate, use false in this case due to statics
+  redSA15Mantis:Start()
+
+
+
+local redSA3Mantis = MANTIS:New( "SA3 MANTIS", "SR SA3", "EWRRED", "REDHQ", "red", false, "AWACSRED" )
+  redSA3Mantis:SetSAMRadius(UTILS.NMToMeters(40))
+  redSA3Mantis:SetSAMRange(75)
+  redSA3Mantis:SetDetectInterval(20)
+  redSA3Mantis:SetAutoRelocate(false,false)
+  redSA3Mantis:AddShorad(redShorad,720)
+  redSA3Mantis:Start()
+  
+local redSA5Mantis = MANTIS:New( "SA5 MANTIS", "SR SA5", "EWRRED", "REDHQ", "red", false, "AWACSRED" )
+  redSA5Mantis:SetSAMRadius(UTILS.NMToMeters(50))
+  redSA5Mantis:SetSAMRange(60)
+  redSA5Mantis:SetDetectInterval(45)
+  redSA5Mantis:SetAutoRelocate(false,false)
+  redSA5Mantis:AddShorad(redShorad,720)
+  redSA5Mantis:Start()
+  
+local redSA10Mantis = MANTIS:New("SA10 MANTIS","SR SA10", "EWRRED", "REDHQ", "red", false, "AWACSRED" )
+  redSA10Mantis:SetSAMRadius(UTILS.NMToMeters(40))
+  redSA10Mantis:SetSAMRange(70)
+  redSA10Mantis:SetDetectInterval(20)
+  redSA10Mantis:AddShorad(redShorad,720)
+  redSA10Mantis:SetAutoRelocate(true,false)
+  redSA10Mantis:Start()
+  
+local redS350Mantis = MANTIS:New( "S350 MANTIS", "SR S350 HDS", "EWRRED", "REDHQ", "red", false, "AWACSRED")
+  redS350Mantis:SetSAMRadius(UTILS.NMToMeters(50))
+  redS350Mantis:SetSAMRange(60)
+  redS350Mantis:SetDetectInterval(30)
+  redS350Mantis:SetAutoRelocate(false,false)
+  redS350Mantis:AddShorad(redShorad,720)
+  redS350Mantis:Start()
+
 
 
 if DEBUG then
-redMantis:Debug(on)
+redAAAMantis:Debug(true)
+redSA15Mantis:Debug(true)
+redSA3Mantis:Debug(true)
+redSA5Mantis:Debug(true)
+redSA10Mantis:Debug(true)
+redS350Mantis:Debug(true)
 end
 
-redMantis:Start()
+
+
+
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- TODO BLUE REAPER DRONE
