@@ -16,12 +16,14 @@ env.info("CTLD Loaded")
 dofile(lfs.writedir()..'/Missions/DCS Scripts/MY_MISSIONS/MissionScripts/OperationEspressoMartini/Hercules_Cargo_CTLD.lua')
 env.info("Herc CTLD Loaded")
 
-dofile(lfs.writedir()..'/Missions/DCS Scripts/MY_MISSIONS/MissionScripts/OperationEspressoMartini/SplashDamage.lua')
-env.info("Splash Damage Loaded")
+--dofile(lfs.writedir()..'/Missions/DCS Scripts/MY_MISSIONS/MissionScripts/OperationEspressoMartini/SplashDamage.lua')
+--env.info("Splash Damage Loaded")
 
 dofile(lfs.writedir()..'/Missions/DCS Scripts/MY_MISSIONS/MissionScripts/OperationEspressoMartini/OperationEspressoMartini.lua')
 env.info("Mission Script Loaded")
 
+dofile(lfs.writedir()..'/Missions/DCS Scripts/MY_MISSIONS/MissionScripts/OperationEspressoMartini/Its Over 9000 script by Mith.lua')
+env.info("Its over 9000")
 
 
 

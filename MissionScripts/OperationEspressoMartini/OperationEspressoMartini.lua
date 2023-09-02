@@ -43,40 +43,15 @@ Dismissed and caffeinated!
 
 TODO
 
-Armor Spawns Balanced--STATIC  <<<  THIS LOOKS STUPID AF MAKE THEM BETTER
-CTLD Tested--NEEDED
-
-
-assemble small representation of flotilla--TEST
-
-assemble bluefor flotilla--carrier done, two assault ships, two tarawas (1 for hueys cargo and 1 for apaches)--DONE
-
-
-
 UPDATE SOUNDS
   Need to add to mission file
   add CTLD beacon sounds also
-
-
-SET MISSION and MISSION STAGES--in progress
-
-
-
-Destruction of Qeshm Island and Larak Island CommandCenters and Bunkers  (this will shutdown spawns of helo troops, and cap)
-
-Destruction of Redfor Armor Landing Supply Vessel
-
-Elimination of Redfor Forces at Khasab
-
-Construction of FOB by Huey CTLD at Khasab
-
-
 
 SPLASH DAMAGE SCRIPT IS ALL KINDS OF FUCKED.  Fix it.  <---still no clue
 
 
 
-AWACS IS BROKEN>>>>MUST FIX LINK TO SRS TO MAKE WORK
+AWACS IS BROKEN>>>>MUST FIX LINK TO SRS TO MAKE WORK---still not sure why this breaks
 ]]
 
 
@@ -86,8 +61,8 @@ AWACS IS BROKEN>>>>MUST FIX LINK TO SRS TO MAKE WORK
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
-local DEBUG = true
-local DEBUG_PARKING = true
+local DEBUG = false
+local DEBUG_PARKING = false
 
 
 
@@ -216,6 +191,7 @@ Scoring:SetScaleDestroyPenalty( 40 )
 Scoring:SetMessagesHit(false)
 Scoring:SetMessagesDestroy(true)
 Scoring:SetMessagesScore(true)
+
 
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -387,12 +363,6 @@ local BlueAwacs = AWACS:New("Awacs-Blue", AwacsBlue, "blue", AIRBASE.PersianGulf
 -- TODO HELO TRANSPORT
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
---local redInfantrySet = SET_GROUP:New():FilterPrefixes("Red Infantry Group"):FilterStart()
---local troopPickupCoord = ZONE:New("PickupZone"):GetCoordinate()
---local troopDropCoord = ZONE:New("DropZone"):GetCoordinate()
-
-
-
 --Platoon
 
 local redInfantryPlatoon = PLATOON:New("Red Infantry", 10, "Red Infantry")
@@ -414,49 +384,18 @@ local redHeloSquadron = SQUADRON:New("RedTransportHelo",15,"Cream Slingers")
   redHeloSquadron:SetGrouping(1)
   redHeloSquadron:SetModex(100)
   redHeloSquadron:SetSkill(AI.Skill.ACE)
-
-
   
-  
+
 --Airwing
 
 local redHeloAirwing = AIRWING:New("WarehouseAirwing", "Mocha Caramel")
 
---THIS COULD CHANGE TO A SHIP???  this would lessen the flight time and increase the urgency of shooting these down.
-
-
 --THIS NEEDS A FREAKING AIRBASE!!!  WHY>  WHY>  WHY>  IT HAD A FARP BUT NOOOOOOOOO, MI8s are TOOOO GOOD FOR A FARP.  
 
   redHeloAirwing:SetAirbase(AIRBASE:FindByName(AIRBASE.PersianGulf.Qeshm_Island))
-
-
-
   redHeloAirwing:NewPayload("RedTransportHelo", -1, AUFTRAG.Type.OPSTRANSPORT, 100)
-  
-
   redHeloAirwing:SetTakeoffCold()
-
-  
   redHeloAirwing:AddSquadron(redHeloSquadron)
-  
-  
-
-
-
------ Function called each time and OPS group is send on a mission.
---function redCommander:onafterOpsOnMission(From, Event, To, OpsGroup, Mission)
---  local opsgroup=OpsGroup --Ops.OpsGroup#OPSGROUP
---  local mission=Mission   --Ops.Auftrag#AUFTRAG
---  
---  -- Info message.
---  local text=string.format("Group %s is on %s mission %s", opsgroup:GetName(), mission:GetType(), mission:GetName())
---  MESSAGE:New(text, 360):ToAll()
---  env.info(text)
---end  
-
-
-
-
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- TODO REDFOR FLIGHTGROUPS
@@ -523,11 +462,12 @@ local missionRedCAPzone = AUFTRAG:NewCAP(redCAPzone, 15000, 350, nil, 90, 20, {"
 -- TODO REDFOR COMMANDER TO HANDLE FLIGHTGROUP RESPONSE
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-local zonePatrol = ZONE:New("RedTroopLandingZone"):DrawZone()
+local zonePatrol = ZONE:New("RedTroopPatrolZone")
 
 local missionPatrol = AUFTRAG:NewPATROLZONE(zonePatrol)
   missionPatrol:SetRequiredAssets(8)
   missionPatrol:SetRequiredTransport(zonePatrol, 4, 6)
+  
   
 
 local redforCommander = COMMANDER:New(coalition.side.RED)
