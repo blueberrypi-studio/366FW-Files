@@ -27,6 +27,9 @@ end
 ---TODO RANGE ZONES
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+--pull smokes here after testing, use while player is actively using the respective range only
+
+
 --conventional bombing range target circles
 local CBRange = ZONE:New("CBRANGE"):SmokeZone(SMOKECOLOR.Blue)
 --precision bombing range
@@ -39,7 +42,10 @@ local StaticRange = ZONE:New("STATICRANGE"):SmokeZone(SMOKECOLOR.White)
 local LiveRange = ZONE:New("LIVERANGE"):SmokeZone(SMOKECOLOR.White)
 --SAM Range
 local SAMRange = ZONE:New("SAMRANGE"):SmokeZone(SMOKECOLOR.Red)
-
+--AirfieldStrike Simulation
+local AFStrike = ZONE:New("AFSTRIKESIM"):SmokeZone(SMOKECOLOR.Orange)
+--Ship Range
+local AntiShipRange = ZONE:New("ANTISHIPRANGE"):SmokeZone(SMOKECOLOR.Blue)
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ---TODO SPAWN ZONES
@@ -123,6 +129,7 @@ function flagReset()
 
   Static4Flag = USERFLAG:New("Static4Spawned")
   Static4Flag:Set(0,0)
+  
 --SAMRANGE flags  
   SA2Flag = USERFLAG:New("SA2Spawned")
   SA2Flag:Set(0,0)
@@ -776,19 +783,48 @@ end
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ---TODO MENU
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
---both menus need to be rebuilt into one
+--both menus need to be rebuilt into on--
+--
+
+--[[
+
+Menu Layout
+
+Menu One - Range Menu
+  Sub Menu 1 - 1 - StaticRange (Spawnables)
+  Sub Menu 1 - 2 - PrecisionRange
+  Sub Menu 1 - 3 - LiveRange
+  Sub Menu 1 - 4 - SAMRange
+  Sub Menu 1 - 5 - AA Gauntlet
+  Sub Menu 1 - 6 - ShipRange
 
 
+
+]]
 --Build Menu Object
 menumgr = CLIENTMENUMANAGER:New(clientSet, "Range Menu")
 --Main Menu
 MenuLevel1 = menumgr:NewEntry("Range Menu")
 --Sub Menu Under Main
-MenuLevel2_1 = menumgr:NewEntry("Spawn Hard Targets", MenuLevel1)
-MenuLevel2_2 = menumgr:NewEntry("Spawn Soft Targets", MenuLevel1)
-MenuLevel2_3 = menumgr:NewEntry("Spawn Hostile Targets", MenuLevel1)
-MenuLevel2_4 = menumgr:NewEntry("Spawn Precision Targets", MenuLevel1)
-MenuLevel2_5 = menumgr:NewEntry("Spawn AAA Targets", MenuLevel1)
+
+MenuLevel2_1 = menumgr:NewEntry("Static Range", MenuLevel1)
+MenuLevel2_2 = menumgr:NewEntry("Precision Range", MenuLevel1)
+MenuLevel2_3 = menumgr:NewEntry("Live Range - HOSTILE", MenuLevel1)
+MenuLevel2_4 = menumgr:NewEntry("SAM Range - HOSTILE", MenuLevel1)
+MenuLevel2_5 = menumgr:NewEntry("Air to Air Gauntlet", MenuLevel1)
+MenuLevel2_6 = menumgr:NewEntry("Anti Shipping Range", MenuLevel1)
+
+
+--Static Range
+MenuLevel3_1 = menumgr:NewEntry("T-72s", MenuLevel2_1, TARGET_T72)
+MenuLevel3_2 = menumgr:NewEntry("T-80s", MenuLevel2_1, TARGET_T80)
+MenuLevel3_3 = menumgr:NewEntry("T-90s", MenuLevel2_1, TARGET_T90)
+MenuLevel3_4 = menumgr:NewEntry("Trucks", MenuLevel2_1, TARGET_URALS)
+MenuLevel3_5 = menumgr:NewEntry("Armored Trucks", MenuLevel2_1, TARGET_ARMORED)
+MenuLevel3_6 = menumgr:NewEntry("Jeeps", MenuLevel2_1, TARGET_JEEPS)
+
+--move AAA to SAMRange
+MenuLevel3_5 = menumgr:NewEntry("Spawn AAA Targets", MenuLevel2_1)
 
 --Sub Menus
 --hard targets
