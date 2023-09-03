@@ -165,7 +165,6 @@ US_CC = COMMANDCENTER:New( GROUP:FindByName( "BLUECC" ), "Allied Command")
 -- TODO DETECTION
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
---RED
 DetectionSetGroupRed = SET_GROUP:New()
 DetectionSetGroupRed:FilterPrefixes({ "EWRRED", "AWACSRED", "FACRED", "JTACRED" })
 DetectionSetGroupRed:FilterStart()
@@ -273,12 +272,12 @@ local redS350Mantis = MANTIS:New( "S350 MANTIS", "SR S350 HDS", "EWRRED", "REDHQ
 
 
 if DEBUG then
-redAAAMantis:Debug(true)
-redSA15Mantis:Debug(true)
-redSA3Mantis:Debug(true)
-redSA5Mantis:Debug(true)
-redSA10Mantis:Debug(true)
-redS350Mantis:Debug(true)
+  redAAAMantis:Debug(true)
+  redSA15Mantis:Debug(true)
+  redSA3Mantis:Debug(true)
+  redSA5Mantis:Debug(true)
+  redSA10Mantis:Debug(true)
+  redS350Mantis:Debug(true)
 end
 
 
@@ -845,14 +844,14 @@ end
 operation:__Start(30)
 
 
-----Operation Start Sound
---function InitialSound()
---  local file = string.format("Korean War %d.ogg",ogg)
---  local radio = USERSOUND:New(file):ToCoalition(coalition.side.BLUE)
---end
---
---local Stimer = TIMER:New(InitialSound)
---Stimer:Start(11)
+--Operation Start Sound
+function InitialSound()
+  local file = "Korean War %d.ogg"
+  local radio = USERSOUND:New(file):ToCoalition(coalition.side.BLUE)
+end
+
+local Stimer = TIMER:New(InitialSound)
+Stimer:Start(11)
 
   
 
