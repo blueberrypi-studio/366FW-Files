@@ -83,7 +83,7 @@ ctld.enabledFOBBuilding = true -- if true, you can load a crate INTO a C-130 tha
 -- In future i'd like it to be a FARP but so far that seems impossible...
 -- You can also enable troop Pickup at FOBS
 
-ctld.cratesRequiredForFOB = 3 -- The amount of crates required to build a FOB. Once built, helis can spawn crates at this outpost to be carried and deployed in another area.
+ctld.cratesRequiredForFOB = 2 -- The amount of crates required to build a FOB. Once built, helis can spawn crates at this outpost to be carried and deployed in another area.
 -- The large crates can only be loaded and dropped by large aircraft, like the C-130 and listed in ctld.vehicleTransportEnabled
 -- Small FOB crates can be moved by helicopter. The FOB will require ctld.cratesRequiredForFOB larges crates and small crates are 1/3 of a large fob crate
 -- To build the FOB entirely out of small crates you will need ctld.cratesRequiredForFOB * 3
@@ -203,7 +203,7 @@ ctld.dropOffZones = {
     { "dropzone1", "green", 2 },
     { "dropzone2", "blue", 2 },
     { "dropzone3", "orange", 2 },
-    { "dropzone4", "none", 2 },
+    { "ArmorDropZone", "blue", 2 },
     { "dropzone5", "none", 1 },
     { "dropzone6", "none", 1 },
     { "dropzone7", "none", 1 },
@@ -215,15 +215,15 @@ ctld.dropOffZones = {
 
 --wpZones = { "Zone name", "smoke color",  "ACTIVE (yes/no)", "side (0 = Both sides / 1 = Red / 2 = Blue )", }
 ctld.wpZones = {
-    { "wpzone1", "green","yes", 2 },
-    { "wpzone2", "blue","yes", 2 },
-    { "wpzone3", "orange","yes", 2 },
+    { "wpzone1", "none","yes", 2 },
+    { "wpzone2", "none","yes", 2 },
+    { "wpzone3", "none","yes", 2 },
     { "wpzone4", "none","yes", 2 },
     { "wpzone5", "none","yes", 2 },
-    { "wpzone6", "none","yes", 1 },
-    { "wpzone7", "none","yes", 1 },
-    { "wpzone8", "none","yes", 1 },
-    { "wpzone9", "none","yes", 1 },
+    { "wpzone6", "none","yes", 2 },
+    { "wpzone7", "none","yes", 2 },
+    { "wpzone8", "none","yes", 2 },
+    { "wpzone9", "none","yes", 2 },
     { "wpzone10", "none","no", 0 }, -- Both sides as its set to 0
 }
 
