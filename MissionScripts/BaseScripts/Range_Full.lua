@@ -778,6 +778,8 @@ function CLEAR_RANGE()
     function(Group)
       Group:Destroy()
     end)
+    
+  --insert range score reset here
 end
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -797,6 +799,7 @@ Menu One - Range Menu
   Sub Menu 1 - 4 - SAMRange
   Sub Menu 1 - 5 - AA Gauntlet
   Sub Menu 1 - 6 - ShipRange
+  Sub Menu 1 - 7 - Airfield Strike
 
 
 
@@ -815,78 +818,67 @@ MenuLevel2_5 = menumgr:NewEntry("Air to Air Gauntlet", MenuLevel1)
 MenuLevel2_6 = menumgr:NewEntry("Anti Shipping Range", MenuLevel1)
 
 
---Static Range
-MenuLevel3_1 = menumgr:NewEntry("T-72s", MenuLevel2_1, TARGET_T72)
-MenuLevel3_2 = menumgr:NewEntry("T-80s", MenuLevel2_1, TARGET_T80)
-MenuLevel3_3 = menumgr:NewEntry("T-90s", MenuLevel2_1, TARGET_T90)
-MenuLevel3_4 = menumgr:NewEntry("Trucks", MenuLevel2_1, TARGET_URALS)
-MenuLevel3_5 = menumgr:NewEntry("Armored Trucks", MenuLevel2_1, TARGET_ARMORED)
-MenuLevel3_6 = menumgr:NewEntry("Jeeps", MenuLevel2_1, TARGET_JEEPS)
+--STATIC RANGE MENU
+MenuLevel2_1_1 = menumgr:NewEntry("T-72s", MenuLevel2_1, TARGET_T72)
+MenuLevel2_1_2 = menumgr:NewEntry("T-80s", MenuLevel2_1, TARGET_T80)
+MenuLevel2_1_3 = menumgr:NewEntry("T-90s", MenuLevel2_1, TARGET_T90)
+MenuLevel2_1_4 = menumgr:NewEntry("Trucks", MenuLevel2_1, TARGET_URALS)
+MenuLevel2_1_5 = menumgr:NewEntry("Armored Trucks", MenuLevel2_1, TARGET_ARMORED)
+MenuLevel2_1_6 = menumgr:NewEntry("Jeeps", MenuLevel2_1, TARGET_JEEPS)
+MenuLevel2_1_7 = menumgr:NewEntry("Infantry - Enclosed", MenuLevel2_1, TARGET_INFANTRY)
 
---move AAA to SAMRange
-MenuLevel3_5 = menumgr:NewEntry("Spawn AAA Targets", MenuLevel2_1)
-
---Sub Menus
---hard targets
-Menu1 = menumgr:NewEntry("T-72s", MenuLevel2_1, TARGET_T72)
-Menu2 = menumgr:NewEntry("T-80s", MenuLevel2_1, TARGET_T80)
-Menu3 = menumgr:NewEntry("T-90s", MenuLevel2_1, TARGET_T90)
---soft targets
-Menu4 = menumgr:NewEntry("Trucks", MenuLevel2_2, TARGET_URALS)
-Menu5 = menumgr:NewEntry("Armored Trucks", MenuLevel2_2, TARGET_ARMORED)
-Menu6 = menumgr:NewEntry("Jeeps", MenuLevel2_2, TARGET_JEEPS)
---hostile targets
-Menu7 = menumgr:NewEntry("T-72 Hostile", MenuLevel2_3, TARGET_T72_HOSTILE)
-Menu8 = menumgr:NewEntry("T-80 Hostile", MenuLevel2_3, TARGET_T80_HOSTILE)
-Menu9 = menumgr:NewEntry("T-90 Hostile", MenuLevel2_3, TARGET_T90_HOSTILE)
+--PRECISION RANGE MENU
 --enclosed or vision obscured targets
-Menu10 = menumgr:NewEntry("BTR - Enclosed", MenuLevel2_4, TARGET_BTR)
-Menu11 = menumgr:NewEntry("BMP - Enclosed", MenuLevel2_4, TARGET_BMP)
-Menu12 = menumgr:NewEntry("Infantry - Enclosed", MenuLevel2_4, TARGET_INFANTRY)
+MenuLevel2_3_1 = menumgr:NewEntry("BTR - Enclosed", MenuLevel2_2, TARGET_BTR)
+MenuLevel2_3_2 = menumgr:NewEntry("BMP - Enclosed", MenuLevel2_2, TARGET_BMP)
+
+--LIVE RANGE MENU
+--hostile targets
+MenuLevel2_3_1 = menumgr:NewEntry("T-72 Hostile", MenuLevel2_3, TARGET_T72_HOSTILE)
+MenuLevel2_3_2 = menumgr:NewEntry("T-80 Hostile", MenuLevel2_3, TARGET_T80_HOSTILE)
+MenuLevel2_3_3 = menumgr:NewEntry("T-90 Hostile", MenuLevel2_3, TARGET_T90_HOSTILE)
+
+
+
+
+--SAMRANGE
+MenuLevel2_4_1 = menumgr:NewEntry("Spawn AAA Targets", MenuLevel2_4)
+MenuLevel2_4_2 = menumgr:NewEntry("Easy Non Complex Sites", MenuLevel2_4)
+MenuLevel2_4_3 = menumgr:NewEntry("Medium Non Complex Sites", MenuLevel2_4)
+MenuLevel2_4_4 = menumgr:NewEntry("Hard Long Range Complex Sites", MenuLevel2_4)
+MenuLevel2_4_5 = menumgr:NewEntry("I Hate Myself Mode", MenuLevel2_4)
+
 --AAA targets LIVE
-Menu13 = menumgr:NewEntry("ZU-23", MenuLevel2_5, TARGET_ZU23)
-Menu14 = menumgr:NewEntry("Shilka", MenuLevel2_5, TARGET_SHILKA)
-
-
-
---Build Menu Object
-menumgr = CLIENTMENUMANAGER:New(clientSet, "Range Menu")
---Main Menu
-MenuLevel1 = menumgr:NewEntry("Range Menu")
---Sub Menu Under Main
-MenuLevel2_1 = menumgr:NewEntry("Easy Non Complex Sites", MenuLevel1)
-MenuLevel2_2 = menumgr:NewEntry("Medium Non Complex Sites", MenuLevel1)
-MenuLevel2_3 = menumgr:NewEntry("Hard Long Range Complex Sites", MenuLevel1)
-MenuLevel2_4 = menumgr:NewEntry("I Hate Myself Mode", MenuLevel1)
-MenuLevel2_5 = menumgr:NewEntry("Clear Range", MenuLevel1, CLEAR_RANGE)
-
+MenuLevel2_4_1_1 = menumgr:NewEntry("ZU-23", MenuLevel2_4_1, TARGET_ZU23)
+MenuLevel2_4_1_2 = menumgr:NewEntry("Shilka", MenuLevel2_4_1, TARGET_SHILKA)
 
 --Sub Menus
 --non complex sam sites  shorter range, less close range defenses
 
-Menu1 = menumgr:NewEntry("SA2", MenuLevel2_1, TARGET_SA2)
-Menu2 = menumgr:NewEntry("SA3", MenuLevel2_1, TARGET_SA3)
-Menu3 = menumgr:NewEntry("SA5", MenuLevel2_1, TARGET_SA5)
+MenuLevel2_4_2_1 = menumgr:NewEntry("SA2", MenuLevel2_4_2, TARGET_SA2)
+MenuLevel2_4_2_2 = menumgr:NewEntry("SA3", MenuLevel2_4_2, TARGET_SA3)
+MenuLevel2_4_2_3 = menumgr:NewEntry("SA5", MenuLevel2_4_2, TARGET_SA5)
+
 
 --Medium Non Complex Sites
 
-Menu4 = menumgr:NewEntry("SA6", MenuLevel2_2, TARGET_SA6)
-Menu5 = menumgr:NewEntry("SA8", MenuLevel2_2, TARGET_SA8)
-Menu6 = menumgr:NewEntry("Manpads", MenuLevel2_2, TARGET_MANPADS)
+MenuLevel2_4_3_1 = menumgr:NewEntry("SA6", MenuLevel2_4_3, TARGET_SA6)
+MenuLevel2_4_3_2 = menumgr:NewEntry("SA8", MenuLevel2_4_3, TARGET_SA8)
+MenuLevel2_4_3_3 = menumgr:NewEntry("Manpads", MenuLevel2_4_3, TARGET_MANPADS)
 
 --Hard Long Range, Complex Sites
 
-Menu7 = menumgr:NewEntry("SA10 Complex", MenuLevel2_3, TARGET_SA10)
-Menu8 = menumgr:NewEntry("SA11 Complex", MenuLevel2_3, TARGET_SA11)
-Menu9 = menumgr:NewEntry("SA12 Complex", MenuLevel2_3, TARGET_SA12)
+MenuLevel2_4_4_1 = menumgr:NewEntry("SA10 Complex", MenuLevel2_4_4, TARGET_SA10)
+MenuLevel2_4_4_2 = menumgr:NewEntry("SA11 Complex", MenuLevel2_4_4, TARGET_SA11)
+MenuLevel2_4_4_3 = menumgr:NewEntry("SA12 Complex", MenuLevel2_4_4, TARGET_SA12)
 
 
 --I hate myself mode
 --Long Range, Short Range, Manpads, Mod Systems, Shorad, Mantis
-Menu10 = menumgr:NewEntry("I choose Death", MenuLevel2_4, TARGET_DEATHMODE)
+MenuLevel2_4_5_1 = menumgr:NewEntry("I choose Death", MenuLevel2_4_5, TARGET_DEATHMODE)
 
-
-
+--CLEAR RANGE FUNCTION
+MenuLevel2_4_6 = menumgr:NewEntry("Clear Range", MenuLevel1, CLEAR_RANGE)
 
 
 
