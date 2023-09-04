@@ -50,7 +50,7 @@ splash_damage_options = {
   ["unit_disabled_health"] = 30, --if health is below this value after our explosions, disable its movement 
   ["unit_cant_fire_health"] = 50, --if health is below this value after our explosions, set ROE to HOLD to simulate damage weapon systems
   ["infantry_cant_fire_health"] = 90,  --if health is below this value after our explosions, set ROE to HOLD to simulate severe injury
-  ["debug"] = true,  --enable debugging messages
+  ["debug"] = false,  --enable debugging messages
   ["weapon_missing_message"] = true, --false disables messages alerting you to weapons missing from the explTable
   ["rocket_multiplier"] = 1.3, --multiplied by the explTable value for rockets
 }
