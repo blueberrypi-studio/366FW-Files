@@ -200,7 +200,7 @@ Scoring:SetMessagesScore(true)
 
 -- Function to check and cleanup stuck aircraft
 
-CleanUpAirports = CLEANUP_AIRBASE:New(AIRBASE.PersianGulf.Qeshm_Island)
+--CleanUpAirports = CLEANUP_AIRBASE:New(AIRBASE.PersianGulf.Qeshm_Island)
 
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -410,7 +410,7 @@ local BlueAwacs = AWACS:New("Awacs-Blue", AwacsBlue, "blue", AIRBASE.PersianGulf
 --  AwacsBlue:SetSRS(hereSRSPath,"female","en-US",hereSRSPort,"en-US-Wavenet-F",0.9,hereSRSGoogle)
 --else
    --use Windows
-  BlueAwacs:SetSRS(hereSRSPath,"male","en-US",hereSRSPort, nil, 0.9)
+--  BlueAwacs:SetSRS(hereSRSPath,"male","en-US",hereSRSPort, nil, 0.9)
 --end
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
