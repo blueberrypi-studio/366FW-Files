@@ -846,7 +846,7 @@ operation:__Start(30)
 
 --Operation Start Sound
 function InitialSound()
-  local file = "Korean War %d.ogg"
+  local file = "Korean War 3.ogg"
   local radio = USERSOUND:New(file):ToCoalition(coalition.side.BLUE)
 end
 
@@ -888,7 +888,7 @@ end
 -- Operation finished
 function operation:OnAfterOver(From,Event,To,Phase)
   MESSAGE:New("Operation Espresso Martini Victory!!",15):ToBlue()
-  local file = "campaignvictory.ogg"
+  local file = "Campaign Victory 1.ogg"
   local radio = USERSOUND:New(file):ToCoalition(coalition.side.BLUE)
 end  
 
