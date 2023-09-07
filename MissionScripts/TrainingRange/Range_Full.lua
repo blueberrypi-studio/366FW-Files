@@ -159,13 +159,15 @@ function flagReset()
 
 end
 
+local initialReset = flagReset()
+
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ---TODO MESSAGES
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-nospawnmessage = MESSAGE:New("You may not spawn anymore of these targets",10)
-preparefordeathmessage = MESSAGE:New("Prepare for Death.",10)
-
+local nospawnmessage = MESSAGE:New("You may not spawn anymore of these targets",10)
+local preparefordeathmessage = MESSAGE:New("Prepare for Death.",10)
+local gauntletstart = MESSAGE:New("Air to Air Gauntlet Started, Targets will spawn inside the defined engagement zone.")
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ---TODO TABLES/GROUPS
@@ -209,10 +211,85 @@ function targetSet:OnEventKill(EventData)
   local radio = USERSOUND:New(file):ToCoalition(coalition.side.BLUE)
 end
 
+--Client Sound Functions
+function clientSet:OnEventDead(EventData)
+  local file = "Oh Jesus.ogg"
+  local radio = USERSOUND:New(file):ToCoalition(coalition.side.BLUE)
+end
+
+function clientSet:OnEventLand(EventData)
+  local file = "GreatSuccess.ogg"
+  local radio = USERSOUND:New(file):ToCoalition(coalition.side.BLUE)
+end
+
+function clientSet:OnEventPlayerEnterAircraft(EventData)
+  local file = "allyourshit.ogg"
+  local radio = USERSOUND:New(file):ToCoalition(coalition.side.BLUE)
+end
+
+--Target Sound Functions
+
+function TargetSet:OnEventKill(EventData)
+  local file = "GreatSuccess.ogg"
+  local radio = USERSOUND:New(file):ToCoalition(coalition.side.BLUE)
+end
+
+function TargetSet:OnEventBirth(EventData)
+  local file = "pieceofcandy.ogg"
+  local radio = USERSOUND:New(file):ToCoalition(coalition.side.BLUE)
+end
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
----TODO SETUP RANGES
+---TODO SETUP RANGES AND SCORING
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+----conventional bombing range target circles
+--local CBRange = ZONE:New("CBRANGE"):SmokeZone(SMOKECOLOR.Blue)
+----precision bombing range
+--local PBRange = ZONE:New("PBRANGE"):SmokeZone(SMOKECOLOR.Green)
+----strafing range
+--local STRange = ZONE:New("STRANGE"):SmokeZone(SMOKECOLOR.Orange)
+----static target range (spawnables)
+--local StaticRange = ZONE:New("STATICRANGE"):SmokeZone(SMOKECOLOR.White)
+----live target range
+--local LiveRange = ZONE:New("LIVERANGE"):SmokeZone(SMOKECOLOR.White)
+----SAM Range
+--local SAMRange = ZONE:New("SAMRANGE"):SmokeZone(SMOKECOLOR.Red)
+
+--conventional range
+
+
+
+--precision range
+
+
+
+--strafing range
+
+
+
+--staticrange
+
+
+
+--live range
+
+
+
+--sam range
+
+
+
+--shipping range
+
+
+
+--scoring for gauntlet
+
+
+
+--scoring for afstrikesim
+
 
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -835,6 +912,8 @@ local targetUnitNames = { "Mig15", "Mig19", "Mig21", "Mig23", "Mig25", "Mig29", 
 function AAGauntlet()
 
   if GAUNTLETFLAG:Is(0) then
+  
+    gauntletstart:ToAll()--Start Message
 
     local randNum = math.random(1,4)
 
@@ -846,6 +925,11 @@ function AAGauntlet()
       :InitRandomizeZones(ZoneTable)
       :SpawnScheduled(5,.5)
     
+    TIMER:New(function()
+      randNum = math.random(1,4)
+      SpawnTarget:InitGrouping(randNum)
+      end):Start(5,5)    
+      
     GAUNTLETFLAG:Set(1,0)  
     
   else
@@ -855,49 +939,11 @@ function AAGauntlet()
   end    
 end
   
---Get targets for scoring if scoring is inadequate
+--Starting of gauntlet is working, you still need to figure out a way to Stop the gauntlet though, your breakpoint is that the group doesnt exist until spawn and the variable is inside the function.
+--can possibly use a boolean to establish a global gauntlet on or off
 
 
-    TIMER:New(function()
-      randNum = math.random(1,4)
-      SpawnTarget:InitGrouping(randNum)
-      end):Start(5,5)
-  
 
-  
-local Scoring = SCORING:New("Air Gauntlet")
-
-Scoring:SetMessagesHit(Off)
-Scoring:SetMessagesDestroy(On)
-Scoring:SetMessagesToCoalition()
-
-----Client Sound Functions
---function clientSet:OnEventDead(EventData)
---  local file = "Oh Jesus.ogg"
---  local radio = USERSOUND:New(file):ToCoalition(coalition.side.BLUE)
---end
---
---function clientSet:OnEventLand(EventData)
---  local file = "GreatSuccess.ogg"
---  local radio = USERSOUND:New(file):ToCoalition(coalition.side.BLUE)
---end
---
---function clientSet:OnEventPlayerEnterAircraft(EventData)
---  local file = "allyourshit.ogg"
---  local radio = USERSOUND:New(file):ToCoalition(coalition.side.BLUE)
---end
---
-----Target Sound Functions
---
---function TargetSet:OnEventKill(EventData)
---  local file = "GreatSuccess.ogg"
---  local radio = USERSOUND:New(file):ToCoalition(coalition.side.BLUE)
---end
---
---function TargetSet:OnEventBirth(EventData)
---  local file = "pieceofcandy.ogg"
---  local radio = USERSOUND:New(file):ToCoalition(coalition.side.BLUE)
---end
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ---TODO MENU
@@ -988,6 +1034,9 @@ MenuLevel2_4_3_3 = menumgr:NewEntry("Manpads", MenuLevel2_4_3, TARGET_MANPADS)
 MenuLevel2_4_4_1 = menumgr:NewEntry("SA10 Complex", MenuLevel2_4_4, TARGET_SA10)
 MenuLevel2_4_4_2 = menumgr:NewEntry("SA11 Complex", MenuLevel2_4_4, TARGET_SA11)
 MenuLevel2_4_4_3 = menumgr:NewEntry("SA12 Complex", MenuLevel2_4_4, TARGET_SA12)
+
+--air gauntlet menu
+MenuLevel2_5_1 = menumgr:NewEntry("Start Air Gauntlet", MenuLevel2_5, AAGauntlet)
 
 
 --I hate myself mode
