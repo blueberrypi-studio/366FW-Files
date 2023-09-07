@@ -255,42 +255,80 @@ end
 --local LiveRange = ZONE:New("LIVERANGE"):SmokeZone(SMOKECOLOR.White)
 ----SAM Range
 --local SAMRange = ZONE:New("SAMRANGE"):SmokeZone(SMOKECOLOR.Red)
+--
+
+--RANGE SCORE
+
+local rangeScore = SCORING:New("Training Range")
+
+  rangeScore:SetDisplayMessagePrefix("Rangemaster")
+  rangeScore:SetMessagesDestroy(true)
+  rangeScore:SetMessagesHit(true)
+  rangeScore:SetScaleDestroyScore(3)
+  rangeScore:AddZoneScore(SAMRange,100)  
+
 
 --conventional range
 
+local cbRange = RANGE:New("Conventional Bombing Range")
 
+  cbRange:SetRangeZone(ZONE:FindByName("CBRANGE"))
+  cbRange:AddBombingTargets({"BC1", "BC2", "BC3", "BC4", "BC5"}, 10, false)
+  cbRange:AddBombingTargets({"BC6", "BC7"}, 5, false)
 
 --precision range
 
-
+local pbRange = RANGE:New("Precision Bombing Range")
+  
+  pbRange:SetRangeZone(ZONE:FindByName("PBRANGE"))
+  
 
 --strafing range
 
+local stRange = RANGE:New("Strafing Range")
+
+  stRange:SetRangeZone(ZONE:FindByName("STRANGE"))
 
 
 --staticrange
 
+local staticRange = RANGE:New("Static Spawn Range")
+
+  staticRange:SetRangeZone(ZONE:FindByName("STATICRANGE"))
 
 
 --live range
 
+local liveRange = RANGE:New("Live Hostile Range")
 
+  liveRange:SetRangeZone(ZONE:FindByName("LIVERANGE"))
 
 --sam range
+
+local samRange = RANGE:New("Live SAM Range")
+
+  samRange:SetRangeZone(ZONE:FindByName("SAMRANGE"))
+
+
 
 
 
 --shipping range
 
+local shippingRange = RANGE:New("Anti Shipping Range")
+
+  shippingRange:SetRangeZone(ZONE:FindByName("ANTISHIPRANGE"))
+
 
 
 --scoring for gauntlet
 
+--use rangescore here instead of RANGE
 
 
 --scoring for afstrikesim
 
-
+--use rangescore here instead of RANGE
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ---TODO MAIN
