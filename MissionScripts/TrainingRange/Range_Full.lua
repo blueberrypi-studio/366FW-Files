@@ -60,8 +60,8 @@ local jeepSpawnZone = ZONE:New("JeepZone")
 ---TODO SETS
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-clientSet = SET_CLIENT:New():FilterTypes({"plane", "helicopter"}):FilterStart()
-targetSet = SET_GROUP:New():FilterCoalitions("red"):FilterStart()
+local clientSet = SET_CLIENT:New():FilterTypes({"plane", "helicopter"}):FilterStart()
+local targetSet = SET_GROUP:New():FilterCoalitions("red"):FilterStart()
 
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -763,7 +763,7 @@ function TARGET_DEATHMODE()
 end
 
 
-
+--THHIS WILL BREAK THE REST OF THE RANGE --CONFINE THE SCAN TO THE SAMRANGE ZONE
 function CLEAR_RANGE()
   local zoneScanSet = SET_GROUP:New():FilterCoalitions("red"):FilterOnce()
     BASE:I(zoneScanSet)
@@ -878,9 +878,9 @@ end
 
 --Zones
 
-local ZoneTable = { ZONE:New("Zone1"), ZONE:New("Zone2"), ZONE:New("Zone3"), ZONE:New("Zone4") }
+local ZoneTable = { ZONE:New("AAZONE1"), ZONE:New("AAZONE2"), ZONE:New("AAZONE3"), ZONE:New("AAZONE4"), ZONE:New("AAZONE5"), ZONE:New("AAZONE6") }
 
-local engageZone = ZONE:New("EngagementZone"):DrawZone(coalition.side.BLUE, {1,0,0},1, {1,0,0}, {0,1}, 2, true)
+local engageZone = ZONE:New("AAGAUNTLET"):DrawZone(coalition.side.BLUE, {1,0,0},1, {1,0,0}, {0,1}, 2, true)
 
 --Tables
 
@@ -907,27 +907,33 @@ clientSet:HandleEvent(EVENTS.PlayerEnterAircraft)
 
 local targetUnitNames = { "Mig15", "Mig19", "Mig21", "Mig23", "Mig25", "Mig29", "Mig31", "Mirage F1", "SU27", "SU30", "Mirage2000" }
 
+
+local aaGauntletClients = SET_CLIENT:New():FilterPrefixes("AA"):FilterStart()
+
 --Main function of gauntlet
 
-local randNum = math.random(1,4)
+aaGauntletClients:ForEachClientInZone(engageZone,
 
-local SpawnTarget = SPAWN:New("SpawnTarget")
-  :InitKeepUnitNames(true)
-  :InitGrouping(randNum)
-  :InitLimit(1, 0)
-  :InitRandomizeTemplate(TemplateTable)
-  :InitRandomizeZones(ZoneTable)
-  :SpawnScheduled(5,.5)
+  function()
+    local randNum = math.random(1,4)
+
+    local SpawnTarget = SPAWN:New("SpawnTarget")
+      :InitKeepUnitNames(true)
+      :InitGrouping(randNum)
+      :InitLimit(1, 0)
+      :InitRandomizeTemplate(TemplateTable)
+      :InitRandomizeZones(ZoneTable)
+      :SpawnScheduled(5,.5)
   
 --Get targets for scoring if scoring is inadequate
 
 
-TIMER:New(function()
-  randNum = math.random(1,4)
-  SpawnTarget:InitGrouping(randNum)
-  end):Start(5,5)
+    TIMER:New(function()
+      randNum = math.random(1,4)
+      SpawnTarget:InitGrouping(randNum)
+      end):Start(5,5)
   
-  
+  end)  
   
 local Scoring = SCORING:New("Air Gauntlet")
 
