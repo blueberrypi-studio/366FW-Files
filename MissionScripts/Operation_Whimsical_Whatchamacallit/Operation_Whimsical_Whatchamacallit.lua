@@ -16,7 +16,8 @@ TODO
 10.  Add sounds to miz
 11.  Build Script Load Triggers
 12.  Fix awacs breaking srs/ to do this more than likely just establish an Orbit AUFTRAG using the persistent AWACS build, and just scratch the voice coms from awacs
-
+13.  Shorad
+14.  Mantis
 
 
 
@@ -101,6 +102,30 @@ local clientSet = SET_CLIENT:New():FilterPrefixes("366th"):FilterStart()
 
 
 
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- TODO EVENT HANDLERS
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+clientSet:HandleEvent(EVENTS.Hit)
+clientSet:HandleEvent(EVENTS.Dead)
+clientSet:HandleEvent(EVENTS.Land)
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- TODO SOUNDS
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- TODO MESSAGES
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+local opStartMessage = MESSAGE:New("Welcome to Operation Whimsical Whatchamacallit",10)
+
+
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- TODO ATIS Sochi on 131.1 MHz AM
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -125,6 +150,107 @@ local atisSochi = ATIS:New(AIRBASE.Caucasus.Sochi_Adler, 131.1)
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+---TODO TARGET TABLE
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+--Define Operation Targets
+
+local operationTargets = { 
+  [1] = {       
+    TargetName = "EWRRED Tunb Island",
+    TargetStatic = false,
+    TargetBriefing = "Destroy the Early Warning Radar located on Tunb Island",
+    TargetAuftrag = AUFTRAG.Type.SEAD,
+  },
+  [2] = {       
+    TargetName = "EWRRED Qeshm Island",
+    TargetStatic = false,
+    TargetBriefing = "Destroy the Early Warning Radar located on Qeshm Island",
+    TargetAuftrag = AUFTRAG.Type.SEAD,
+  },
+  [3] = {       
+    TargetName = "Qeshm Command Center",
+    TargetStatic = true,
+    TargetBriefing = "Destroy the Command Center located on Qeshm Island",
+    TargetAuftrag = AUFTRAG.Type.STRIKE,
+  },
+  [4] = {       
+    TargetName = "EWRRED Larak Island",
+    TargetStatic = false,
+    TargetBriefing = "Destroy the Early Warning Radar located on Larak Island",
+    TargetAuftrag = AUFTRAG.Type.SEAD,
+  },
+  [5] = {       
+    TargetName = "Larak Command Center",
+    TargetStatic = true,
+    TargetBriefing = "Destroy the Command Center located on Larak Island",
+    TargetAuftrag = AUFTRAG.Type.STRIKE,
+  },
+  [6] = {       
+    TargetName = "Red Armor Group",
+    TargetStatic = false,
+    TargetBriefing = "Destroy Redfor Armor Units attacking Khasab Airbase",
+    TargetAuftrag = AUFTRAG.Type.GROUNDATTACK,
+  },
+  }
+  --FINISH ADDING TARGETS HERE
+
+
+--Create TARGET objects
+
+local BlueTargets = {}
+for i=1,6 do
+  if operationTargets[i].TargetStatic then
+    -- static
+    BlueTargets[i] = TARGET:New(STATIC:FindByName(operationTargets[i].TargetName))
+  else
+    -- group
+    BlueTargets[i] = TARGET:New(GROUP:FindByName(operationTargets[i].TargetName))
+  end
+end
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+---TODO PLAYER TASK CONTROLLER
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+local menu = MENU_COALITION:New(coalition.side.BLUE,"Ops Menu")
+
+
+-- Set up A2G task controller for the blue side named "82nd Airborne"
+local taskmanager = PLAYERTASKCONTROLLER:New("366th Airwing",coalition.side.BLUE,PLAYERTASKCONTROLLER.Type.A2G)
+taskmanager:DisableTaskInfoMenu()
+taskmanager:EnableTaskInfoMenu()
+--taskmanager:SetMenuOptions(true,5,45)
+taskmanager:SetAllowFlashDirection(true)
+taskmanager:SetCallSignOptions(true,true,{Ford="Yankee"})
+-- set locale
+taskmanager:SetLocale("en")
+taskmanager:SetMenuName("Inspector Gadget")
+-- Set up using SRS
+--taskmanager:SetSRS({130,255},{radio.modulation.AM,radio.modulation.AM},hereSRSPath,"female","en-US",hereSRSPort,"Microsoft Hazel Desktop",0.7,hereSRSGoogle)
+-- Controller will announce itself under these broadcast frequencies
+--taskmanager:SetSRSBroadcast({127.5,305},{radio.modulation.AM,radio.modulation.AM})
+-- Set target radius
+taskmanager:SetTargetRadius(750)
+taskmanager:SetParentMenu(menu)
+
+
+function taskmanager:OnAfterTaskTargetSmoked(From,Event,To,Task)
+  local file = "Target Smoke.ogg"
+  local radio = USERSOUND:New(file):ToCoalition(coalition.side.BLUE)
+end
+
+function taskmanager:OnAfterTaskTargetFlared(From,Event,To,Task)
+  local file = "Target Smoke.ogg"
+  local radio = USERSOUND:New(file):ToCoalition(coalition.side.BLUE)
+end
+
+function taskmanager:OnAfterTaskTargetIlluminated(From,Event,To,Task)
+  local file = "Target Smoke.ogg"
+  local radio = USERSOUND:New(file):ToCoalition(coalition.side.BLUE)
+end
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- TODO AIRBASE MAINTENANCE
@@ -215,7 +341,90 @@ Scoring:SetMessagesScore(true)
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- TODO OPERATION PHASES
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+--Setup Operation
+local operation = OPERATION:New("Operation Whimsical Whatchamacallit")
+
+
+if DEBUG then
+  operation.verbose = 1
+end
+
+
+--Add Operation Phases
+for i=1,6 do
+  
+  local phase = operation:AddPhase(i)
+  
+  --add completion
+  operation:AddPhaseConditonOverAll(phase,
+  function(target)
+    local Target = target -- Ops.Target#TARGET
+    if Target:IsDead() or Target:IsDestroyed() or Target:CountTargets() == 0 then
+      return true
+    else
+     return false
+    end 
+  end,BlueTargets[i])
+end  
+
+
+--Start Operation
+operation:__Start(30)
+
+
+--Operation Start Sound
+function InitialSound()
+  local file = "Korean War 3.ogg"
+  local radio = USERSOUND:New(file):ToCoalition(coalition.side.BLUE)
+end
+
+local Stimer = TIMER:New(InitialSound)
+Stimer:Start(11)
+
+  
+
+--function called at start of operation  
+function operation:OnAfterStart(From,Event,To)
+  opStartMessage:ToBlue()
+end
+
+
+
+--function called on phase change
+  
+-- next phase
+function operation:OnAfterPhaseChange(From,Event,To,Phase)
+  -- Next phase, this is Phase done
+  local phase = operation:GetPhaseActive()
+  local ind = phase.name
+  local type = operationTargets[ind].TargetAuftrag
+  local brief = operationTargets[ind].TargetBriefing
+  if DEBUG then
+    BlueTargets[ind].verbose = 3
+  end
+  local task = PLAYERTASK:New(type,BlueTargets[ind],true,99,type)
+  task:AddFreetext(brief)
+  if DEBUG then
+    task.verbose = true
+  end
+  taskmanager:AddPlayerTaskToQueue(task)
+  local file = "That Is Our Target.ogg"
+  local radio = USERSOUND:New(file):ToCoalition(coalition.side.BLUE)
+end 
+  
+  
+-- Operation finished
+function operation:OnAfterOver(From,Event,To,Phase)
+  MESSAGE:New("Operation Whimsical Whatchamacallit Victory!!",15):ToBlue()
+  local file = "Campaign Victory 1.ogg"
+  local radio = USERSOUND:New(file):ToCoalition(coalition.side.BLUE)
+end
+
+  
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ---TODO REDFOR
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -347,27 +556,27 @@ local redAirwing = AIRWING:New("WarehouseNovoAirwing", "Jelly Smashers")
 
 --Red Capture Mission
 local missionRedCaptureZone1=AUFTRAG:NewCAPTUREZONE(opzone1, coalition.side.RED)
-missionRedCaptureZone1:SetRequiredAssets(8)
-missionRedCaptureZone1:SetRepeatOnFailure(10)
-missionRedCaptureZone1:SetROE(ENUMS.ROE.OpenFire)
+  missionRedCaptureZone1:SetRequiredAssets(8)
+  missionRedCaptureZone1:SetRepeatOnFailure(10)
+  missionRedCaptureZone1:SetROE(ENUMS.ROE.OpenFire)
 
 --Red CAP Mission for MainClashZone
 local missionRedCAPzone2 = AUFTRAG:NewCAP(zone13, 15000, 350, nil, 90, 20, {"Air"})
-missionRedCAPzone2:SetRequiredAssets(2)
-missionRedCAPzone2:SetRepeatOnFailure(5)
-missionRedCAPzone2:SetROE(ENUMS.ROE.OpenFire)
+  missionRedCAPzone2:SetRequiredAssets(2)
+  missionRedCAPzone2:SetRepeatOnFailure(5)
+  missionRedCAPzone2:SetROE(ENUMS.ROE.OpenFire)
 
 --Red CAS Mission for MainClashZone
 local missionRedCASzone2 = AUFTRAG:NewCAS(zone13, 8000, 250)
-missionRedCASzone2:SetRequiredAssets(2)
-missionRedCASzone2:SetRepeatOnFailure(5)
-missionRedCASzone2:SetROE(ENUMS.ROE.OpenFire)
+  missionRedCASzone2:SetRequiredAssets(2)
+  missionRedCASzone2:SetRepeatOnFailure(5)
+  missionRedCASzone2:SetROE(ENUMS.ROE.OpenFire)
 
 --Air Defense Missions -- use Capzones Zone7 Zone8 Zone9
 local missionRedAirDefenseOne = AUFTRAG:NewAIRDEFENSE(zone14)
-missionRedAirDefenseOne:SetRequiredAssets(6)
-missionRedAirDefenseOne:SetRepeatOnFailure(5)
-missionRedAirDefenseOne:SetROE(ENUMS.ROE.OpenFireWeaponFree)
+  missionRedAirDefenseOne:SetRequiredAssets(6)
+  missionRedAirDefenseOne:SetRepeatOnFailure(5)
+  missionRedAirDefenseOne:SetROE(ENUMS.ROE.OpenFireWeaponFree)
 
 --RED CHIEF
 
@@ -378,7 +587,7 @@ local RedAgents = DetectionSetGroupRed
 local RUChief=CHIEF:New(coalition.side.RED, RedAgents)
 
 --Add border zone.
-RUChief:AddBorderZone(zone8)
+RUChief:AddBorderZone(zone2)
 
 --Enable tactical overview.
 --RUChief:SetTacticalOverviewOn()
@@ -571,7 +780,7 @@ local BlueAgents = DetectionSetGroupBlue
 --Define the CHIEF.  
 local USChief=CHIEF:New(coalition.side.BLUE, BlueAgents)
 --Add border zone.
-USChief:AddBorderZone(zone7)
+USChief:AddBorderZone(zone1)
 --Enable tactical overview.
 
 if DEBUG then
@@ -637,6 +846,8 @@ USChief:SetStrategicZoneResourceEmpty(BlueStratZone1, BlueCAPTUREResourceEmpty)
 
 
 USChief:Start(5)
+
+
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- TODO ZONE CAPTURE
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
