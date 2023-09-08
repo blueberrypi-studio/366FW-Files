@@ -15,20 +15,91 @@
 ---TODO SETUP
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+_SETTINGS:SetPlayerMenuOff()
+_SETTINGS:SetImperial()
+_SETTINGS:SetA2G_BR()
+_SETTINGS:SetA2A_BRAA()
 
+
+local DEBUG = false
+local DEBUG_COMMANDERS = false
+local DEBUG_PARKING = false
+
+if DEBUG_PARKING then
+  AIRBASE:FindByName(AIRBASE.Caucasus.Sochi_Adler):MarkParkingSpots()
+end
+
+--Sochi
+local Parking = ({33, 34, 35, 46, 36, 47, 37, 48, 38, 39, 49, 40, 50, 41, 51, 42, 52, 43, 53, 44, 104, 44, 55})
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ---TODO ZONES
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+local zone1 = ZONE:New("BLUECHIEF")  --rename after testing due to intel being named this
+local zone2 = ZONE:New("REDCHIEF")
+local zone3 = ZONE:New("BLUECAPZONE")
+local zone4 = ZONE:New("REDCAPZONE")
+local zone5 = ZONE:New("REDARMORSPAWN")
+local zone6 = ZONE:New("BLUEARMORSPAWN")
+local zone7 = ZONE:New("INDUSTRIALZONE")
+local zone8 = ZONE:New("PORTZONE")
+local zone9 = ZONE:New("TRAINDEPOT")
 
+local zone10 = ZONE:New("CAPTUREZONE")
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- TODO OPSZONES for CAPTURE FUNCTION
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+--use these for strategic zones also
+
+local opzone1 = OPSZONE:New("CAPTUREZONE")
+
+
+--CREATE OPSZONES SET for Capture function
+local opszonesSET=SET_OPSZONE:New():FilterPrefixes("CAPTUREZONE"):FilterOnce()
+
+-- Start all opszones in the SET.
+  opszonesSET:Start()
+
+--This is the capture zone function.
+-- Capture Time (60seconds)
+  opszonesSET:ForEachZone(
+
+    function (_opszoneSET)
+      local opszoneSET=_opszoneSET --Ops.OpsZone#OPSZONE
+      opszoneSET:SetCaptureTime(60)
+    end)
+    
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ---TODO TABLES
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+local clientSet = SET_CLIENT:New():FilterPrefixes("366th"):FilterStart()
 
 
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- TODO ATIS Sochi on 131.1 MHz AM
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ 
+atisSochi = ATIS:New(AIRBASE.Caucasus.Sochi_Adler, 131.1)
+atisSochi:SetRadioRelayUnitName( "RadioRelaySochi" )
+atisSochi:SetTowerFrequencies({181.1, 188.1})
+atisSochi:SetRunwayHeadingsMagnetic( {"24", "06"})
+atisSochi:SetActiveRunwayTakeoff("24")
+atisSochi:SetActiveRunwayLanding("06")
+atisSochi:AddILS( 110.1, "24" )
+atisSochi:AddILS( 112.1, "06" )
+atisSochi:SetVOR( 121.1 )
+atisSochi:SetTACAN(24)
+atisSochi:SetElevation()
+atisSochi:SetRunwayLength()
+atisSochi:GetMissionWeather()
+atisSochi:Start()
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ---TODO FUNCTIONS
@@ -36,11 +107,93 @@
 
 
 
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- TODO AIRBASE MAINTENANCE
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+-- Function to check and cleanup stuck aircraft
+
+CleanUpAirports = CLEANUP_AIRBASE:New( { AIRBASE.Caucasus.Sochi_Adler, AIRBASE.Caucasus.Novorossiysk } )
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- TODO HEADQUARTERS/COMMANDCENTERS
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+blueHQ = STATIC:FindByName("BLUEHQ")
+redHQ = STATIC:FindByName("REDHQ")
+
+---COMMANDCENTERS
+
+--RED
+
+RU_CC = COMMANDCENTER:New( GROUP:FindByName( "REDCC" ), "Russian Command" )
+US_CC = COMMANDCENTER:New( GROUP:FindByName( "BLUECC" ), "Allied Command")
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- TODO DETECTION
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+--BLUE
+
+DetectionSetGroupBlue = SET_GROUP:New()
+DetectionSetGroupBlue:FilterPrefixes( { "EWRBLUE", "AWACSBLUE", "FACBLUE", "JTACBLUE", "366th" } )
+DetectionSetGroupBlue:FilterStart()
+
+DetectionBlue = DETECTION_AREAS:New( DetectionSetGroupBlue, 30000 )
+
+--RED
+DetectionSetGroupRed = SET_GROUP:New()
+DetectionSetGroupRed:FilterPrefixes({ "EWRRED", "AWACSRED", "FACRED", "JTACRED" })
+DetectionSetGroupRed:FilterStart()
+
+DetectionRed = DETECTION_AREAS:New( DetectionSetGroupRed, 30000 )
+
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ---TODO SCORING
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+--ScoringGroups
+
+--Name Scoring Object
+Scoring = SCORING:New("Operation Whimsical Whatchamacallit")
+
+--Scale Scoring
+Scoring:SetScaleDestroyScore( 10 )
+Scoring:SetScaleDestroyPenalty( 40 )
+
+
+--Add Scoring Groups
+
+
+--Add Individual Scoring Units if Necessary
+--Scoring:AddUnitScore(ScoreUnit,Score)
+--Add Static Scoring
+
+Scoring:SetMessagesHit(false)
+Scoring:SetMessagesDestroy(true)
+Scoring:SetMessagesScore(true)
+
+
+--Add Zone Scoring
+
+--Set the Zone scoring multiplier to award a higher score for kills inside the engagement zone of the air defenses.
+
+--ScoringMultiplierZone = ZONE:New( "DoubleScoreZone" )
+--Scoring:AddZoneScore( ScoringMultiplierZone, 100 )
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- TODO SETUP SHORAD
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- TODO SETUP MANTIS
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 
