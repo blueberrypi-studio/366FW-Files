@@ -1,5 +1,24 @@
 --[[
 
+  Operation Whimsical Whatchamacallit
+  
+TODO
+
+1.  Add air defense platoons to the brigades
+2.  Thin out me templates
+3.  Rebuild battlezone
+4.  Build Target List
+5.  Build commander interface
+6.  Build reaper set
+7.  Build ctld setup
+8.  Build csar setup
+9.  Rebuild zone structure - check from zone list
+10.  Add sounds to miz
+11.  Build Script Load Triggers
+12.  Fix awacs breaking srs/ to do this more than likely just establish an Orbit AUFTRAG using the persistent AWACS build, and just scratch the voice coms from awacs
+
+
+
 
 
 
