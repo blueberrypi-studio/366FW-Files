@@ -422,8 +422,202 @@ RUChief:Start(5)
 ---TODO BLUEFOR
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+--BLUE PLATOONS
+
+--Blue Mobile Air Defense
+--Alpha Platoon
+local rolandPlatoonAlpha = PLATOON:New( "☢ Roland", 15, "☢ Roland Alpha" )
+rolandPlatoonAlpha:AddMissionCapability( AUFTRAG.Type.AIRDEFENSE )
+
+local chaparralPlatoonAlpha = PLATOON:New( "☢ Chaparral", 15, "☢ Chaparral Alpha" )
+chaparralPlatoonAlpha:AddMissionCapability( AUFTRAG.Type.AIRDEFENSE )
+
+local avengerPlatoonAlpha = PLATOON:New( "☢ Avenger", 15, "☢ Avenger Alpha" )
+avengerPlatoonAlpha:AddMissionCapability( AUFTRAG.Type.AIRDEFENSE )
 
 
+--Blue Tanks
+
+--☮
+--Alpha Platoons
+
+local abramsPlatoonAlpha = PLATOON:New( "☮ M1A2 Abrams", 35, "☮ M1A2 Abrams Alpha")
+abramsPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.GROUNDATTACK, 80)
+abramsPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.CAPTUREZONE, 80)
+abramsPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.PATROLZONE, 70)
+abramsPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.ONGUARD, 70)
+
+local strykermgsPlatoonAlpha = PLATOON:New( "☮ Stryker MGS", 35, "☮ Stryker MGS Alpha")
+strykermgsPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.GROUNDATTACK, 80)
+strykermgsPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.CAPTUREZONE, 80)
+strykermgsPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.PATROLZONE, 70)
+strykermgsPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.ONGUARD, 70)
+
+local strykeratgmPlatoonAlpha = PLATOON:New( "☮ ATGM Stryker", 35, "☮ ATGM Stryker Alpha")
+strykeratgmPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.GROUNDATTACK, 80)
+strykeratgmPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.CAPTUREZONE, 80)
+strykeratgmPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.PATROLZONE, 70)
+strykeratgmPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.ONGUARD, 70)
+
+--Blue Armor Brigades
+
+local blueBrigadeArmorAlpha = BRIGADE:New( "WarehouseBlueAlphaBrigade", "Crunchy Peanutbutter")
+blueBrigadeArmorAlpha:AddPlatoon(abramsPlatoonAlpha)
+blueBrigadeArmorAlpha:AddPlatoon(strykermgsPlatoonAlpha)
+blueBrigadeArmorAlpha:AddPlatoon(strykeratgmPlatoonAlpha)
+blueBrigadeArmorAlpha:SetSpawnZone(zone1)
+blueBrigadeArmorAlpha:Start()
+
+--BLUE SQUADRONS
+
+--CAP
+local blueCapOne=SQUADRON:New("✈ F18C", 8, "✈ F18C") --Ops.Squadron#SQUADRON
+blueCapOne:AddMissionCapability(AUFTRAG.Type.CAP)
+blueCapOne:SetModex(100)
+blueCapOne:SetCallsign(CALLSIGN.Aircraft.Ford)
+blueCapOne:SetParkingIDs(Parking)
+blueCapOne:SetTakeoffHot()
+blueCapOne:SetDespawnAfterHolding(true)
+blueCapOne:SetSkill(AI.Skill.ACE)
+
+--INTERCEPT
+local blueIntOne=SQUADRON:New("✈ F14B", 8, "✈ F14B") --Ops.Squadron#SQUADRON
+blueIntOne:AddMissionCapability(AUFTRAG.Type.INTERCEPT)
+blueIntOne:SetModex(100)
+blueIntOne:SetCallsign(CALLSIGN.Aircraft.Pontiac)
+blueIntOne:SetParkingIDs(Parking)
+blueIntOne:SetTakeoffHot()
+blueIntOne:SetDespawnAfterHolding(true)
+blueIntOne:SetSkill(AI.Skill.ACE)
+
+--CAS
+local blueCasOne=SQUADRON:New("✈ AH64DCAS", 8, "✈ AH64DCAS")
+blueCasOne:AddMissionCapability(AUFTRAG.Type.CAS, 100)
+blueCasOne:SetModex(100)
+blueCasOne:SetSkill(AI.Skill.ACE)
+blueCasOne:SetDespawnAfterHolding(true)
+blueCasOne:SetTakeoffAir()
+blueCasOne:SetParkingIDs(Parking)
+
+--BLUE AIRWING
+
+local blueAirwing = AIRWING:New("WarehouseSochiAirwing", "Peanut Butter Crackers")
+
+blueAirwing:NewPayload("✈ F14B", 99, AUFTRAG.Type.INTERCEPT, 100)
+
+blueAirwing:NewPayload("✈ F18C", 99, AUFTRAG.Type.CAP, 100)
+
+
+blueAirwing:NewPayload("✈ AH64DCAS", 99, AUFTRAG.Type.CAS, 100)
+
+
+blueAirwing:AddSquadron(blueCapOne)
+
+blueAirwing:AddSquadron(blueIntOne)
+
+blueAirwing:AddSquadron(blueCasOne)
+
+
+blueAirwing:Start()
+
+--MISSIONS
+--Blue Capture Mission to Take Main Clash Zone
+local missionBlueCaptureZone6 = AUFTRAG:NewCAPTUREZONE(opzone1, coalition.side.BLUE)
+missionBlueCaptureZone6:SetROE(ENUMS.ROE.OpenFireWeaponFree)
+missionBlueCaptureZone6:SetRequiredAssets(6)
+missionBlueCaptureZone6:SetRepeatOnFailure(10)
+
+--Blue CAP Mission for MainClashZone
+local missionBlueCAPzone2 = AUFTRAG:NewCAP(zone14, 15000, 350, nil, 90, 20, {"Air"})
+missionBlueCAPzone2:SetRequiredAssets(2)
+missionBlueCAPzone2:SetRepeatOnFailure(20)
+missionBlueCAPzone2:SetROE(ENUMS.ROE.OpenFireWeaponFree)
+
+--Blue CAS Mission for MainClashZone
+local missionBlueCASzone2 = AUFTRAG:NewCAS(zone14, 5000, 250, nil, 90, 5, {"Ground Units"})
+missionBlueCASzone2:SetRequiredAssets(2)
+missionBlueCASzone2:SetRepeatOnFailure(15)
+missionBlueCASzone2:SetROE(ENUMS.ROE.OpenFireWeaponFree)
+
+--Air Defense Missions -- use Capzones Zone7 Zone8 Zone9
+local missionBlueAirDefenseOne = AUFTRAG:NewAIRDEFENSE( zone14 )
+missionBlueAirDefenseOne:SetRequiredAssets(4)
+missionBlueAirDefenseOne:SetRepeatOnFailure(5)
+missionBlueAirDefenseOne:SetROE(ENUMS.ROE.OpenFireWeaponFree)
+
+
+--BLUE
+--Agents
+local BlueAgents = DetectionSetGroupBlue
+--Define the CHIEF.  
+local USChief=CHIEF:New(coalition.side.BLUE, BlueAgents)
+--Add border zone.
+USChief:AddBorderZone(zone7)
+--Enable tactical overview.
+
+if DEBUG then
+USChief:SetTacticalOverviewOn()
+end
+
+--Response on targets
+
+USChief:SetResponseOnTarget(2, 2, 2, TARGET.Category.AIRCRAFT, AUFTRAG.Type.INTERCEPT)
+USChief:SetResponseOnTarget(2, 4, 2, TARGET.Category.GROUND, AUFTRAG.Type.CAS)
+USChief:SetResponseOnTarget(8, 8, 3, TARGET.Category.ZONE, AUFTRAG.Type.CAPTUREZONE)
+
+
+--Strategy--  ADJUST THIS IF TOO MUCH
+USChief:SetStrategy(USChief.Strategy.TOTALWAR)
+
+--ADD BRIGADES
+
+USChief:AddBrigade(blueBrigadeArmorAlpha)
+
+
+
+--ADD AIRWINGS
+
+USChief:AddAirwing(blueAirwing)
+
+--ADD MISSIONS
+
+USChief:AddMission(missionBlueCaptureZone6)
+USChief:AddMission(missionBlueCAPzone2)
+
+USChief:AddMission(missionBlueCASzone2)
+
+USChief:AddMission(missionBlueAirDefenseOne)
+
+
+--USChief:SetLimitMission(5)
+USChief:SetLimitMission(2, AUFTRAG.Type.CAS)
+
+USChief:SetLimitMission(2, AUFTRAG.Type.CAP)
+
+USChief:SetLimitMission(2, AUFTRAG.Type.INTERCEPT)
+USChief:SetLimitMission(1, AUFTRAG.Type.AIRDEFENSE)
+
+--Blue Chief Resources
+-- Add strategic (OPS) zones.
+local BlueStratZone1 = USChief:AddStrategicZone(opzone1, 100, 100)
+
+--Blue Chief Resources
+
+local BlueCAPTUREResourceOccupied = USChief:CreateResource(AUFTRAG.Type.CAPTUREZONE, 6, 20, nil, nil)
+USChief:AddToResource(BlueCAPTUREResourceOccupied, AUFTRAG.Type.PATROLZONE, 3, 6, nil, nil)
+
+local BlueCAPTUREResourceEmpty = USChief:CreateResource(AUFTRAG.Type.ONGUARD, 3, 5)
+USChief:AddToResource(BlueCAPTUREResourceEmpty, AUFTRAG.Type.PATROLZONE, 2, 4)
+
+
+--Assign StratZones to resource lists
+--StratZone1 - CAPTUREZONE
+USChief:SetStrategicZoneResourceOccupied(BlueStratZone1, BlueCAPTUREResourceOccupied)
+USChief:SetStrategicZoneResourceEmpty(BlueStratZone1, BlueCAPTUREResourceEmpty)
+
+
+
+USChief:Start(5)
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- TODO ZONE CAPTURE
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
