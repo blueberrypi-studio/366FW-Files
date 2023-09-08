@@ -5,8 +5,33 @@
 
 --DISCLAIMER:  THIS SCRIPT IS A WIP< DO NOT ATTEMPT TO USE.  IT WILL ABSOLUTELY CRASH YOUR SHIT.
 
+--[[
+TODO
+
+BTR and BMP spawns/ random zones in precision range
+Stoppage of Gauntlet
+Clear script not breaking fucking everything
+write Antishipping section/  still need to finish templates in ME
 
 
+
+TODO Testing
+
+CBrange spawns
+PBrange spawns
+STrange dimensions and setup, check headings to ensure propper strafe pass results
+StaticRange spawns
+LiveRange Spawns
+SAMRange spawns and clear
+Shipping range spawns
+
+Scoring
+Range Functions
+
+
+
+
+]]
 
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -179,8 +204,7 @@ local gauntletstart = MESSAGE:New("Air to Air Gauntlet Started, Targets will spa
 ---TODO EVENT HANDLERS
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-clientSet:HandleEvent(EVENTS.PlayerEnterAircraft)
-clientSet:HandleEvent(EVENTS.Crash)
+
 
 
 --Target Event Handlers
@@ -190,6 +214,12 @@ targetSet:HandleEvent(EVENTS.Birth)
 targetSet:HandleEvent(EVENTS.Kill)
 
 
+--Client Event Handlers
+clientSet:HandleEvent(EVENTS.Crash)
+clientSet:HandleEvent(EVENTS.Hit)
+clientSet:HandleEvent(EVENTS.Dead)
+clientSet:HandleEvent(EVENTS.Land)
+clientSet:HandleEvent(EVENTS.PlayerEnterAircraft)
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ---TODO SOUNDS
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -276,40 +306,42 @@ local cbRange = RANGE:New("Conventional Bombing Range")
   cbRange:AddBombingTargets({"BC1", "BC2", "BC3", "BC4", "BC5"}, 10, false)
   cbRange:AddBombingTargets({"BC6", "BC7"}, 5, false)
 
+  cbRange:Start()
 --precision range
 
 local pbRange = RANGE:New("Precision Bombing Range")
   
   pbRange:SetRangeZone(ZONE:FindByName("PBRANGE"))
   
-
+  pbRange:Start()
 --strafing range
 
 local stRange = RANGE:New("Strafing Range")
 
   stRange:SetRangeZone(ZONE:FindByName("STRANGE"))
 
-
+  stRange:Start()
 --staticrange
 
 local staticRange = RANGE:New("Static Spawn Range")
 
   staticRange:SetRangeZone(ZONE:FindByName("STATICRANGE"))
 
-
+  staticRange:Start()
 --live range
 
 local liveRange = RANGE:New("Live Hostile Range")
 
   liveRange:SetRangeZone(ZONE:FindByName("LIVERANGE"))
-
+  
+  liveRange:Start()
 --sam range
 
 local samRange = RANGE:New("Live SAM Range")
 
   samRange:SetRangeZone(ZONE:FindByName("SAMRANGE"))
 
-
+  samRange:Start()
 
 
 
@@ -319,7 +351,7 @@ local shippingRange = RANGE:New("Anti Shipping Range")
 
   shippingRange:SetRangeZone(ZONE:FindByName("ANTISHIPRANGE"))
 
-
+  shippingRange:Start()
 
 --scoring for gauntlet
 
@@ -342,7 +374,7 @@ function TARGET_T72()
     spawnT72:OnSpawnGroup(
       function(SpawnGroup)
         local Target = SpawnGroup
-        Range:AddBombingTargetGroup(Target,10)
+        staticRange:AddBombingTargetGroup(Target,10)
         T72Flag:Set(1,0)
       end)
     :InitLimit(5,5)
@@ -364,7 +396,7 @@ function TARGET_T80()
     spawnT80:OnSpawnGroup(
       function(SpawnGroup)
         local Target = SpawnGroup
-        Range:AddBombingTargetGroup(Target,10)
+        staticRange:AddBombingTargetGroup(Target,10)
         T80Flag:Set(1,0)
       end)
     :InitLimit(5,5)
@@ -387,7 +419,7 @@ function TARGET_T90()
     spawnT90:OnSpawnGroup(
       function(SpawnGroup)
         local Target = SpawnGroup
-        Range:AddBombingTargetGroup(Target,10)
+        staticRange:AddBombingTargetGroup(Target,10)
         T90Flag:Set(1,0)
       end)
     :InitLimit(5,5)
@@ -410,7 +442,7 @@ function TARGET_URALS()
     spawnUral:OnSpawnGroup(
       function(SpawnGroup)
         local Target = SpawnGroup
-        Range:AddBombingTargetGroup(Target,10)
+        staticRange:AddBombingTargetGroup(Target,10)
         UralFlag:Set(1,0)
       end)
     :InitLimit(5,5)
@@ -432,7 +464,7 @@ function TARGET_ARMORED()
     spawnArmoredTruck:OnSpawnGroup(
       function(SpawnGroup)
         local Target = SpawnGroup
-        Range:AddBombingTargetGroup(Target, 10)
+        staticRange:AddBombingTargetGroup(Target, 10)
         ArmoredTruckFlag:Set(1, 0)
       end)
      :InitLimit(5,5)
@@ -455,7 +487,7 @@ function TARGET_JEEPS()
     spawnJeep:OnSpawnGroup(
       function(SpawnGroup)
         local Target = SpawnGroup
-        Range:AddBombingTargetGroup(Target, 10)
+        staticRange:AddBombingTargetGroup(Target, 10)
         JeepFlag:Set(1, 0)
       end)
      :InitLimit(5,5)
@@ -477,7 +509,7 @@ function TARGET_T72_HOSTILE()
     spawnT72Hostile:OnSpawnGroup(
       function(SpawnGroup)
         local Target = SpawnGroup
-        Range:AddBombingTargetGroup(Target, 10)
+        liveRange:AddBombingTargetGroup(Target, 10)
         T72HFlag:Set(1, 0)
       end)
      :InitLimit(5,5)
@@ -499,7 +531,7 @@ function TARGET_T80_HOSTILE()
     spawnT80Hostile:OnSpawnGroup(
       function(SpawnGroup)
         local Target = SpawnGroup
-        Range:AddBombingTargetGroup(Target, 10)
+        liveRange:AddBombingTargetGroup(Target, 10)
         T80HFlag:Set(1,0)
       end)
      :InitLimit(5,5)
@@ -521,7 +553,7 @@ function TARGET_T90_HOSTILE()
     spawnT90Hostile:OnSpawnGroup(
       function(SpawnGroup)
         local Target = SpawnGroup
-        Range:AddBombingTargetGroup(Target,10)
+        liveRange:AddBombingTargetGroup(Target,10)
         T90HFlag:Set(1,0)    
       end)    
     :InitLimit(5,5)
@@ -536,47 +568,47 @@ function TARGET_T90_HOSTILE()
   end
 end
 
+--REWORK BTR for use IN precision range
+--function TARGET_BTR()
+--  if BTRFlag:Is(0) then
+--    local spawnBTR = SPAWN:NewWithAlias("BTR", "BTR")
+--    spawnBTR:OnSpawnGroup(
+--      function(SpawnGroup)
+--        local Target = SpawnGroup
+--        Range:AddBombingTargetGroup(Target,1)
+--        BTRFlag:Set(1,0)
+--      end)
+--    :InitLimit(1,0)
+--    :InitAIOnOff(false)
+--    :SpawnInZone(enclosedTargetZone, false)
+--  else if BTRFlag:Is(1) then
+--    nospawnmessage:ToAll()
+--    return
+--    end
+--  end
+--end
 
-function TARGET_BTR()
-  if BTRFlag:Is(0) then
-    local spawnBTR = SPAWN:NewWithAlias("BTR", "BTR")
-    spawnBTR:OnSpawnGroup(
-      function(SpawnGroup)
-        local Target = SpawnGroup
-        Range:AddBombingTargetGroup(Target,1)
-        BTRFlag:Set(1,0)
-      end)
-    :InitLimit(1,0)
-    :InitAIOnOff(false)
-    :SpawnInZone(enclosedTargetZone, false)
-  else if BTRFlag:Is(1) then
-    nospawnmessage:ToAll()
-    return
-    end
-  end
-end
 
-
-
-function TARGET_BMP()
-  if BMPFlag:Is(0) then
-    local spawnBMP = SPAWN:NewWithAlias("BMP", "BMP")
-    spawnBMP:OnSpawnGroup(
-      function(SpawnGroup)
-        local Target = SpawnGroup
-        Range:AddBombingTargetGroup(Target,2)
-        BMPFlag:Set(1,0)
-      end)
-    :InitLimit(5,5)
-    :InitAIOnOff(false)
-    :InitRandomizeZones(rZoneTable)
-    :SpawnScheduled(2,.5)
-  else if BMPFlag:Is(1) then
-    nospawnmessage:ToAll()
-    return
-    end
-  end
-end
+--rework BMP for use in Precision Range
+--function TARGET_BMP()
+--  if BMPFlag:Is(0) then
+--    local spawnBMP = SPAWN:NewWithAlias("BMP", "BMP")
+--    spawnBMP:OnSpawnGroup(
+--      function(SpawnGroup)
+--        local Target = SpawnGroup
+--        Range:AddBombingTargetGroup(Target,2)
+--        BMPFlag:Set(1,0)
+--      end)
+--    :InitLimit(5,5)
+--    :InitAIOnOff(false)
+--    :InitRandomizeZones(rZoneTable)
+--    :SpawnScheduled(2,.5)
+--  else if BMPFlag:Is(1) then
+--    nospawnmessage:ToAll()
+--    return
+--    end
+--  end
+--end
 
 
 
@@ -586,7 +618,7 @@ function TARGET_ZU23()
     spawnZU23:OnSpawnGroup(
       function(SpawnGroup)
         local Target = SpawnGroup
-        Range:AddBombingTargetGroup(Target,5)
+        liveRange:AddBombingTargetGroup(Target,5)
         ZU23Flag:Set(1,0)
       end)
     :InitGrouping(2)
@@ -609,7 +641,7 @@ function TARGET_SHILKA()
     spawnShilka:OnSpawnGroup(
       function(SpawnGroup)
         local Target = SpawnGroup
-        Range:AddBombingTargetGroup(Target,5)
+        liveRange:AddBombingTargetGroup(Target,5)
         ShilkaFlag:Set(1,0)
       end)
     :InitGrouping(2)
@@ -632,7 +664,7 @@ function TARGET_INFANTRY()
     spawnInfantry:OnSpawnGroup(
       function(SpawnGroup)
         local Target = SpawnGroup
-        Range:AddBombingTargetGroup(Target,5)
+        liveRange:AddBombingTargetGroup(Target,5)
         InfantryFlag:Set(1,0)
       end)
     :InitGrouping(20)
@@ -644,6 +676,9 @@ function TARGET_INFANTRY()
     end
   end
 end
+
+
+
 
 --SAMRANGE
 
@@ -663,6 +698,8 @@ function TARGET_SA2()
     :InitAIOnOff(true)
     :SpawnInZone(rangeZone,true)
     :SmokeRed()
+    
+--  samRange:AddBombingTargetGroup(Target,10,false)  --this is potentially a bad way to score, as it will require killing the entire group.  Potential fix would be a zone score multiplier
   else if SA2Flag:Is(1) then
     nospawnmessage:ToAll()
     return
@@ -881,6 +918,19 @@ function TARGET_DEATHMODE()
 end
 
 
+--AntiShipping Range
+
+--Build Two Versions, one with Options set to fire, one with AI off
+
+
+
+
+
+
+
+
+
+
 --THHIS WILL BREAK THE REST OF THE RANGE --CONFINE THE SCAN TO THE SAMRANGE ZONE
 function CLEAR_RANGE()
   local zoneScanSet = SET_GROUP:New():FilterCoalitions("red"):FilterOnce()
@@ -893,13 +943,6 @@ end
 
 
 
-
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
----TODO START RANGE
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-
---start ranges
 
 
 
@@ -923,21 +966,7 @@ local TemplateTable = { "Mig15", "Mig19", "Mig21", "Mig23", "Mig25", "Mig29", "M
 
 local TargetSet = SET_GROUP:New():FilterCoalitions(coalition.side.RED):FilterStart()
 
---Event Handlers
 
---Target Event Handlers
-TargetSet:HandleEvent(EVENTS.Hit)
-TargetSet:HandleEvent(EVENTS.Dead)
-TargetSet:HandleEvent(EVENTS.Birth)
-TargetSet:HandleEvent(EVENTS.Kill)
-
-
-
---Client Event Handlers
-clientSet:HandleEvent(EVENTS.Hit)
-clientSet:HandleEvent(EVENTS.Dead)
-clientSet:HandleEvent(EVENTS.Land)
-clientSet:HandleEvent(EVENTS.PlayerEnterAircraft)
 
 
 local targetUnitNames = { "Mig15", "Mig19", "Mig21", "Mig23", "Mig25", "Mig29", "Mig31", "Mirage F1", "SU27", "SU30", "Mirage2000" }
@@ -1073,8 +1102,7 @@ MenuLevel2_4_4_1 = menumgr:NewEntry("SA10 Complex", MenuLevel2_4_4, TARGET_SA10)
 MenuLevel2_4_4_2 = menumgr:NewEntry("SA11 Complex", MenuLevel2_4_4, TARGET_SA11)
 MenuLevel2_4_4_3 = menumgr:NewEntry("SA12 Complex", MenuLevel2_4_4, TARGET_SA12)
 
---air gauntlet menu
-MenuLevel2_5_1 = menumgr:NewEntry("Start Air Gauntlet", MenuLevel2_5, AAGauntlet)
+
 
 
 --I hate myself mode
@@ -1083,6 +1111,9 @@ MenuLevel2_4_5_1 = menumgr:NewEntry("I choose Death", MenuLevel2_4_5, TARGET_DEA
 
 --CLEAR RANGE FUNCTION
 MenuLevel2_4_6 = menumgr:NewEntry("Clear Range", MenuLevel1, CLEAR_RANGE)
+
+--air gauntlet menu
+MenuLevel2_5_1 = menumgr:NewEntry("Start Air Gauntlet", MenuLevel2_5, AAGauntlet)
 
 
 
