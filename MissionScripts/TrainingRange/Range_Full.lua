@@ -53,18 +53,17 @@ end
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --conventional bombing range target circles
-local CBRange = ZONE:New("CBRANGE"):SmokeZone(SMOKECOLOR.Blue)
+local CBRange = ZONE:New("CBRANGE")
 --precision bombing range
-local PBRange = ZONE:New("PBRANGE"):SmokeZone(SMOKECOLOR.Green)
+local PBRange = ZONE:New("PBRANGE")
 --strafing range
-local STRange = ZONE:New("STRANGE"):SmokeZone(SMOKECOLOR.Orange)
+local STRange = ZONE:New("STRANGE")
 --static target range (spawnables)
-local StaticRange = ZONE:New("STATICRANGE"):SmokeZone(SMOKECOLOR.White)
+local StaticRange = ZONE:New("STATICRANGE")
 --live target range
-local LiveRange = ZONE:New("LIVERANGE"):SmokeZone(SMOKECOLOR.White)
+local LiveRange = ZONE:New("LIVERANGE")
 --SAM Range
-local SAMRange = ZONE:New("SAMRANGE"):SmokeZone(SMOKECOLOR.Red)
-
+local SAMRange = ZONE:New("SAMRANGE")
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ---TODO SPAWN ZONES
@@ -259,12 +258,12 @@ end
 
 --Target Sound Functions
 
-function TargetSet:OnEventKill(EventData)
+function targetSet:OnEventKill(EventData)
   local file = "GreatSuccess.ogg"
   local radio = USERSOUND:New(file):ToCoalition(coalition.side.BLUE)
 end
 
-function TargetSet:OnEventBirth(EventData)
+function targetSet:OnEventBirth(EventData)
   local file = "pieceofcandy.ogg"
   local radio = USERSOUND:New(file):ToCoalition(coalition.side.BLUE)
 end
@@ -921,7 +920,7 @@ end
 --AntiShipping Range
 
 --Build Two Versions, one with Options set to fire, one with AI off
-
+--Add random waypoints to spawns inside zone.  Static ships are boring
 
 
 
@@ -932,6 +931,10 @@ end
 
 
 --THHIS WILL BREAK THE REST OF THE RANGE --CONFINE THE SCAN TO THE SAMRANGE ZONE
+
+--THANKFULLY THIS DOES NOT CLEAR STATICS
+
+
 function CLEAR_RANGE()
   local zoneScanSet = SET_GROUP:New():FilterCoalitions("red"):FilterOnce()
     BASE:I(zoneScanSet)
@@ -939,6 +942,7 @@ function CLEAR_RANGE()
     function(Group)
       Group:Destroy()
     end)
+  flagReset()
 end
 
 

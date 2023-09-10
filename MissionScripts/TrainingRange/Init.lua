@@ -7,6 +7,9 @@ env.info("Moose Loaded")
 dofile(lfs.writedir()..'/Missions/DCS Scripts/MY_MISSIONS/MissionScripts/TrainingRange/Range_Full.lua')
 env.info("Range Script Loaded")
 
+dofile(lfs.writedir()..'/Missions/DCS Scripts/MY_MISSIONS/MissionScripts/TrainingRange/Splash_Damage_2_0.lua')
+env.info("Splash Damage Loaded")
+
 
 
 
