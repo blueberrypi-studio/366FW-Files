@@ -20,6 +20,12 @@ TODO
 14.  Mantis
 
 
+Ideas-
+For Balance purposes, give Red Chief more air assets than blue chief, or restrict the number of intercept and cap missions for blue with a higher number for red.
+Possibly add Air defense brigades at spawn to SHORAD defense of the factory area
+
+
+
 
 
 
@@ -149,73 +155,26 @@ local atisSochi = ATIS:New(AIRBASE.Caucasus.Sochi_Adler, 131.1)
 ---TODO FUNCTIONS
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+local bridge1 = SCENERY:FindByNameInZone("74252386",ZONE:FindByName("roadbridge1"))
+local bridge2 = SCENERY:FindByNameInZone("74252524",ZONE:FindByName("roadbridge2"))
+local bridge3 = SCENERY:FindByNameInZone("74252567",ZONE:FindByName("roadbridge3"))
+local bridge4 = SCENERY:FindByNameInZone("74252628",ZONE:FindByName("roadbridge4"))
+local bridge5 = SCENERY:FindByNameInZone("74252797",ZONE:FindByName("roadbridge5"))
+local bridge6 = SCENERY:FindByNameInZone("74252804",ZONE:FindByName("roadbridge6"))
+local bridge7 = SCENERY:FindByNameInZone("74252817",ZONE:FindByName("roadbridge7"))
+local bridge8 = SCENERY:FindByNameInZone("74252923",ZONE:FindByName("roadbridge8"))
 
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
----TODO TARGET TABLE
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
---Define Operation Targets
-
-local operationTargets = { 
-  [1] = {       
-    TargetName = "EWRRED Tunb Island",
-    TargetStatic = false,
-    TargetBriefing = "Destroy the Early Warning Radar located on Tunb Island",
-    TargetAuftrag = AUFTRAG.Type.SEAD,
-  },
-  [2] = {       
-    TargetName = "EWRRED Qeshm Island",
-    TargetStatic = false,
-    TargetBriefing = "Destroy the Early Warning Radar located on Qeshm Island",
-    TargetAuftrag = AUFTRAG.Type.SEAD,
-  },
-  [3] = {       
-    TargetName = "Qeshm Command Center",
-    TargetStatic = true,
-    TargetBriefing = "Destroy the Command Center located on Qeshm Island",
-    TargetAuftrag = AUFTRAG.Type.STRIKE,
-  },
-  [4] = {       
-    TargetName = "EWRRED Larak Island",
-    TargetStatic = false,
-    TargetBriefing = "Destroy the Early Warning Radar located on Larak Island",
-    TargetAuftrag = AUFTRAG.Type.SEAD,
-  },
-  [5] = {       
-    TargetName = "Larak Command Center",
-    TargetStatic = true,
-    TargetBriefing = "Destroy the Command Center located on Larak Island",
-    TargetAuftrag = AUFTRAG.Type.STRIKE,
-  },
-  [6] = {       
-    TargetName = "Red Armor Group",
-    TargetStatic = false,
-    TargetBriefing = "Destroy Redfor Armor Units attacking Khasab Airbase",
-    TargetAuftrag = AUFTRAG.Type.GROUNDATTACK,
-  },
-  }
-  --FINISH ADDING TARGETS HERE
-
-
---Create TARGET objects
-
-local BlueTargets = {}
-for i=1,6 do
-  if operationTargets[i].TargetStatic then
-    -- static
-    BlueTargets[i] = TARGET:New(STATIC:FindByName(operationTargets[i].TargetName))
-  else
-    -- group
-    BlueTargets[i] = TARGET:New(GROUP:FindByName(operationTargets[i].TargetName))
-  end
-end
+local railBridge1 = SCENERY:FindByNameInZone("74810038",ZONE:FindByName("railbridge1"))
+local railBridge2 = SCENERY:FindByNameInZone("74252420",ZONE:FindByName("railbridge2"))
 
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ---TODO PLAYER TASK CONTROLLER
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-local menu = MENU_COALITION:New(coalition.side.BLUE,"Ops Menu")
+--CLEAN THIS SECTION UP YOU NASTY SLOB
+
+--local menu = MENU_COALITION:New(coalition.side.BLUE,"Ops Menu")
 
 
 -- Set up A2G task controller for the blue side named "82nd Airborne"
@@ -229,12 +188,16 @@ taskmanager:SetCallSignOptions(true,true,{Ford="Yankee"})
 taskmanager:SetLocale("en")
 taskmanager:SetMenuName("Inspector Gadget")
 -- Set up using SRS
+
+--HOW LONG ARE YOU GOING TO LET THIS SRS BULLSHIT BEAT YOU??
+
+
 --taskmanager:SetSRS({130,255},{radio.modulation.AM,radio.modulation.AM},hereSRSPath,"female","en-US",hereSRSPort,"Microsoft Hazel Desktop",0.7,hereSRSGoogle)
 -- Controller will announce itself under these broadcast frequencies
 --taskmanager:SetSRSBroadcast({127.5,305},{radio.modulation.AM,radio.modulation.AM})
 -- Set target radius
 taskmanager:SetTargetRadius(750)
-taskmanager:SetParentMenu(menu)
+--taskmanager:SetParentMenu(menu)
 
 
 function taskmanager:OnAfterTaskTargetSmoked(From,Event,To,Task)
@@ -313,6 +276,7 @@ Scoring:SetScaleDestroyPenalty( 40 )
 
 
 --Add Scoring Groups
+Scoring:AddStaticScore(bridge1,250)
 
 
 --Add Individual Scoring Units if Necessary
@@ -340,6 +304,65 @@ Scoring:SetMessagesScore(true)
 -- TODO SETUP MANTIS
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+---TODO TARGET TABLE
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+--Define Operation Targets
+
+local operationTargets = { 
+  [1] = {       
+    TargetName = "EWRRED Tunb Island",
+    TargetStatic = false,
+    TargetBriefing = "Destroy the Early Warning Radar located on Tunb Island",
+    TargetAuftrag = AUFTRAG.Type.SEAD,
+  },
+  [2] = {       
+    TargetName = "EWRRED Qeshm Island",
+    TargetStatic = false,
+    TargetBriefing = "Destroy the Early Warning Radar located on Qeshm Island",
+    TargetAuftrag = AUFTRAG.Type.SEAD,
+  },
+  [3] = {       
+    TargetName = "Qeshm Command Center",
+    TargetStatic = true,
+    TargetBriefing = "Destroy the Command Center located on Qeshm Island",
+    TargetAuftrag = AUFTRAG.Type.STRIKE,
+  },
+  [4] = {       
+    TargetName = "EWRRED Larak Island",
+    TargetStatic = false,
+    TargetBriefing = "Destroy the Early Warning Radar located on Larak Island",
+    TargetAuftrag = AUFTRAG.Type.SEAD,
+  },
+  [5] = {       
+    TargetName = "Larak Command Center",
+    TargetStatic = true,
+    TargetBriefing = "Destroy the Command Center located on Larak Island",
+    TargetAuftrag = AUFTRAG.Type.STRIKE,
+  },
+  [6] = {       
+    TargetName = "Red Armor Group",
+    TargetStatic = false,
+    TargetBriefing = "Destroy Redfor Armor Units attacking Khasab Airbase",
+    TargetAuftrag = AUFTRAG.Type.GROUNDATTACK,
+  },
+  }
+  --FINISH ADDING TARGETS HERE
+
+
+--Create TARGET objects
+
+local BlueTargets = {}
+for i=1,6 do
+  if operationTargets[i].TargetStatic then
+    -- static
+    BlueTargets[i] = TARGET:New(STATIC:FindByName(operationTargets[i].TargetName))
+  else
+    -- group
+    BlueTargets[i] = TARGET:New(GROUP:FindByName(operationTargets[i].TargetName))
+  end
+end
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- TODO OPERATION PHASES

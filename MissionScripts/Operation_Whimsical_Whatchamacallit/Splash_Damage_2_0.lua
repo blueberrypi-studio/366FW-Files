@@ -51,7 +51,7 @@ splash_damage_options = {
   ["unit_cant_fire_health"] = 50, --if health is below this value after our explosions, set ROE to HOLD to simulate damage weapon systems
   ["infantry_cant_fire_health"] = 90,  --if health is below this value after our explosions, set ROE to HOLD to simulate severe injury
   ["debug"] = false,  --enable debugging messages
-  ["weapon_missing_message"] = true, --false disables messages alerting you to weapons missing from the explTable
+  ["weapon_missing_message"] = false, --false disables messages alerting you to weapons missing from the explTable
   ["rocket_multiplier"] = 1.3, --multiplied by the explTable value for rockets
 }
 
@@ -177,7 +177,7 @@ explTable = {
   ["HOT3"] = 15,
   ["AGR_20A"] = 8,
   ["GBU_54_V_1B"] = 118,
-  ["SA5B55"] = 160,
+  
 }
 
 
@@ -272,11 +272,11 @@ function track_wpns()
           trigger.action.explosion(impactPoint, getWeaponExplosive(wpnData.name))
           --trigger.action.smoke(impactPoint, 0)
       end
-    local explosive = getWeaponExplosive(wpnData.name)
+	  local explosive = getWeaponExplosive(wpnData.name)
       if splash_damage_options.rocket_multiplier > 0 and wpnData.cat == Weapon.Category.ROCKET then
         explosive = explosive * splash_damage_options.rocket_multiplier
       end
-    blastWave(impactPoint, splash_damage_options.blast_search_radius, wpnData.ordnance, explosive)
+	  blastWave(impactPoint, splash_damage_options.blast_search_radius, wpnData.ordnance, explosive)
       tracked_weapons[wpn_id_] = nil -- remove from tracked weapons first.         
     end
   end
@@ -469,3 +469,4 @@ if (script_enable == 1) then
   )
   world.addEventHandler(WpnHandler)
 end
+
