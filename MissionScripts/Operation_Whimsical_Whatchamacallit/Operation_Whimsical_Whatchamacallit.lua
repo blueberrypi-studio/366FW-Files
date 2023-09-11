@@ -12,7 +12,7 @@ TODO
 6.  Build reaper set
 7.  Build ctld setup
 8.  Build csar setup
-9.  Rebuild zone structure - check from zone list
+9.  Rebuild zone structure - check from zone list --zone structure tested in aitest1
 10.  Add sounds to miz
 11.  Build Script Load Triggers
 12.  Fix awacs breaking srs/ to do this more than likely just establish an Orbit AUFTRAG using the persistent AWACS build, and just scratch the voice coms from awacs
@@ -24,6 +24,14 @@ Ideas-
 For Balance purposes, give Red Chief more air assets than blue chief, or restrict the number of intercept and cap missions for blue with a higher number for red.
 Possibly add Air defense brigades at spawn to SHORAD defense of the factory area
 
+
+Balance Test1
+
+Blue destroyed red.  Insane amount of abrams, balance this.
+Very few red units.  Make more
+Apparently Warehouses are now captureable based on zone coalition.  Blue captured reds warehouse, therefore leading to a shutdown of the red armor.  Interesting
+
+Too many blue air units, limit auftrags, and limit grouping
 
 
 
@@ -47,9 +55,17 @@ _SETTINGS:SetA2G_BR()
 _SETTINGS:SetA2A_BRAA()
 
 
-local DEBUG = false
-local DEBUG_COMMANDERS = false
+local DEBUG = true
+local DEBUG_COMMANDERS = true
 local DEBUG_PARKING = false
+
+if DEBUG then
+BASE:TraceClass("CHIEF")
+BASE:TraceClass("SCORING")
+BASE:TraceOn()
+end
+
+
 
 if DEBUG_PARKING then
   AIRBASE:FindByName(AIRBASE.Caucasus.Sochi_Adler):MarkParkingSpots()
@@ -64,13 +80,13 @@ local Parking = ({33, 34, 35, 46, 36, 47, 37, 48, 38, 39, 49, 40, 50, 41, 51, 42
 
 local zone1 = ZONE:New("BLUECHIEF")  --rename after testing due to intel being named this
 local zone2 = ZONE:New("REDCHIEF")
-local zone3 = ZONE:New("BLUECAPZONE")
-local zone4 = ZONE:New("REDCAPZONE")
+local zone3 = ZONE:New("BLUECAP")
+local zone4 = ZONE:New("REDCAP")
 local zone5 = ZONE:New("REDARMORSPAWN")
 local zone6 = ZONE:New("BLUEARMORSPAWN")
-local zone7 = ZONE:New("INDUSTRIALZONE")
-local zone8 = ZONE:New("PORTZONE")
-local zone9 = ZONE:New("TRAINDEPOT")
+--local zone7 = ZONE:New("INDUSTRIALZONE")
+--local zone8 = ZONE:New("PORTZONE")
+--local zone9 = ZONE:New("TRAINDEPOT")
 
 local zone10 = ZONE:New("CAPTUREZONE")
 
@@ -155,17 +171,9 @@ local atisSochi = ATIS:New(AIRBASE.Caucasus.Sochi_Adler, 131.1)
 ---TODO FUNCTIONS
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-local bridge1 = SCENERY:FindByNameInZone("74252386",ZONE:FindByName("roadbridge1"))
-local bridge2 = SCENERY:FindByNameInZone("74252524",ZONE:FindByName("roadbridge2"))
-local bridge3 = SCENERY:FindByNameInZone("74252567",ZONE:FindByName("roadbridge3"))
-local bridge4 = SCENERY:FindByNameInZone("74252628",ZONE:FindByName("roadbridge4"))
-local bridge5 = SCENERY:FindByNameInZone("74252797",ZONE:FindByName("roadbridge5"))
-local bridge6 = SCENERY:FindByNameInZone("74252804",ZONE:FindByName("roadbridge6"))
-local bridge7 = SCENERY:FindByNameInZone("74252817",ZONE:FindByName("roadbridge7"))
-local bridge8 = SCENERY:FindByNameInZone("74252923",ZONE:FindByName("roadbridge8"))
 
-local railBridge1 = SCENERY:FindByNameInZone("74810038",ZONE:FindByName("railbridge1"))
-local railBridge2 = SCENERY:FindByNameInZone("74252420",ZONE:FindByName("railbridge2"))
+
+
 
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -268,32 +276,17 @@ DetectionRed = DETECTION_AREAS:New( DetectionSetGroupRed, 30000 )
 --ScoringGroups
 
 --Name Scoring Object
-Scoring = SCORING:New("Operation Whimsical Whatchamacallit")
+missionScoring = SCORING:New("Operation Whimsical Whatchamacallit")
 
 --Scale Scoring
-Scoring:SetScaleDestroyScore( 10 )
-Scoring:SetScaleDestroyPenalty( 40 )
+missionScoring:SetScaleDestroyScore( 10 )
+missionScoring:SetScaleDestroyPenalty( 40 )
 
+missionScoring:SetMessagesHit(false)
+missionScoring:SetMessagesDestroy(true)
+missionScoring:SetMessagesScore(true)
 
---Add Scoring Groups
-Scoring:AddStaticScore(bridge1,250)
-
-
---Add Individual Scoring Units if Necessary
---Scoring:AddUnitScore(ScoreUnit,Score)
---Add Static Scoring
-
-Scoring:SetMessagesHit(false)
-Scoring:SetMessagesDestroy(true)
-Scoring:SetMessagesScore(true)
-
-
---Add Zone Scoring
-
---Set the Zone scoring multiplier to award a higher score for kills inside the engagement zone of the air defenses.
-
---ScoringMultiplierZone = ZONE:New( "DoubleScoreZone" )
---Scoring:AddZoneScore( ScoringMultiplierZone, 100 )
+--remember to assign targets after declaration
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- TODO SETUP SHORAD
@@ -304,10 +297,49 @@ Scoring:SetMessagesScore(true)
 -- TODO SETUP MANTIS
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- TODO SCENERY OBJECTS
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+local bridge1 = SCENERY:FindByNameInZone("74252386",ZONE:FindByName("roadbridge1"))
+local bridge2 = SCENERY:FindByNameInZone("74252524",ZONE:FindByName("roadbridge2"))
+local bridge3 = SCENERY:FindByNameInZone("74252567",ZONE:FindByName("roadbridge3"))
+local bridge4 = SCENERY:FindByNameInZone("74252628",ZONE:FindByName("roadbridge4"))
+local bridge5 = SCENERY:FindByNameInZone("74252797",ZONE:FindByName("roadbridge5"))
+local bridge6 = SCENERY:FindByNameInZone("74252804",ZONE:FindByName("roadbridge6"))
+local bridge7 = SCENERY:FindByNameInZone("74252817",ZONE:FindByName("roadbridge7"))
+local bridge8 = SCENERY:FindByNameInZone("74252923",ZONE:FindByName("roadbridge8"))
+
+local railBridge1 = SCENERY:FindByNameInZone("74810038",ZONE:FindByName("railbridge1"))
+local railBridge2 = SCENERY:FindByNameInZone("74252420",ZONE:FindByName("railbridge2"))
+
+local chemTank1 = SCENERY:FindByNameInZone('102269512',ZONE:FindByName("chemtank1"))
+local chemTank2 = SCENERY:FindByNameInZone('102269448',ZONE:FindByName("chemtank2"))
+
+local factory1 = SCENERY:FindByNameInZone('80152029',ZONE:FindByName("factory1"))
+local factory2 = SCENERY:FindByNameInZone('80152028',ZONE:FindByName("factory2"))
+local factory3 = SCENERY:FindByNameInZone('80152030',ZONE:FindByName("factory3"))
+local factory4 = SCENERY:FindByNameInZone('80152031',ZONE:FindByName("factory4"))
+
+
+
+local sceneryTable = {bridge1, bridge2, bridge3, bridge4, bridge5, bridge6, bridge7, bridge8, railBridge1, railBridge2, chemTank1, chemTank2, factory1, factory2, factory3, factory4}
+
+  for i, scenery in ipairs(sceneryTable) do
+    local scenery = scenery
+      missionScoring:AddStaticScore(scenery,250)
+      scenery:SmokeRed()    
+  end
+
+
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ---TODO TARGET TABLE
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
+--[[
 --Define Operation Targets
 
 local operationTargets = { 
@@ -446,8 +478,8 @@ function operation:OnAfterOver(From,Event,To,Phase)
   local file = "Campaign Victory 1.ogg"
   local radio = USERSOUND:New(file):ToCoalition(coalition.side.BLUE)
 end
+]]
 
-  
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ---TODO REDFOR
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -490,7 +522,7 @@ local redBrigadeArmorAlpha = BRIGADE:New( "WarehouseRedAlphaBrigade", "Jelly Rol
   redBrigadeArmorAlpha:AddPlatoon(t80uPlatoonAlpha)
   redBrigadeArmorAlpha:AddPlatoon(t90PlatoonAlpha)
   redBrigadeArmorAlpha:AddPlatoon(t72PlatoonAlpha)
-  redBrigadeArmorAlpha:SetSpawnZone(zone4)
+  redBrigadeArmorAlpha:SetSpawnZone(zone5)
   redBrigadeArmorAlpha:Start()
   
 --REDFOR SQUADRONS
@@ -524,7 +556,7 @@ local redCasOne=SQUADRON:New("✈ KA50", 16, "✈ KA50")
 local AwacsRed = AIRWING:New("WarehouseGeleAwacsAirwing", "AWACSRED")
   AwacsRed:SetReportOn()
   AwacsRed:SetMarker(false)
-  AwacsRed:SetAirbase(AIRBASE:FindByName(AIRBASE.Caucasus.Gelendzhik))
+  AwacsRed:SetAirbase(AIRBASE:FindByName(AIRBASE.Caucasus.Novorossiysk))
   AwacsRed:SetRespawnAfterDestroyed(300)
   AwacsRed:SetTakeoffAir()
   AwacsRed:__Start(2)
@@ -552,7 +584,7 @@ local AwacsEscortsRed = SQUADRON:New("✈ SU35SESCORT",4,"✈ SU35SESCORT")
   AwacsRed:NewPayload("✈ SU35SESCORT",-1,{AUFTRAG.Type.ESCORT},100)
 
 
-local RedAwacs = AWACS:New("Awacs-Red", AwacsRed, "red", AIRBASE.Caucasus.Gelendzhik, "REDAWACSORBIT", ZONE:FindByName("REDCHIEFBORDER"), "REDCAPZONE", 275, radio.modulation.AM )
+local RedAwacs = AWACS:New("Awacs-Red", AwacsRed, "red", AIRBASE.Caucasus.Novorossiysk, "REDAWACSORBIT", ZONE:FindByName("REDCHIEF"), "REDCAP", 275, radio.modulation.AM )
 
   RedAwacs:SetEscort(2)
   RedAwacs:SetAwacsDetails(CALLSIGN.AWACS.Magic,1,30,280,88,25)
@@ -584,19 +616,19 @@ local missionRedCaptureZone1=AUFTRAG:NewCAPTUREZONE(opzone1, coalition.side.RED)
   missionRedCaptureZone1:SetROE(ENUMS.ROE.OpenFire)
 
 --Red CAP Mission for MainClashZone
-local missionRedCAPzone2 = AUFTRAG:NewCAP(zone13, 15000, 350, nil, 90, 20, {"Air"})
+local missionRedCAPzone2 = AUFTRAG:NewCAP(zone4, 15000, 350, nil, 90, 20, {"Air"})
   missionRedCAPzone2:SetRequiredAssets(2)
   missionRedCAPzone2:SetRepeatOnFailure(5)
   missionRedCAPzone2:SetROE(ENUMS.ROE.OpenFire)
 
 --Red CAS Mission for MainClashZone
-local missionRedCASzone2 = AUFTRAG:NewCAS(zone13, 8000, 250)
+local missionRedCASzone2 = AUFTRAG:NewCAS(zone10, 8000, 250)
   missionRedCASzone2:SetRequiredAssets(2)
   missionRedCASzone2:SetRepeatOnFailure(5)
   missionRedCASzone2:SetROE(ENUMS.ROE.OpenFire)
 
---Air Defense Missions -- use Capzones Zone7 Zone8 Zone9
-local missionRedAirDefenseOne = AUFTRAG:NewAIRDEFENSE(zone14)
+--Air Defense Missions -- 
+local missionRedAirDefenseOne = AUFTRAG:NewAIRDEFENSE(zone10)
   missionRedAirDefenseOne:SetRequiredAssets(6)
   missionRedAirDefenseOne:SetRepeatOnFailure(5)
   missionRedAirDefenseOne:SetROE(ENUMS.ROE.OpenFireWeaponFree)
@@ -716,7 +748,7 @@ local blueBrigadeArmorAlpha = BRIGADE:New( "WarehouseBlueAlphaBrigade", "Crunchy
 blueBrigadeArmorAlpha:AddPlatoon(abramsPlatoonAlpha)
 blueBrigadeArmorAlpha:AddPlatoon(strykermgsPlatoonAlpha)
 blueBrigadeArmorAlpha:AddPlatoon(strykeratgmPlatoonAlpha)
-blueBrigadeArmorAlpha:SetSpawnZone(zone1)
+blueBrigadeArmorAlpha:SetSpawnZone(zone6)
 blueBrigadeArmorAlpha:Start()
 
 --BLUE SQUADRONS
@@ -771,6 +803,14 @@ blueAirwing:AddSquadron(blueCasOne)
 
 blueAirwing:Start()
 
+
+
+--add blue awacs here
+
+
+
+
+
 --MISSIONS
 --Blue Capture Mission to Take Main Clash Zone
 local missionBlueCaptureZone6 = AUFTRAG:NewCAPTUREZONE(opzone1, coalition.side.BLUE)
@@ -779,19 +819,19 @@ missionBlueCaptureZone6:SetRequiredAssets(6)
 missionBlueCaptureZone6:SetRepeatOnFailure(10)
 
 --Blue CAP Mission for MainClashZone
-local missionBlueCAPzone2 = AUFTRAG:NewCAP(zone14, 15000, 350, nil, 90, 20, {"Air"})
+local missionBlueCAPzone2 = AUFTRAG:NewCAP(zone3, 15000, 350, nil, 90, 20, {"Air"})
 missionBlueCAPzone2:SetRequiredAssets(2)
 missionBlueCAPzone2:SetRepeatOnFailure(20)
 missionBlueCAPzone2:SetROE(ENUMS.ROE.OpenFireWeaponFree)
 
 --Blue CAS Mission for MainClashZone
-local missionBlueCASzone2 = AUFTRAG:NewCAS(zone14, 5000, 250, nil, 90, 5, {"Ground Units"})
+local missionBlueCASzone2 = AUFTRAG:NewCAS(zone10, 5000, 250, nil, 90, 5, {"Ground Units"})
 missionBlueCASzone2:SetRequiredAssets(2)
 missionBlueCASzone2:SetRepeatOnFailure(15)
 missionBlueCASzone2:SetROE(ENUMS.ROE.OpenFireWeaponFree)
 
 --Air Defense Missions -- use Capzones Zone7 Zone8 Zone9
-local missionBlueAirDefenseOne = AUFTRAG:NewAIRDEFENSE( zone14 )
+local missionBlueAirDefenseOne = AUFTRAG:NewAIRDEFENSE( zone10 )
 missionBlueAirDefenseOne:SetRequiredAssets(4)
 missionBlueAirDefenseOne:SetRepeatOnFailure(5)
 missionBlueAirDefenseOne:SetROE(ENUMS.ROE.OpenFireWeaponFree)
@@ -842,11 +882,11 @@ USChief:AddMission(missionBlueAirDefenseOne)
 
 --USChief:SetLimitMission(5)
 USChief:SetLimitMission(2, AUFTRAG.Type.CAS)
-
 USChief:SetLimitMission(2, AUFTRAG.Type.CAP)
-
 USChief:SetLimitMission(2, AUFTRAG.Type.INTERCEPT)
 USChief:SetLimitMission(1, AUFTRAG.Type.AIRDEFENSE)
+
+
 
 --Blue Chief Resources
 -- Add strategic (OPS) zones.
