@@ -17,10 +17,10 @@ write Antishipping section/  still need to finish templates in ME
 
 TODO Testing
 
-CBrange spawns
+CBrange spawns--tested
 PBrange spawns
 STrange dimensions and setup, check headings to ensure propper strafe pass results
-StaticRange spawns
+StaticRange spawns--tested
 LiveRange Spawns
 SAMRange spawns and clear
 Shipping range spawns
@@ -28,7 +28,10 @@ Shipping range spawns
 Scoring
 Range Functions
 
+clear function works correctly and does not clear statics.  You may not be as dumb as they think
 
+
+Add FOX for SamRange before release.
 
 
 ]]
@@ -44,10 +47,10 @@ if DEBUG then
  BASE:TraceOnOff(true)
  BASE:TraceLevel(1)
  BASE:TraceClass("RANGE")
+ BASE:TraceClass("SCORING")
 end
 
-
-
+_SETTINGS:SetPlayerMenuOff()
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ---TODO RANGE ZONES
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -180,6 +183,9 @@ function flagReset()
   
   GAUNTLETFLAG = USERFLAG:New("Gauntlet")
   GAUNTLETFLAG:Set(0.0)
+  
+  SHIPPINGFLAG = USERFLAG:New("Shipping")
+  SHIPPINGFLAG:Set(0,0)
 
 end
 
@@ -272,19 +278,7 @@ end
 ---TODO SETUP RANGES AND SCORING
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-----conventional bombing range target circles
---local CBRange = ZONE:New("CBRANGE"):SmokeZone(SMOKECOLOR.Blue)
-----precision bombing range
---local PBRange = ZONE:New("PBRANGE"):SmokeZone(SMOKECOLOR.Green)
-----strafing range
---local STRange = ZONE:New("STRANGE"):SmokeZone(SMOKECOLOR.Orange)
-----static target range (spawnables)
---local StaticRange = ZONE:New("STATICRANGE"):SmokeZone(SMOKECOLOR.White)
-----live target range
---local LiveRange = ZONE:New("LIVERANGE"):SmokeZone(SMOKECOLOR.White)
-----SAM Range
---local SAMRange = ZONE:New("SAMRANGE"):SmokeZone(SMOKECOLOR.Red)
---
+
 
 --RANGE SCORE
 
@@ -623,7 +617,7 @@ function TARGET_ZU23()
     :InitGrouping(2)
     :InitLimit(2,2)
     :InitAIOnOff(true)
-    :SpawnInZone(AAASpawnZone,true)
+    :SpawnInZone(SAMRange,true)
     :SmokeRed()
   else if ZU23Flag:Is(1) then
     nospawnmessage:ToAll()
@@ -646,7 +640,7 @@ function TARGET_SHILKA()
     :InitGrouping(2)
     :InitLimit(2,2)
     :InitAIOnOff(true)
-    :SpawnInZone(AAASpawnZone,true)
+    :SpawnInZone(SAMRange,true)
     :SmokeRed()
   else if ShilkaFlag:Is(1) then
     nospawnmessage:ToAll()
@@ -667,7 +661,7 @@ function TARGET_INFANTRY()
         InfantryFlag:Set(1,0)
       end)
     :InitGrouping(20)
-    :SpawnInZone(infantrySpawnZone,false)
+    :SpawnInZone(StaticRange,false)
     :SmokeRed()
   else if InfantryFlag:Is(1) then
     nospawnmessage:ToAll()
@@ -695,7 +689,7 @@ function TARGET_SA2()
         SA2Flag:Set(1,0)
       end)
     :InitAIOnOff(true)
-    :SpawnInZone(rangeZone,true)
+    :SpawnInZone(SAMRange,true)
     :SmokeRed()
     
 --  samRange:AddBombingTargetGroup(Target,10,false)  --this is potentially a bad way to score, as it will require killing the entire group.  Potential fix would be a zone score multiplier
@@ -715,7 +709,7 @@ function TARGET_SA3()
         SA3Flag:Set(1,0)
       end)
     :InitAIOnOff(true)
-    :SpawnInZone(rangeZone,true)
+    :SpawnInZone(SAMRange,true)
     :SmokeRed()
   else if SA3Flag:Is(1) then
     nospawnmessage:ToAll()
@@ -734,7 +728,7 @@ function TARGET_SA5()
         SA5Flag:Set(1,0)
       end)
     :InitAIOnOff(true)
-    :SpawnInZone(rangeZone,true)
+    :SpawnInZone(SAMRange,true)
     :SmokeRed()
   else if SA5Flag:Is(1) then
     nospawnmessage:ToAll()
@@ -758,7 +752,7 @@ function TARGET_SA6()
         SA6Flag:Set(1,0)
       end)
     :InitAIOnOff(true)
-    :SpawnInZone(rangeZone,true)
+    :SpawnInZone(SAMRange,true)
     :SmokeRed()
   else if SA6Flag:Is(1) then
     nospawnmessage:ToAll()
@@ -776,7 +770,7 @@ function TARGET_SA8()
         SA8Flag:Set(1,0)
       end)
     :InitAIOnOff(true)
-    :SpawnInZone(rangeZone,true)
+    :SpawnInZone(SAMRange,true)
     :SmokeRed()
   else if SA8Flag:Is(1) then
     nospawnmessage:ToAll()
@@ -794,7 +788,7 @@ function TARGET_MANPADS()
         ManpadFlag:Set(1,0)
       end)
     :InitAIOnOff(true)
-    :SpawnInZone(rangeZone,true)
+    :SpawnInZone(SAMRange,true)
     :SmokeRed()
   else if ManpadFlag:Is(1) then
     nospawnmessage:ToAll()
@@ -812,7 +806,7 @@ function TARGET_SA10()
         SA10Flag:Set(1,0)
       end)
     :InitAIOnOff(true)
-    :SpawnInZone(rangeZone,true)
+    :SpawnInZone(SAMRange,true)
     :SmokeRed()
   else if SA10Flag:Is(1) then
     nospawnmessage:ToAll()
@@ -830,7 +824,7 @@ function TARGET_SA11()
         SA11Flag:Set(1,0)
       end)
     :InitAIOnOff(true)
-    :SpawnInZone(rangeZone,true)
+    :SpawnInZone(SAMRange,true)
     :SmokeRed()
   else if SA11Flag:Is(1) then
     nospawnmessage:ToAll()
@@ -848,7 +842,7 @@ function TARGET_SA12()
         SA12Flag:Set(1,0)
       end)
     :InitAIOnOff(true)
-    :SpawnInZone(rangeZone,true)
+    :SpawnInZone(SAMRange,true)
     :SmokeRed()
   else if SA12Flag:Is(1) then
     nospawnmessage:ToAll()
@@ -867,47 +861,47 @@ function TARGET_DEATHMODE()
         preparefordeathmessage:ToAll()
       end)
      :InitAIOnOff(true)
-     :SpawnInZone(rangeZone,true)
+     :SpawnInZone(SAMRange,true)
      :SmokeRed()
   local spawnIHMS2 = SPAWN:NewWithAlias("IHMS2", "IHMS2")
      :InitAIOnOff(true)
-     :SpawnInZone(rangeZone,true)
+     :SpawnInZone(SAMRange,true)
      :SmokeRed()
   local spawnIHMS3 = SPAWN:NewWithAlias("SA2", "IHMS3")
      :InitAIOnOff(true)
-     :SpawnInZone(rangeZone,true)
+     :SpawnInZone(SAMRange,true)
      :SmokeRed()
   local spawnIHMS4 = SPAWN:NewWithAlias("SA3", "IHMS4")
      :InitAIOnOff(true)
-     :SpawnInZone(rangeZone,true)
+     :SpawnInZone(SAMRange,true)
      :SmokeRed()     
   local spawnIHMS5 = SPAWN:NewWithAlias("SA5", "IHMS5")
      :InitAIOnOff(true)
-     :SpawnInZone(rangeZone,true)
+     :SpawnInZone(SAMRange,true)
      :SmokeRed()
   local spawnIHMS6 = SPAWN:NewWithAlias("SA6", "IHMS6")
      :InitAIOnOff(true)
-     :SpawnInZone(rangeZone,true)
+     :SpawnInZone(SAMRange,true)
      :SmokeRed()
   local spawnIHMS7 = SPAWN:NewWithAlias("SA8", "IHMS7")
      :InitAIOnOff(true)
-     :SpawnInZone(rangeZone,true)
+     :SpawnInZone(SAMRange,true)
      :SmokeRed()
   local spawnIHMS8 = SPAWN:NewWithAlias("MANPADS", "IHMS8")
      :InitAIOnOff(true)
-     :SpawnInZone(rangeZone,true)
+     :SpawnInZone(SAMRange,true)
      :SmokeRed()
   local spawnIHMS9 = SPAWN:NewWithAlias("SA10", "IHMS9")
      :InitAIOnOff(true)
-     :SpawnInZone(rangeZone,true)
+     :SpawnInZone(SAMRange,true)
      :SmokeRed()
   local spawnIHMS10 = SPAWN:NewWithAlias("SA11", "IHMS10")
      :InitAIOnOff(true)
-     :SpawnInZone(rangeZone,true)
+     :SpawnInZone(SAMRange,true)
      :SmokeRed()
   local spawnIHMS11 = SPAWN:NewWithAlias("SA12", "IHMS11")
      :InitAIOnOff(true)
-     :SpawnInZone(rangeZone,true)
+     :SpawnInZone(SAMRange,true)
      :SmokeRed()
   else if IHMSFlag:Is(1) then
     nospawnmessage:ToAll()
@@ -922,7 +916,23 @@ end
 --Build Two Versions, one with Options set to fire, one with AI off
 --Add random waypoints to spawns inside zone.  Static ships are boring
 
-
+function TARGET_ANTISHIP_ONE()
+  if SHIPPINGFLAG:Is(0) then
+  local spawn = SPAWN:NewWithAlias("AS1", "Ship Target")
+    spawn:OnSpawnGroup(
+      function(SpawnGroup)
+        local Target = SpawnGroup
+        SHIPPINGFLAG:Set(1,0)        
+      end)
+    :InitAIOnOff(true)
+    :SpawnInZone(SAMRange,true)
+    :SmokeRed()
+  else if SHIPPINGFLAG:Is(1) then
+    nospawnmessage:ToAll()
+    return
+    end
+  end
+end
 
 
 
@@ -1013,7 +1023,7 @@ end
 --Starting of gauntlet is working, you still need to figure out a way to Stop the gauntlet though, your breakpoint is that the group doesnt exist until spawn and the variable is inside the function.
 --can possibly use a boolean to establish a global gauntlet on or off
 
-
+--check for timer actually updating the grouping.  May need to pull the timer outside the function and start/stop it inside
 
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1124,3 +1134,11 @@ MenuLevel2_5_1 = menumgr:NewEntry("Start Air Gauntlet", MenuLevel2_5, AAGauntlet
 function clientSet:OnEventPlayerEnterAircraft(EventData)
  menumgr:Propagate(EventData.IniUnit)
 end
+
+
+
+
+
+
+
+
