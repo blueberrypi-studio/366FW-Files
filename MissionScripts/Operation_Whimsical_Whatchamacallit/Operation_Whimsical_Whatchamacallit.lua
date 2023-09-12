@@ -25,7 +25,9 @@ For Balance purposes, give Red Chief more air assets than blue chief, or restric
 Possibly add Air defense brigades at spawn to SHORAD defense of the factory area
 
 
-Balance Test1
+Balance Tests
+
+AI Test1
 
 Blue destroyed red.  Insane amount of abrams, balance this.
 Very few red units.  Make more
@@ -33,7 +35,18 @@ Apparently Warehouses are now captureable based on zone coalition.  Blue capture
 
 Too many blue air units, limit auftrags, and limit grouping
 
+AI Test2
 
+AirDefence Auftrag is having issues
+Map statics is complete garbage.  Assign the bridges in briefing as TOO's as to limit reds ability to move more armor into zone.
+There will not be score for bridges.  Not possible to do as the bridges are literally comprised of 100s of individual concrete walls....wtf ed pro "map making"
+
+Assign static factories as targets
+remove map scenery factory
+
+remove scoring addition of scenery objects, this is going to cause a massive performance problem due to ED's lunacy.
+
+red air needs restructuring, we pretty much went unimpeeded with very little risk.  hopefully some beautiful little manpads will do the trick.
 
 
 
@@ -78,7 +91,7 @@ local Parking = ({33, 34, 35, 46, 36, 47, 37, 48, 38, 39, 49, 40, 50, 41, 51, 42
 ---TODO ZONES
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-local zone1 = ZONE:New("BLUECHIEF")  --rename after testing due to intel being named this
+local zone1 = ZONE:New("BLUECHIEF")
 local zone2 = ZONE:New("REDCHIEF")
 local zone3 = ZONE:New("BLUECAP")
 local zone4 = ZONE:New("REDCAP")
@@ -283,8 +296,8 @@ missionScoring:SetScaleDestroyScore( 10 )
 missionScoring:SetScaleDestroyPenalty( 40 )
 
 missionScoring:SetMessagesHit(false)
-missionScoring:SetMessagesDestroy(true)
-missionScoring:SetMessagesScore(true)
+missionScoring:SetMessagesDestroy(false)
+missionScoring:SetMessagesScore(false)
 
 --remember to assign targets after declaration
 
@@ -317,6 +330,7 @@ local bridge8 = SCENERY:FindByNameInZone("74252923",ZONE:FindByName("roadbridge8
 local railBridge1 = SCENERY:FindByNameInZone("74810038",ZONE:FindByName("railbridge1"))
 local railBridge2 = SCENERY:FindByNameInZone("74252420",ZONE:FindByName("railbridge2"))
 
+--these are cooling towers you idiot not chemtanks
 local chemTank1 = SCENERY:FindByNameInZone('102269512',ZONE:FindByName("chemtank1"))
 local chemTank2 = SCENERY:FindByNameInZone('102269448',ZONE:FindByName("chemtank2"))
 
@@ -488,13 +502,13 @@ end
 
 --Red Alpha Air Defense
 local strelaPlatoonAlpha = PLATOON:New( "☢ Strela", 15, "☢ Strela Alpha" )
-  strelaPlatoonAlpha:AddMissionCapability( AUFTRAG.Type.AIRDEFENSE )
+  strelaPlatoonAlpha:AddMissionCapability( AUFTRAG.Type.AIRDEFENSE, 100 )
 
 local geckoPlatoonAlpha = PLATOON:New( "☢ SA8 Gecko", 15, "☢ SA8 Gecko Alpha" )
-  geckoPlatoonAlpha:AddMissionCapability( AUFTRAG.Type.AIRDEFENSE )
+  geckoPlatoonAlpha:AddMissionCapability( AUFTRAG.Type.AIRDEFENSE, 100 )
 
 local shilkaPlatoonAlpha = PLATOON:New( "☢ ZSU-23 Shilka", 15, "☢ ZSU-23 Shilka Alpha" )
-  shilkaPlatoonAlpha:AddMissionCapability( AUFTRAG.Type.AIRDEFENSE )
+  shilkaPlatoonAlpha:AddMissionCapability( AUFTRAG.Type.AIRDEFENSE, 100 )
 
 --Red Tanks
 
@@ -519,6 +533,9 @@ local t72PlatoonAlpha = PLATOON:New( "☮ T72B3", 35, "☮ T72B3 Alpha")
 
 --RED ARMOR BRIGADES
 local redBrigadeArmorAlpha = BRIGADE:New( "WarehouseRedAlphaBrigade", "Jelly Rolls")
+  redBrigadeArmorAlpha:AddPlatoon(strelaPlatoonAlpha)
+  redBrigadeArmorAlpha:AddPlatoon(geckoPlatoonAlpha)
+  redBrigadeArmorAlpha:AddPlatoon(shilkaPlatoonAlpha)
   redBrigadeArmorAlpha:AddPlatoon(t80uPlatoonAlpha)
   redBrigadeArmorAlpha:AddPlatoon(t90PlatoonAlpha)
   redBrigadeArmorAlpha:AddPlatoon(t72PlatoonAlpha)
@@ -611,7 +628,7 @@ local redAirwing = AIRWING:New("WarehouseNovoAirwing", "Jelly Smashers")
 
 --Red Capture Mission
 local missionRedCaptureZone1=AUFTRAG:NewCAPTUREZONE(opzone1, coalition.side.RED)
-  missionRedCaptureZone1:SetRequiredAssets(8)
+  missionRedCaptureZone1:SetRequiredAssets(12)
   missionRedCaptureZone1:SetRepeatOnFailure(10)
   missionRedCaptureZone1:SetROE(ENUMS.ROE.OpenFire)
 
@@ -629,7 +646,7 @@ local missionRedCASzone2 = AUFTRAG:NewCAS(zone10, 8000, 250)
 
 --Air Defense Missions -- 
 local missionRedAirDefenseOne = AUFTRAG:NewAIRDEFENSE(zone10)
-  missionRedAirDefenseOne:SetRequiredAssets(6)
+  missionRedAirDefenseOne:SetRequiredAssets(5)
   missionRedAirDefenseOne:SetRepeatOnFailure(5)
   missionRedAirDefenseOne:SetROE(ENUMS.ROE.OpenFireWeaponFree)
 
@@ -648,8 +665,8 @@ RUChief:AddBorderZone(zone2)
 --RUChief:SetTacticalOverviewOn()
 
 --Response on targets
-RUChief:SetResponseOnTarget(1, 2, 2, TARGET.Category.AIRCRAFT, AUFTRAG.Type.INTERCEPT)
-RUChief:SetResponseOnTarget(8, 10, 3, TARGET.Category.ZONE, AUFTRAG.Type.CAPTUREZONE)
+RUChief:SetResponseOnTarget(1, 2, 1, TARGET.Category.AIRCRAFT, AUFTRAG.Type.INTERCEPT)
+RUChief:SetResponseOnTarget(8, 10, 0, TARGET.Category.ZONE, AUFTRAG.Type.CAPTUREZONE)
 
 
 
@@ -675,9 +692,9 @@ RUChief:AddMission(missionRedAirDefenseOne)
 
 RUChief:SetLimitMission(2, AUFTRAG.Type.CAS)
 RUChief:SetLimitMission(2, AUFTRAG.Type.CAP)
-RUChief:SetLimitMission(2, AUFTRAG.Type.CAPTUREZONE)
-RUChief:SetLimitMission(1, AUFTRAG.Type.INTERCEPT)
-RUChief:SetLimitMission(2, AUFTRAG.Type.AIRDEFENSE)
+RUChief:SetLimitMission(5, AUFTRAG.Type.CAPTUREZONE)
+RUChief:SetLimitMission(2, AUFTRAG.Type.INTERCEPT)
+RUChief:SetLimitMission(3, AUFTRAG.Type.AIRDEFENSE)
 
 --RED RESOURCES
 -- Add strategic (OPS) zones.
@@ -687,10 +704,11 @@ local RedStratZone1 =RUChief:AddStrategicZone(opzone1, 100, 100)
 
 local RedCAPTUREResourceOccupied = RUChief:CreateResource(AUFTRAG.Type.CAPTUREZONE, 6, 30, nil, nil)
 RUChief:AddToResource(RedCAPTUREResourceOccupied, AUFTRAG.Type.PATROLZONE, 2, 16, nil, nil)
+RUChief:AddToResource(RedCAPTUREResourceOccupied, AUFTRAG.Type.AIRDEFENSE, 4, 6, nil, nil)
 
 local RedCAPTUREResourceEmpty = RUChief:CreateResource(AUFTRAG.Type.ONGUARD, 2, 4)
 RUChief:AddToResource(RedCAPTUREResourceEmpty, AUFTRAG.Type.PATROLZONE, 2, 3)
-
+RUChief:AddToResource(RedCAPTUREResourceEmpty, AUFTRAG.Type.AIRDEFENSE, 2, 4, nil, nil)
 
 --Assign StratZones to resource lists
 
@@ -710,14 +728,17 @@ RUChief:Start(5)
 --Blue Mobile Air Defense
 --Alpha Platoon
 local rolandPlatoonAlpha = PLATOON:New( "☢ Roland", 15, "☢ Roland Alpha" )
-rolandPlatoonAlpha:AddMissionCapability( AUFTRAG.Type.AIRDEFENSE )
+rolandPlatoonAlpha:AddMissionCapability( AUFTRAG.Type.AIRDEFENSE, 100 )
+rolandPlatoonAlpha:SetSkill(AI.Skill.EXCELLENT)
 
 local chaparralPlatoonAlpha = PLATOON:New( "☢ Chaparral", 15, "☢ Chaparral Alpha" )
-chaparralPlatoonAlpha:AddMissionCapability( AUFTRAG.Type.AIRDEFENSE )
+chaparralPlatoonAlpha:AddMissionCapability( AUFTRAG.Type.AIRDEFENSE, 100 )
+chaparralPlatoonAlpha:SetSkill(AI.Skill.EXCELLENT)
+
 
 local avengerPlatoonAlpha = PLATOON:New( "☢ Avenger", 15, "☢ Avenger Alpha" )
-avengerPlatoonAlpha:AddMissionCapability( AUFTRAG.Type.AIRDEFENSE )
-
+avengerPlatoonAlpha:AddMissionCapability( AUFTRAG.Type.AIRDEFENSE, 100 )
+avengerPlatoonAlpha:SetSkill(AI.Skill.EXCELLENT)
 
 --Blue Tanks
 
@@ -729,22 +750,28 @@ abramsPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.GROUNDATTACK, 80)
 abramsPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.CAPTUREZONE, 80)
 abramsPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.PATROLZONE, 70)
 abramsPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.ONGUARD, 70)
+abramsPlatoonAlpha:SetSkill(AI.Skill.EXCELLENT)
 
 local strykermgsPlatoonAlpha = PLATOON:New( "☮ Stryker MGS", 35, "☮ Stryker MGS Alpha")
 strykermgsPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.GROUNDATTACK, 80)
 strykermgsPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.CAPTUREZONE, 80)
 strykermgsPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.PATROLZONE, 70)
 strykermgsPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.ONGUARD, 70)
+strykermgsPlatoonAlpha:SetSkill(AI.Skill.EXCELLENT)
 
 local strykeratgmPlatoonAlpha = PLATOON:New( "☮ ATGM Stryker", 35, "☮ ATGM Stryker Alpha")
 strykeratgmPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.GROUNDATTACK, 80)
 strykeratgmPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.CAPTUREZONE, 80)
 strykeratgmPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.PATROLZONE, 70)
 strykeratgmPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.ONGUARD, 70)
+strykeratgmPlatoonAlpha:SetSkill(AI.Skill.EXCELLENT)
 
 --Blue Armor Brigades
 
 local blueBrigadeArmorAlpha = BRIGADE:New( "WarehouseBlueAlphaBrigade", "Crunchy Peanutbutter")
+blueBrigadeArmorAlpha:AddPlatoon(rolandPlatoonAlpha)
+blueBrigadeArmorAlpha:AddPlatoon(chaparralPlatoonAlpha)
+blueBrigadeArmorAlpha:AddPlatoon(avengerPlatoonAlpha)
 blueBrigadeArmorAlpha:AddPlatoon(abramsPlatoonAlpha)
 blueBrigadeArmorAlpha:AddPlatoon(strykermgsPlatoonAlpha)
 blueBrigadeArmorAlpha:AddPlatoon(strykeratgmPlatoonAlpha)
@@ -854,7 +881,7 @@ end
 
 USChief:SetResponseOnTarget(2, 2, 2, TARGET.Category.AIRCRAFT, AUFTRAG.Type.INTERCEPT)
 USChief:SetResponseOnTarget(2, 4, 2, TARGET.Category.GROUND, AUFTRAG.Type.CAS)
-USChief:SetResponseOnTarget(8, 8, 3, TARGET.Category.ZONE, AUFTRAG.Type.CAPTUREZONE)
+USChief:SetResponseOnTarget(2, 8, 3, TARGET.Category.ZONE, AUFTRAG.Type.CAPTUREZONE)
 
 
 --Strategy--  ADJUST THIS IF TOO MUCH
@@ -884,7 +911,7 @@ USChief:AddMission(missionBlueAirDefenseOne)
 USChief:SetLimitMission(2, AUFTRAG.Type.CAS)
 USChief:SetLimitMission(2, AUFTRAG.Type.CAP)
 USChief:SetLimitMission(2, AUFTRAG.Type.INTERCEPT)
-USChief:SetLimitMission(1, AUFTRAG.Type.AIRDEFENSE)
+USChief:SetLimitMission(2, AUFTRAG.Type.AIRDEFENSE)
 
 
 
@@ -894,7 +921,7 @@ local BlueStratZone1 = USChief:AddStrategicZone(opzone1, 100, 100)
 
 --Blue Chief Resources
 
-local BlueCAPTUREResourceOccupied = USChief:CreateResource(AUFTRAG.Type.CAPTUREZONE, 6, 20, nil, nil)
+local BlueCAPTUREResourceOccupied = USChief:CreateResource(AUFTRAG.Type.CAPTUREZONE, 6, 10, nil, nil)
 USChief:AddToResource(BlueCAPTUREResourceOccupied, AUFTRAG.Type.PATROLZONE, 3, 6, nil, nil)
 
 local BlueCAPTUREResourceEmpty = USChief:CreateResource(AUFTRAG.Type.ONGUARD, 3, 5)
