@@ -37,7 +37,11 @@ Too many blue air units, limit auftrags, and limit grouping
 
 AI Test2
 
-AirDefence Auftrag is having issues
+AirDefence Auftrag is having issues --fixed needs balancing 
+
+potential balancing issue is that there is no intel coming in, besides the awacs
+
+
 Map statics is complete garbage.  Assign the bridges in briefing as TOO's as to limit reds ability to move more armor into zone.
 There will not be score for bridges.  Not possible to do as the bridges are literally comprised of 100s of individual concrete walls....wtf ed pro "map making"
 
@@ -305,18 +309,41 @@ missionScoring:SetMessagesScore(false)
 -- TODO SETUP SHORAD
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+--RED
+
+local redSamSet = SET_GROUP:New():FilterCoalitions("red"):FilterPrefixes("Red AAA", "Red SA8", "Red SA15", "EWRRED"):FilterStart()
+
+local redShorad = SHORAD:New("Fun Factory SHORAD", "Red Shorad", redSamSet, 12000, 600, "red", false)
+  
+  redShorad:SetDefenseLimits(80, 95)
+  
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- TODO SETUP MANTIS
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+local redMantis = MANTIS:New("Fun Factory AAA", "Red AAA", "Red EWR", nil, "red", true, "Red AWACS", false)
+
+  redMantis:SetSAMRadius(UTILS.NMToMeters(40))
+  redMantis:SetSAMRange(85)
+  redMantis:SetDetectInterval(20)
+  
+  redMantis:Start()
+  
+  
+local redSA10 = MANTIS:New()
+
+
+
+
+local redSA12 = MANTIS:New()
 
 
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- TODO SCENERY OBJECTS
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
+--[[
 
 local bridge1 = SCENERY:FindByNameInZone("74252386",ZONE:FindByName("roadbridge1"))
 local bridge2 = SCENERY:FindByNameInZone("74252524",ZONE:FindByName("roadbridge2"))
@@ -349,7 +376,7 @@ local sceneryTable = {bridge1, bridge2, bridge3, bridge4, bridge5, bridge6, brid
       scenery:SmokeRed()    
   end
 
-
+]]
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ---TODO TARGET TABLE
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -492,8 +519,8 @@ function operation:OnAfterOver(From,Event,To,Phase)
   local file = "Campaign Victory 1.ogg"
   local radio = USERSOUND:New(file):ToCoalition(coalition.side.BLUE)
 end
-]]
 
+]]
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ---TODO REDFOR
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
