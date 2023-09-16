@@ -75,6 +75,7 @@ _SETTINGS:SetA2A_BRAA()
 local DEBUG = true
 local DEBUG_COMMANDERS = true
 local DEBUG_PARKING = false
+local DEBUG_SHORAD = true
 
 if DEBUG then
 BASE:TraceClass("CHIEF")
@@ -322,7 +323,7 @@ local redShorad = SHORAD:New("Fun Factory SHORAD", "Red Shorad", redSamSet, 1200
 -- TODO SETUP MANTIS
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-local redMantis = MANTIS:New("Fun Factory AAA", "Red AAA", "Red EWR", nil, "red", true, "Red AWACS", false)
+local redMantis = MANTIS:New("Fun Factory AAA", "Red AAA", "EWRRED", nil, "red", true, "AWACSRED", false)
 
   redMantis:SetSAMRadius(UTILS.NMToMeters(40))
   redMantis:SetSAMRange(85)
@@ -331,13 +332,130 @@ local redMantis = MANTIS:New("Fun Factory AAA", "Red AAA", "Red EWR", nil, "red"
   redMantis:Start()
   
   
-local redSA10 = MANTIS:New()
+local redSA10 = MANTIS:New("Fun Factory SA10", "Red SA10", "EWRRED", nil, "red", true, "AWACSRED", false)
+
+  redSA10:SetSAMRadius(UTILS.NMToMeters(40))
+  redSA10:SetSAMRange(90)
+  redSA10:SetDetectInterval(20)
+  redSA10:AddShorad(redShorad,720)
+  redSA10:SetAdvancedMode(true,90)
+  redSA10:SetAutoRelocate(true,false)
+
+  redSA10:Start()
+
+
+
+local redSA12 = MANTIS:New("Fun Factory SA12", "Red SA12", "EWRRED", nil, "red", true, "AWACSRRED", false)
+
+  redSA12:SetSAMRadius(UTILS.NMToMeters(40))
+  redSA12:SetSAMRange(90)
+  redSA12:SetDetectInterval(20)
+  redSA12:AddShorad(redShorad,720)
+  redSA12:SetAdvancedMode(true,90)
+  redSA12:SetAutoRelocate(true,false)
+
+  redSA12:Start()
 
 
 
 
-local redSA12 = MANTIS:New()
+local redSA2 = MANTIS:New()
 
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- TODO SHORAD DEBUG
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+if DEBUG_SHORAD then
+
+  redMantis:Debug(true)
+  redSA10:Debug(true)
+  redSA12:Debug(true)
+
+--SA10 DEBUG
+function redSA10:OnAfterShoradActivated(From, Event, To, Name, Radius, Ontime)
+  -- show some info
+  local m = MESSAGE:New(string.format("Mantis switched on Shorad for %s | Radius %d | OnTime %d", Name, Radius, Ontime),10,"Info"):ToAll()
+end
+
+function redSA10:OnAfterAdvStateChange(From, Event, To, Oldstate, Newstate, Interval)
+    -- show some info
+  local state = { [1] = "GREEN", [2] = "AMBER", [3] = "RED" }
+  local oldstate = state[Oldstate+1]
+  local newstate = state[Newstate+1]
+  local m = MESSAGE:New(string.format("Mantis switched Advanced from from %s to %s interval %dsec", oldstate, newstate, Interval),10,"Info"):ToAll()
+end
+
+function redSA10:OnAfterRedState(From, Event, To, Group)
+   -- show some info
+  local SamName = Group:GetName()
+  local m = MESSAGE:New(string.format("Mantis switched %s to RED state!", SamName),10,"Info"):ToAll()
+end
+
+function redSA10:OnAfterGreenState(From, Event, To, Group)
+   -- show some info
+  local SamName = Group:GetName()
+  local m = MESSAGE:New(string.format("Mantis switched %s to GREEN state!", SamName),10,"Info"):ToAll()
+end
+
+--SA12 DEBUG
+
+function redSA12:OnAfterShoradActivated(From, Event, To, Name, Radius, Ontime)
+  -- show some info
+  local m = MESSAGE:New(string.format("Mantis switched on Shorad for %s | Radius %d | OnTime %d", Name, Radius, Ontime),10,"Info"):ToAll()
+end
+
+function redSA12:OnAfterAdvStateChange(From, Event, To, Oldstate, Newstate, Interval)
+    -- show some info
+  local state = { [1] = "GREEN", [2] = "AMBER", [3] = "RED" }
+  local oldstate = state[Oldstate+1]
+  local newstate = state[Newstate+1]
+  local m = MESSAGE:New(string.format("Mantis switched Advanced from from %s to %s interval %dsec", oldstate, newstate, Interval),10,"Info"):ToAll()
+end
+
+function redSA12:OnAfterRedState(From, Event, To, Group)
+   -- show some info
+  local SamName = Group:GetName()
+  local m = MESSAGE:New(string.format("Mantis switched %s to RED state!", SamName),10,"Info"):ToAll()
+end
+
+function redSA12:OnAfterGreenState(From, Event, To, Group)
+   -- show some info
+  local SamName = Group:GetName()
+  local m = MESSAGE:New(string.format("Mantis switched %s to GREEN state!", SamName),10,"Info"):ToAll()
+end
+
+--SA2 DEBUG
+
+function redSA2:OnAfterShoradActivated(From, Event, To, Name, Radius, Ontime)
+  -- show some info
+  local m = MESSAGE:New(string.format("Mantis switched on Shorad for %s | Radius %d | OnTime %d", Name, Radius, Ontime),10,"Info"):ToAll()
+end
+
+function redSA2:OnAfterAdvStateChange(From, Event, To, Oldstate, Newstate, Interval)
+    -- show some info
+  local state = { [1] = "GREEN", [2] = "AMBER", [3] = "RED" }
+  local oldstate = state[Oldstate+1]
+  local newstate = state[Newstate+1]
+  local m = MESSAGE:New(string.format("Mantis switched Advanced from from %s to %s interval %dsec", oldstate, newstate, Interval),10,"Info"):ToAll()
+end
+
+function redSA2:OnAfterRedState(From, Event, To, Group)
+   -- show some info
+  local SamName = Group:GetName()
+  local m = MESSAGE:New(string.format("Mantis switched %s to RED state!", SamName),10,"Info"):ToAll()
+end
+
+function redSA2:OnAfterGreenState(From, Event, To, Group)
+   -- show some info
+  local SamName = Group:GetName()
+  local m = MESSAGE:New(string.format("Mantis switched %s to GREEN state!", SamName),10,"Info"):ToAll()
+end
+
+
+end
 
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
