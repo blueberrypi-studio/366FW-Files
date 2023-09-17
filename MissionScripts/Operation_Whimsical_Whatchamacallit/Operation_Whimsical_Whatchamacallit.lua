@@ -102,9 +102,7 @@ local zone3 = ZONE:New("BLUECAP")
 local zone4 = ZONE:New("REDCAP")
 local zone5 = ZONE:New("REDARMORSPAWN")
 local zone6 = ZONE:New("BLUEARMORSPAWN")
---local zone7 = ZONE:New("INDUSTRIALZONE")
---local zone8 = ZONE:New("PORTZONE")
---local zone9 = ZONE:New("TRAINDEPOT")
+
 
 local zone10 = ZONE:New("CAPTUREZONE")
 
@@ -116,6 +114,8 @@ local zone10 = ZONE:New("CAPTUREZONE")
 --use these for strategic zones also
 
 local opzone1 = OPSZONE:New("CAPTUREZONE")
+
+
 
 
 --CREATE OPSZONES SET for Capture function
@@ -339,29 +339,36 @@ local redSA10 = MANTIS:New("Fun Factory SA10", "Red SA10", "EWRRED", nil, "red",
   redSA10:SetDetectInterval(20)
   redSA10:AddShorad(redShorad,720)
   redSA10:SetAdvancedMode(true,90)
-  redSA10:SetAutoRelocate(true,false)
+  redSA10:SetAutoRelocate(false,false)
 
   redSA10:Start()
 
 
 
-local redSA12 = MANTIS:New("Fun Factory SA12", "Red SA12", "EWRRED", nil, "red", true, "AWACSRRED", false)
+local redSA12 = MANTIS:New("Fun Factory SA12", "Red SA12", "EWRRED", nil, "red", true, "AWACSRED", false)
 
   redSA12:SetSAMRadius(UTILS.NMToMeters(40))
   redSA12:SetSAMRange(90)
   redSA12:SetDetectInterval(20)
   redSA12:AddShorad(redShorad,720)
   redSA12:SetAdvancedMode(true,90)
-  redSA12:SetAutoRelocate(true,false)
+  redSA12:SetAutoRelocate(false,false)
 
   redSA12:Start()
 
 
 
 
-local redSA2 = MANTIS:New()
+local redSA2 = MANTIS:New("Fun Factory SA2", "Red SA2", "EWRRED", nil, "red", true, "AWACSRED", false)
 
+  redSA2:SetSAMRadius(UTILS.NMToMeters(40))
+  redSA2:SetSAMRange(90)
+  redSA2:SetDetectInterval(20)
+  redSA2:AddShorad(redShorad,720)
+  redSA2:SetAdvancedMode(true,90)
+  redSA2:SetAutoRelocate(false,false)
 
+  redSA2:Start()
 
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -373,6 +380,7 @@ if DEBUG_SHORAD then
   redMantis:Debug(true)
   redSA10:Debug(true)
   redSA12:Debug(true)
+  redSA2:Debug(true)
 
 --SA10 DEBUG
 function redSA10:OnAfterShoradActivated(From, Event, To, Name, Radius, Ontime)
@@ -837,9 +845,9 @@ RUChief:AddMission(missionRedAirDefenseOne)
 
 RUChief:SetLimitMission(2, AUFTRAG.Type.CAS)
 RUChief:SetLimitMission(2, AUFTRAG.Type.CAP)
-RUChief:SetLimitMission(5, AUFTRAG.Type.CAPTUREZONE)
+RUChief:SetLimitMission(8, AUFTRAG.Type.CAPTUREZONE)
 RUChief:SetLimitMission(2, AUFTRAG.Type.INTERCEPT)
-RUChief:SetLimitMission(3, AUFTRAG.Type.AIRDEFENSE)
+RUChief:SetLimitMission(6, AUFTRAG.Type.AIRDEFENSE)
 
 --RED RESOURCES
 -- Add strategic (OPS) zones.
@@ -847,9 +855,9 @@ local RedStratZone1 =RUChief:AddStrategicZone(opzone1, 100, 100)
 
 --Red Chief Resources
 
-local RedCAPTUREResourceOccupied = RUChief:CreateResource(AUFTRAG.Type.CAPTUREZONE, 6, 30, nil, nil)
-RUChief:AddToResource(RedCAPTUREResourceOccupied, AUFTRAG.Type.PATROLZONE, 2, 16, nil, nil)
-RUChief:AddToResource(RedCAPTUREResourceOccupied, AUFTRAG.Type.AIRDEFENSE, 4, 6, nil, nil)
+local RedCAPTUREResourceOccupied = RUChief:CreateResource(AUFTRAG.Type.CAPTUREZONE, 6, 16, nil, nil)
+RUChief:AddToResource(RedCAPTUREResourceOccupied, AUFTRAG.Type.PATROLZONE, 6, 16, nil, nil)
+RUChief:AddToResource(RedCAPTUREResourceOccupied, AUFTRAG.Type.AIRDEFENSE, 6, 8, nil, nil)
 
 local RedCAPTUREResourceEmpty = RUChief:CreateResource(AUFTRAG.Type.ONGUARD, 2, 4)
 RUChief:AddToResource(RedCAPTUREResourceEmpty, AUFTRAG.Type.PATROLZONE, 2, 3)
@@ -890,21 +898,21 @@ avengerPlatoonAlpha:SetSkill(AI.Skill.EXCELLENT)
 --☮
 --Alpha Platoons
 
-local abramsPlatoonAlpha = PLATOON:New( "☮ M1A2 Abrams", 35, "☮ M1A2 Abrams Alpha")
+local abramsPlatoonAlpha = PLATOON:New( "☮ M1A2 Abrams", 15, "☮ M1A2 Abrams Alpha")
 abramsPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.GROUNDATTACK, 80)
 abramsPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.CAPTUREZONE, 80)
 abramsPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.PATROLZONE, 70)
 abramsPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.ONGUARD, 70)
 abramsPlatoonAlpha:SetSkill(AI.Skill.EXCELLENT)
 
-local strykermgsPlatoonAlpha = PLATOON:New( "☮ Stryker MGS", 35, "☮ Stryker MGS Alpha")
+local strykermgsPlatoonAlpha = PLATOON:New( "☮ Stryker MGS", 15, "☮ Stryker MGS Alpha")
 strykermgsPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.GROUNDATTACK, 80)
 strykermgsPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.CAPTUREZONE, 80)
 strykermgsPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.PATROLZONE, 70)
 strykermgsPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.ONGUARD, 70)
 strykermgsPlatoonAlpha:SetSkill(AI.Skill.EXCELLENT)
 
-local strykeratgmPlatoonAlpha = PLATOON:New( "☮ ATGM Stryker", 35, "☮ ATGM Stryker Alpha")
+local strykeratgmPlatoonAlpha = PLATOON:New( "☮ ATGM Stryker", 15, "☮ ATGM Stryker Alpha")
 strykeratgmPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.GROUNDATTACK, 80)
 strykeratgmPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.CAPTUREZONE, 80)
 strykeratgmPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.PATROLZONE, 70)
@@ -1004,7 +1012,7 @@ missionBlueCASzone2:SetROE(ENUMS.ROE.OpenFireWeaponFree)
 
 --Air Defense Missions -- use Capzones Zone7 Zone8 Zone9
 local missionBlueAirDefenseOne = AUFTRAG:NewAIRDEFENSE( zone10 )
-missionBlueAirDefenseOne:SetRequiredAssets(4)
+missionBlueAirDefenseOne:SetRequiredAssets(6)
 missionBlueAirDefenseOne:SetRepeatOnFailure(5)
 missionBlueAirDefenseOne:SetROE(ENUMS.ROE.OpenFireWeaponFree)
 
@@ -1026,7 +1034,7 @@ end
 
 USChief:SetResponseOnTarget(2, 2, 2, TARGET.Category.AIRCRAFT, AUFTRAG.Type.INTERCEPT)
 USChief:SetResponseOnTarget(2, 4, 2, TARGET.Category.GROUND, AUFTRAG.Type.CAS)
-USChief:SetResponseOnTarget(2, 8, 3, TARGET.Category.ZONE, AUFTRAG.Type.CAPTUREZONE)
+USChief:SetResponseOnTarget(2, 4, 3, TARGET.Category.ZONE, AUFTRAG.Type.CAPTUREZONE)
 
 
 --Strategy--  ADJUST THIS IF TOO MUCH
@@ -1057,6 +1065,9 @@ USChief:SetLimitMission(2, AUFTRAG.Type.CAS)
 USChief:SetLimitMission(2, AUFTRAG.Type.CAP)
 USChief:SetLimitMission(2, AUFTRAG.Type.INTERCEPT)
 USChief:SetLimitMission(2, AUFTRAG.Type.AIRDEFENSE)
+USChief:SetLimitMission(2, AUFTRAG.Type.CAPTUREZONE)
+USChief:SetLimitMission(2, AUFTRAG.Type.GROUNDATTACK)
+USChief:SetLimitMission(5, AUFTRAG.Type.PATROLZONE)
 
 
 
@@ -1066,7 +1077,7 @@ local BlueStratZone1 = USChief:AddStrategicZone(opzone1, 100, 100)
 
 --Blue Chief Resources
 
-local BlueCAPTUREResourceOccupied = USChief:CreateResource(AUFTRAG.Type.CAPTUREZONE, 6, 10, nil, nil)
+local BlueCAPTUREResourceOccupied = USChief:CreateResource(AUFTRAG.Type.CAPTUREZONE, 3, 6, nil, nil)
 USChief:AddToResource(BlueCAPTUREResourceOccupied, AUFTRAG.Type.PATROLZONE, 3, 6, nil, nil)
 
 local BlueCAPTUREResourceEmpty = USChief:CreateResource(AUFTRAG.Type.ONGUARD, 3, 5)
