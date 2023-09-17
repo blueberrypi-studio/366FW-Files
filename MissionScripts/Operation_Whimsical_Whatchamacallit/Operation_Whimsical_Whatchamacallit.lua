@@ -52,7 +52,18 @@ remove scoring addition of scenery objects, this is going to cause a massive per
 
 red air needs restructuring, we pretty much went unimpeeded with very little risk.  hopefully some beautiful little manpads will do the trick.
 
+AI Test3
+1 hour test
+No errors.
+Blue started strong unfortunately this is the point where red is losing ALL initial air defenses.  You need a way to counter this, either by delaying the auftrags to the chief or delaying inital activation of chief the latter part is dirty
+Red came back to win, took blues warehouse and therefore cutting chiefs assets to what was left alive.  initial suggestion is to change this, however after thinking about it this occured 40 minutes into the test.  By this point players
+should have already completed set tasks.  Use this as a mission failure.
+the main battle was fucking awesome to watch, if my machine can run it without stutters the server will be fine
 
+
+TODO
+reduce the number of blue cas in air, also move their spawns to a dedicated tarawa
+address the brigades and specialize the units as to see a more diverse battlefield
 
 
 
@@ -331,7 +342,7 @@ local redSA10 = MANTIS:New("Fun Factory SA10", "Red SA10", "EWRRED", nil, "red",
   redSA10:SetSAMRange(90)
   redSA10:SetDetectInterval(20)
   redSA10:AddShorad(redShorad,720)
-  redSA10:SetAdvancedMode(true,90)
+--  redSA10:SetAdvancedMode(true,90)
   redSA10:SetAutoRelocate(false,false)
 
   redSA10:Start()
@@ -342,7 +353,7 @@ local redSA12 = MANTIS:New("Fun Factory SA12", "Red SA12", "EWRRED", nil, "red",
   redSA12:SetSAMRange(90)
   redSA12:SetDetectInterval(20)
   redSA12:AddShorad(redShorad,720)
-  redSA12:SetAdvancedMode(true,90)
+--  redSA12:SetAdvancedMode(true,90)
   redSA12:SetAutoRelocate(false,false)
 
   redSA12:Start()
@@ -353,7 +364,7 @@ local redSA2 = MANTIS:New("Fun Factory SA2", "Red SA2", "EWRRED", nil, "red", tr
   redSA2:SetSAMRange(90)
   redSA2:SetDetectInterval(20)
   redSA2:AddShorad(redShorad,720)
-  redSA2:SetAdvancedMode(true,90)
+--  redSA2:SetAdvancedMode(true,90)
   redSA2:SetAutoRelocate(false,false)
 
   redSA2:Start()
@@ -644,12 +655,16 @@ end
 --Red Alpha Air Defense
 local strelaPlatoonAlpha = PLATOON:New( "☢ Strela", 15, "☢ Strela Alpha" )
   strelaPlatoonAlpha:AddMissionCapability( AUFTRAG.Type.AIRDEFENSE, 100 )
+  strelaPlatoonAlpha:SetSkill(AI.Skill.EXCELLENT)
+
 
 local geckoPlatoonAlpha = PLATOON:New( "☢ SA8 Gecko", 15, "☢ SA8 Gecko Alpha" )
   geckoPlatoonAlpha:AddMissionCapability( AUFTRAG.Type.AIRDEFENSE, 100 )
+  geckoPlatoonAlpha:SetSkill(AI.Skill.EXCELLENT)
 
 local shilkaPlatoonAlpha = PLATOON:New( "☢ ZSU-23 Shilka", 15, "☢ ZSU-23 Shilka Alpha" )
   shilkaPlatoonAlpha:AddMissionCapability( AUFTRAG.Type.AIRDEFENSE, 100 )
+  shilkaPlatoonAlpha:SetSkill(AI.Skill.EXCELLENT)
 
 --Red Tanks
 
@@ -658,6 +673,7 @@ local t80uPlatoonAlpha = PLATOON:New( "☮ T80U", 35, "☮ T80U Alpha")
   t80uPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.CAPTUREZONE, 80)
   t80uPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.PATROLZONE, 70)
   t80uPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.ONGUARD, 70)
+  t80uPlatoonAlpha:SetSkill(AI.Skill.EXCELLENT)
 
 
 local t90PlatoonAlpha = PLATOON:New( "☮ T90", 35, "☮ T90 Alpha")
@@ -665,12 +681,14 @@ local t90PlatoonAlpha = PLATOON:New( "☮ T90", 35, "☮ T90 Alpha")
   t90PlatoonAlpha:AddMissionCapability(AUFTRAG.Type.CAPTUREZONE, 80)
   t90PlatoonAlpha:AddMissionCapability(AUFTRAG.Type.PATROLZONE, 80)
   t90PlatoonAlpha:AddMissionCapability(AUFTRAG.Type.ONGUARD, 80)
+  t90PlatoonAlpha:SetSkill(AI.Skill.EXCELLENT)
 
 local t72PlatoonAlpha = PLATOON:New( "☮ T72B3", 35, "☮ T72B3 Alpha")
   t72PlatoonAlpha:AddMissionCapability(AUFTRAG.Type.GROUNDATTACK, 80)
   t72PlatoonAlpha:AddMissionCapability(AUFTRAG.Type.CAPTUREZONE, 80)
   t72PlatoonAlpha:AddMissionCapability(AUFTRAG.Type.PATROLZONE, 80)
   t72PlatoonAlpha:AddMissionCapability(AUFTRAG.Type.ONGUARD, 80)
+  t72PlatoonAlpha:SetSkill(AI.Skill.EXCELLENT)
 
 --RED ARMOR BRIGADES
 local redBrigadeArmorAlpha = BRIGADE:New( "WarehouseRedAlphaBrigade", "Jelly Rolls")
@@ -770,7 +788,7 @@ local redAirwing = AIRWING:New("WarehouseNovoAirwing", "Jelly Smashers")
 --Red Capture Mission
 local missionRedCaptureZone1=AUFTRAG:NewCAPTUREZONE(opzone1, coalition.side.RED)
   missionRedCaptureZone1:SetRequiredAssets(12)
-  missionRedCaptureZone1:SetRepeatOnFailure(10)
+  missionRedCaptureZone1:SetRepeatOnFailure(99)
   missionRedCaptureZone1:SetROE(ENUMS.ROE.OpenFire)
 
 --Red CAP Mission for MainClashZone
@@ -788,7 +806,7 @@ local missionRedCASzone2 = AUFTRAG:NewCAS(zone10, 8000, 250)
 --Air Defense Missions -- 
 local missionRedAirDefenseOne = AUFTRAG:NewAIRDEFENSE(zone10)
   missionRedAirDefenseOne:SetRequiredAssets(5)
-  missionRedAirDefenseOne:SetRepeatOnFailure(5)
+  missionRedAirDefenseOne:SetRepeatOnFailure(99)
   missionRedAirDefenseOne:SetROE(ENUMS.ROE.OpenFireWeaponFree)
 
 --RED CHIEF
@@ -808,6 +826,7 @@ RUChief:AddBorderZone(zone2)
 --Response on targets
 RUChief:SetResponseOnTarget(1, 2, 1, TARGET.Category.AIRCRAFT, AUFTRAG.Type.INTERCEPT)
 RUChief:SetResponseOnTarget(8, 10, 0, TARGET.Category.ZONE, AUFTRAG.Type.CAPTUREZONE)
+RUChief:SetResponseOnTarget(5, 10, 2, TARGET.Category.GROUND, AUFTRAG.Type.PATROLZONE)
 
 
 
@@ -843,13 +862,13 @@ local RedStratZone1 =RUChief:AddStrategicZone(opzone1, 100, 100)
 
 --Red Chief Resources
 
-local RedCAPTUREResourceOccupied = RUChief:CreateResource(AUFTRAG.Type.CAPTUREZONE, 6, 16, nil, nil)
-RUChief:AddToResource(RedCAPTUREResourceOccupied, AUFTRAG.Type.PATROLZONE, 6, 16, nil, nil)
+local RedCAPTUREResourceOccupied = RUChief:CreateResource(AUFTRAG.Type.CAPTUREZONE, 10, 16, nil, nil)
+RUChief:AddToResource(RedCAPTUREResourceOccupied, AUFTRAG.Type.PATROLZONE, 10, 16, nil, nil)
 RUChief:AddToResource(RedCAPTUREResourceOccupied, AUFTRAG.Type.AIRDEFENSE, 6, 8, nil, nil)
 
-local RedCAPTUREResourceEmpty = RUChief:CreateResource(AUFTRAG.Type.ONGUARD, 2, 4)
-RUChief:AddToResource(RedCAPTUREResourceEmpty, AUFTRAG.Type.PATROLZONE, 2, 3)
-RUChief:AddToResource(RedCAPTUREResourceEmpty, AUFTRAG.Type.AIRDEFENSE, 2, 4, nil, nil)
+local RedCAPTUREResourceEmpty = RUChief:CreateResource(AUFTRAG.Type.ONGUARD, 10, 16)
+RUChief:AddToResource(RedCAPTUREResourceEmpty, AUFTRAG.Type.PATROLZONE, 10, 13)
+RUChief:AddToResource(RedCAPTUREResourceEmpty, AUFTRAG.Type.AIRDEFENSE, 6, 8, nil, nil)
 
 --Assign StratZones to resource lists
 
@@ -1026,7 +1045,7 @@ USChief:SetResponseOnTarget(2, 4, 3, TARGET.Category.ZONE, AUFTRAG.Type.CAPTUREZ
 
 
 --Strategy--  ADJUST THIS IF TOO MUCH
-USChief:SetStrategy(USChief.Strategy.TOTALWAR)
+USChief:SetStrategy(USChief.Strategy.AGGRESSIVE)
 
 --ADD BRIGADES
 
@@ -1079,7 +1098,7 @@ USChief:SetStrategicZoneResourceEmpty(BlueStratZone1, BlueCAPTUREResourceEmpty)
 
 
 
-USChief:Start(5)
+USChief:Start(30)
 
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
