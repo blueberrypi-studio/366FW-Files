@@ -6,11 +6,11 @@ TODO
 
 1.  Add air defense platoons to the brigades--done
 2.  Thin out me templates
-3.  Rebuild battlezone
+3.  Rebuild battlezone --nearly done
 4.  Build Target List
-5.  Build commander interface
+5.  Build commander interface --done
 6.  Build reaper set
-7.  Build ctld setup
+7.  Build ctld setup --done
 8.  Build csar setup
 9.  Rebuild zone structure - check from zone list --zone structure tested in aitest1--done
 10.  Add sounds to miz
@@ -63,9 +63,9 @@ the main battle was fucking awesome to watch, if my machine can run it without s
 
 TODO
 reduce the number of blue cas in air, also move their spawns to a dedicated tarawa
-address the brigades and specialize the units as to see a more diverse battlefield
+address the brigades and specialize the units as to see a more diverse battlefield --done needs testing
 
-
+change names of chief zones, as they are displayed in messages
 
 
 ]]
@@ -679,8 +679,8 @@ local shilkaPlatoonAlpha = PLATOON:New( "☢ ZSU-23 Shilka", 15, "☢ ZSU-23 Shi
 --Red Tanks
 
 local t80uPlatoonAlpha = PLATOON:New( "☮ T80U", 35, "☮ T80U Alpha")
-  t80uPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.GROUNDATTACK, 80)
-  t80uPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.CAPTUREZONE, 80)
+--  t80uPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.GROUNDATTACK, 80)
+--  t80uPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.CAPTUREZONE, 80)
   t80uPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.PATROLZONE, 70)
   t80uPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.ONGUARD, 70)
   t80uPlatoonAlpha:SetSkill(AI.Skill.EXCELLENT)
@@ -689,15 +689,15 @@ local t80uPlatoonAlpha = PLATOON:New( "☮ T80U", 35, "☮ T80U Alpha")
 local t90PlatoonAlpha = PLATOON:New( "☮ T90", 35, "☮ T90 Alpha")
   t90PlatoonAlpha:AddMissionCapability(AUFTRAG.Type.GROUNDATTACK, 80)
   t90PlatoonAlpha:AddMissionCapability(AUFTRAG.Type.CAPTUREZONE, 80)
-  t90PlatoonAlpha:AddMissionCapability(AUFTRAG.Type.PATROLZONE, 80)
-  t90PlatoonAlpha:AddMissionCapability(AUFTRAG.Type.ONGUARD, 80)
+--  t90PlatoonAlpha:AddMissionCapability(AUFTRAG.Type.PATROLZONE, 80)
+--  t90PlatoonAlpha:AddMissionCapability(AUFTRAG.Type.ONGUARD, 80)
   t90PlatoonAlpha:SetSkill(AI.Skill.EXCELLENT)
 
 local t72PlatoonAlpha = PLATOON:New( "☮ T72B3", 35, "☮ T72B3 Alpha")
-  t72PlatoonAlpha:AddMissionCapability(AUFTRAG.Type.GROUNDATTACK, 80)
-  t72PlatoonAlpha:AddMissionCapability(AUFTRAG.Type.CAPTUREZONE, 80)
+--  t72PlatoonAlpha:AddMissionCapability(AUFTRAG.Type.GROUNDATTACK, 80)
+--  t72PlatoonAlpha:AddMissionCapability(AUFTRAG.Type.CAPTUREZONE, 80)
   t72PlatoonAlpha:AddMissionCapability(AUFTRAG.Type.PATROLZONE, 80)
-  t72PlatoonAlpha:AddMissionCapability(AUFTRAG.Type.ONGUARD, 80)
+--  t72PlatoonAlpha:AddMissionCapability(AUFTRAG.Type.ONGUARD, 80)
   t72PlatoonAlpha:SetSkill(AI.Skill.EXCELLENT)
 
 --RED ARMOR BRIGADES
@@ -916,25 +916,25 @@ avengerPlatoonAlpha:SetSkill(AI.Skill.EXCELLENT)
 --Alpha Platoons
 
 local abramsPlatoonAlpha = PLATOON:New( "☮ M1A2 Abrams", 15, "☮ M1A2 Abrams Alpha")
-abramsPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.GROUNDATTACK, 80)
-abramsPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.CAPTUREZONE, 80)
-abramsPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.PATROLZONE, 70)
-abramsPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.ONGUARD, 70)
-abramsPlatoonAlpha:SetSkill(AI.Skill.EXCELLENT)
+  abramsPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.GROUNDATTACK, 80)
+--  abramsPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.CAPTUREZONE, 80)
+--  abramsPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.PATROLZONE, 70)
+  abramsPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.ONGUARD, 70)
+  abramsPlatoonAlpha:SetSkill(AI.Skill.EXCELLENT)
 
 local strykermgsPlatoonAlpha = PLATOON:New( "☮ Stryker MGS", 15, "☮ Stryker MGS Alpha")
-strykermgsPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.GROUNDATTACK, 80)
-strykermgsPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.CAPTUREZONE, 80)
-strykermgsPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.PATROLZONE, 70)
-strykermgsPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.ONGUARD, 70)
-strykermgsPlatoonAlpha:SetSkill(AI.Skill.EXCELLENT)
+  strykermgsPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.GROUNDATTACK, 80)
+  strykermgsPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.CAPTUREZONE, 80)
+--  strykermgsPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.PATROLZONE, 70)
+--  strykermgsPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.ONGUARD, 70)
+  strykermgsPlatoonAlpha:SetSkill(AI.Skill.EXCELLENT)
 
 local strykeratgmPlatoonAlpha = PLATOON:New( "☮ ATGM Stryker", 15, "☮ ATGM Stryker Alpha")
-strykeratgmPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.GROUNDATTACK, 80)
-strykeratgmPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.CAPTUREZONE, 80)
-strykeratgmPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.PATROLZONE, 70)
-strykeratgmPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.ONGUARD, 70)
-strykeratgmPlatoonAlpha:SetSkill(AI.Skill.EXCELLENT)
+  strykeratgmPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.GROUNDATTACK, 80)
+--  strykeratgmPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.CAPTUREZONE, 80)
+--  strykeratgmPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.PATROLZONE, 70)
+  strykeratgmPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.ONGUARD, 70)
+  strykeratgmPlatoonAlpha:SetSkill(AI.Skill.EXCELLENT)
 
 --Blue Armor Brigades
 
@@ -977,30 +977,28 @@ blueCasOne:SetModex(100)
 blueCasOne:SetSkill(AI.Skill.ACE)
 blueCasOne:SetDespawnAfterHolding(true)
 blueCasOne:SetTakeoffAir()
-blueCasOne:SetParkingIDs(Parking)
+--blueCasOne:SetParkingIDs(Parking)
 
 --BLUE AIRWING
 
 local blueAirwing = AIRWING:New("WarehouseSochiAirwing", "Peanut Butter Crackers")
 
-blueAirwing:NewPayload("✈ F14B", 99, AUFTRAG.Type.INTERCEPT, 100)
+  blueAirwing:NewPayload("✈ F14B", 99, AUFTRAG.Type.INTERCEPT, 100)
+  blueAirwing:NewPayload("✈ F18C", 99, AUFTRAG.Type.CAP, 100)
 
-blueAirwing:NewPayload("✈ F18C", 99, AUFTRAG.Type.CAP, 100)
+  blueAirwing:AddSquadron(blueCapOne)
+  blueAirwing:AddSquadron(blueIntOne)
 
+  blueAirwing:Start()
 
-blueAirwing:NewPayload("✈ AH64DCAS", 99, AUFTRAG.Type.CAS, 100)
+--Tarawa Airwing
 
+local blueCasAirwing = AIRWING:New("AITarawa", "Jolly Ranchers")
 
-blueAirwing:AddSquadron(blueCapOne)
-
-blueAirwing:AddSquadron(blueIntOne)
-
-blueAirwing:AddSquadron(blueCasOne)
-
-
-blueAirwing:Start()
-
-
+  blueCasAirwing:NewPayload("✈ AH64DCAS", 99, AUFTRAG.Type.CAS, 100)
+  blueCasAirwing:AddSquadron(blueCasOne)
+  
+  blueCasAirwing:Start()
 
 --BLUE AWACS
 -- We need an AirWing
@@ -1034,7 +1032,7 @@ AwacsBlue:AddSquadron(AwacsEscortsRed)
 AwacsBlue:NewPayload("✈ F14BESCORT",-1,{AUFTRAG.Type.ESCORT},100)
 
 
-local AwacsBlue = AWACS:New("Awacs-Blue", AwacsBlue, "blue", AIRBASE.Caucasus.Sochi_Adler, "BLUEAWACSORBIT", ZONE:FindByName("FEZ"), "BLUECAPZONE", 264, radio.modulation.AM )
+local AwacsBlue = AWACS:New("Awacs-Blue", AwacsBlue, "blue", AIRBASE.Caucasus.Sochi_Adler, "BLUEAWACSORBIT", ZONE:FindByName("BLUECHIEF"), "BLUECAP", 264, radio.modulation.AM )
 
 AwacsBlue:SetEscort(2)
 AwacsBlue:SetAwacsDetails(CALLSIGN.AWACS.Darkstar,1,30,280,88,25)
@@ -1114,6 +1112,7 @@ USChief:AddBrigade(blueBrigadeArmorAlpha)
 --ADD AIRWINGS
 
 USChief:AddAirwing(blueAirwing)
+USChief:AddAirwing(blueCasAirwing)
 
 --ADD MISSIONS
 
