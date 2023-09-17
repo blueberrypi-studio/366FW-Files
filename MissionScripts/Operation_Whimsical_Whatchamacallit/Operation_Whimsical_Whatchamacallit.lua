@@ -103,6 +103,16 @@ end
 --Sochi
 local Parking = ({33, 34, 35, 46, 36, 47, 37, 48, 38, 39, 49, 40, 50, 41, 51, 42, 52, 43, 53, 44, 104, 44, 55})
 
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- TODO SETUP SRS
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+local hereSRSPath = "C:\Program Files\DCS-SimpleRadio-Standalone"
+--local hereSRSPath = "Z:\DCS-SimpleRadio-Standalone"
+local hereSRSPort = 5002
+
+
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ---TODO ZONES
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -992,7 +1002,55 @@ blueAirwing:Start()
 
 
 
---add blue awacs here
+--BLUE AWACS
+-- We need an AirWing
+local AwacsBlue = AIRWING:New("WarehouseSochiAwacsAirwing", "AWACSBLUE")
+--AwacsAW:SetReportOn()
+AwacsBlue:SetMarker(false)
+AwacsBlue:SetAirbase(AIRBASE:FindByName(AIRBASE.Caucasus.Sochi_Adler))
+AwacsBlue:SetRespawnAfterDestroyed(300)
+AwacsBlue:SetTakeoffAir()
+AwacsBlue:__Start(2)
+
+-- AWACS itself
+local AwacsBlueSquadron = SQUADRON:New("AWACSBLUE", 2, "AWACSBLUE")
+AwacsBlueSquadron:AddMissionCapability({AUFTRAG.Type.ORBIT},100)
+AwacsBlueSquadron:SetFuelLowRefuel(true)
+AwacsBlueSquadron:SetFuelLowThreshold(0.2)
+AwacsBlueSquadron:SetTurnoverTime(10,20)
+AwacsBlue:AddSquadron(AwacsBlueSquadron)
+AwacsBlue:NewPayload("AWACSBLUE",-1,{AUFTRAG.Type.ORBIT},100)
+
+
+-- Escorts
+local AwacsEscortsRed = SQUADRON:New("✈ F14BESCORT",4,"✈ F14BESCORT")
+AwacsEscortsRed:AddMissionCapability({AUFTRAG.Type.ESCORT})
+AwacsEscortsRed:SetFuelLowRefuel(true)
+AwacsEscortsRed:SetFuelLowThreshold(0.3)
+AwacsEscortsRed:SetTurnoverTime(10,20)
+AwacsEscortsRed:SetTakeoffAir()
+AwacsEscortsRed:SetRadio(275,radio.modulation.AM)
+AwacsBlue:AddSquadron(AwacsEscortsRed)
+AwacsBlue:NewPayload("✈ F14BESCORT",-1,{AUFTRAG.Type.ESCORT},100)
+
+
+local AwacsBlue = AWACS:New("Awacs-Blue", AwacsBlue, "blue", AIRBASE.Caucasus.Sochi_Adler, "BLUEAWACSORBIT", ZONE:FindByName("FEZ"), "BLUECAPZONE", 264, radio.modulation.AM )
+
+AwacsBlue:SetEscort(2)
+AwacsBlue:SetAwacsDetails(CALLSIGN.AWACS.Darkstar,1,30,280,88,25)
+AwacsBlue:SetTOS(4, 4)
+
+
+AwacsBlue:__Start(5)
+
+-- Set up SRS
+--if hereSRSGoogle then
+--  -- use Google
+--  AwacsBlue:SetSRS(hereSRSPath,"female","en-US",hereSRSPort,"en-US-Wavenet-F",0.9,hereSRSGoogle)
+--else
+   --use Windows
+AwacsBlue:SetSRS(hereSRSPath,"male","en-US",hereSRSPort, nil, 0.9)
+--end
 
 
 
@@ -1174,3 +1232,104 @@ ZoneCaptureCoalitionOne:Start( 30, 120 )
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ---TODO EXTRAS
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- TODO BLUE TANKER
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+local ZoneBoom=ZONE:FindByName("Zone Boom")
+local ZoneProbe=ZONE:FindByName("Zone Probe")
+local ZonePointBoom=ZONE:FindByName("Point Boom")
+local ZonePointProbe=ZONE:FindByName("Point Probe")
+
+-- KC-135 squadron, callsign "Arco".
+local kc135=SQUADRON:New("✈ KC135", 5, "✈ KC135") --Ops.Squadron#SQUADRON
+kc135:SetModex(100)
+kc135:SetCallsign(CALLSIGN.Tanker.Arco)
+kc135:SetRadio(260)
+kc135:SetSkill(AI.Skill.EXCELLENT)
+kc135:AddMissionCapability({AUFTRAG.Type.TANKER}, 100)
+kc135:AddTacanChannel(70, 75)
+
+-- KC-130 squadron, callsign "Texaco".
+local kc130=SQUADRON:New("✈ KC130", 5, "✈ KC130") --Ops.Squadron#SQUADRON
+kc130:SetModex(200)
+kc130:SetCallsign(CALLSIGN.Tanker.Texaco)
+kc130:SetRadio(261)
+kc130:SetSkill(AI.Skill.EXCELLENT)
+kc130:AddMissionCapability({AUFTRAG.Type.TANKER}, 100)
+kc130:AddTacanChannel(80, 85)
+
+-- Create an airwing.
+local blueTankerWing=AIRWING:New("WarehouseSochiAwacsAirwing", "Need Gas?") --Ops.AirWing#AIRWING
+
+
+-- Add a patrol point for tanker with boom and receptacle.
+blueTankerWing:AddPatrolPointTANKER(ZonePointBoom, 20000, 350, 180, 30, Unit.RefuelingSystem.BOOM_AND_RECEPTACLE)
+
+-- Add a patrol point for tankers with probe and drogue.
+blueTankerWing:AddPatrolPointTANKER(ZonePointProbe, 20000, 350, 0, 30, Unit.RefuelingSystem.PROBE_AND_DROGUE)
+
+-- Set number of tankers constantly in the air.
+blueTankerWing:SetNumberTankerBoom(1)
+blueTankerWing:SetNumberTankerProbe(1)
+
+
+-- Add squadrons to airwing.
+blueTankerWing:AddSquadron(kc135)
+blueTankerWing:AddSquadron(kc130)
+
+blueTankerWing:SetTakeoffAir()
+
+
+-- Start airwing.
+blueTankerWing:Start()
+
+-- Function to create a new tanker mission.
+local function NewTankerMission(RefuelSystem)
+
+  -- Get coordinate depending on refuel system type.
+  local Coordinate
+  if RefuelSystem==Unit.RefuelingSystem.BOOM_AND_RECEPTACLE then
+    Coordinate=ZoneBoom:GetCoordinate()
+  elseif RefuelSystem==Unit.RefuelingSystem.PROBE_AND_DROGUE then
+    Coordinate=ZoneProbe:GetCoordinate()
+  end
+
+  -- Tanker mission.
+  local mission=AUFTRAG:NewTANKER(Coordinate, 20000, 350, 000, 25, RefuelSystem)
+  
+  -- Assign mission to airwing.
+  blueTankerWing:AddMission(mission)
+  
+  -- Create a new mission when this one is done. Keeps tankers in the air at all times.
+  function mission:OnAfterDone()
+    MESSAGE:New(string.format("Mission %s done. Creating new TANKER mission for refuel system type %d", mission:GetName(), RefuelSystem), 360):ToAll():ToLog()
+    NewTankerMission(RefuelSystem)
+  end
+  
+end
+
+-- Create a tanker mission with boom.
+NewTankerMission(Unit.RefuelingSystem.BOOM_AND_RECEPTACLE)
+
+-- Create a tanker mission with probe.
+NewTankerMission(Unit.RefuelingSystem.PROBE_AND_DROGUE)
+
+
+--- Function called each time a flight group goes on a mission. Can be used to fine tune.
+function blueTankerWing:OnAfterFlightOnMission(From, Event, To, Flightgroup, Mission)
+  local flightgroup=Flightgroup --Ops.FlightGroup#FLIGHTGROUP
+  local mission=Mission --Ops.Auftrag#AUFTRAG
+  
+  -- Get info about TACAN channel.
+  local tacanChannel, tacanMorse, tacanBand=flightgroup:GetTACAN()
+  
+  -- Print some info.
+  local text=string.format("Flight %s on %s mission %s. TACAN Channel %s%s (%s)", flightgroup:GetName(), mission:GetType(), mission:GetName(), tostring(tacanChannel), tostring(tacanBand), tostring(tacanMorse))
+  MESSAGE:New(text):ToAll():ToLog()  
+  
+  
+  flightgroup:SetFuelLowThreshold(25)
+end
