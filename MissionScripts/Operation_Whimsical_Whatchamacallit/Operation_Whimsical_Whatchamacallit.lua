@@ -4,7 +4,7 @@
   
 TODO
 
-1.  Add air defense platoons to the brigades
+1.  Add air defense platoons to the brigades--done
 2.  Thin out me templates
 3.  Rebuild battlezone
 4.  Build Target List
@@ -12,12 +12,12 @@ TODO
 6.  Build reaper set
 7.  Build ctld setup
 8.  Build csar setup
-9.  Rebuild zone structure - check from zone list --zone structure tested in aitest1
+9.  Rebuild zone structure - check from zone list --zone structure tested in aitest1--done
 10.  Add sounds to miz
 11.  Build Script Load Triggers
 12.  Fix awacs breaking srs/ to do this more than likely just establish an Orbit AUFTRAG using the persistent AWACS build, and just scratch the voice coms from awacs
-13.  Shorad
-14.  Mantis
+13.  Shorad--done
+14.  Mantis--done
 
 
 Ideas-
@@ -78,9 +78,9 @@ local DEBUG_PARKING = false
 local DEBUG_SHORAD = true
 
 if DEBUG then
-BASE:TraceClass("CHIEF")
-BASE:TraceClass("SCORING")
-BASE:TraceOn()
+  BASE:TraceClass("CHIEF")
+  BASE:TraceClass("SCORING")
+  BASE:TraceOn()
 end
 
 
@@ -169,7 +169,7 @@ local opStartMessage = MESSAGE:New("Welcome to Operation Whimsical Whatchamacall
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- TODO ATIS Sochi on 131.1 MHz AM
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
- 
+--this is completely unneccessary and noone will use it.  consider pulling 
 local atisSochi = ATIS:New(AIRBASE.Caucasus.Sochi_Adler, 131.1)
   atisSochi:SetRadioRelayUnitName( "RadioRelaySochi" )
   atisSochi:SetTowerFrequencies({181.1, 188.1})
@@ -205,25 +205,22 @@ local atisSochi = ATIS:New(AIRBASE.Caucasus.Sochi_Adler, 131.1)
 
 -- Set up A2G task controller for the blue side named "82nd Airborne"
 local taskmanager = PLAYERTASKCONTROLLER:New("366th Airwing",coalition.side.BLUE,PLAYERTASKCONTROLLER.Type.A2G)
-taskmanager:DisableTaskInfoMenu()
-taskmanager:EnableTaskInfoMenu()
---taskmanager:SetMenuOptions(true,5,45)
-taskmanager:SetAllowFlashDirection(true)
-taskmanager:SetCallSignOptions(true,true,{Ford="Yankee"})
--- set locale
-taskmanager:SetLocale("en")
-taskmanager:SetMenuName("Inspector Gadget")
+  taskmanager:DisableTaskInfoMenu()
+  taskmanager:EnableTaskInfoMenu()
+  taskmanager:SetAllowFlashDirection(true)
+  taskmanager:SetCallSignOptions(true,true,{Ford="Yankee"})
+  taskmanager:SetLocale("en")
+  taskmanager:SetMenuName("Inspector Gadget")
 -- Set up using SRS
 
 --HOW LONG ARE YOU GOING TO LET THIS SRS BULLSHIT BEAT YOU??
 
-
 --taskmanager:SetSRS({130,255},{radio.modulation.AM,radio.modulation.AM},hereSRSPath,"female","en-US",hereSRSPort,"Microsoft Hazel Desktop",0.7,hereSRSGoogle)
--- Controller will announce itself under these broadcast frequencies
+
 --taskmanager:SetSRSBroadcast({127.5,305},{radio.modulation.AM,radio.modulation.AM})
--- Set target radius
-taskmanager:SetTargetRadius(750)
---taskmanager:SetParentMenu(menu)
+
+  taskmanager:SetTargetRadius(750)
+
 
 
 function taskmanager:OnAfterTaskTargetSmoked(From,Event,To,Task)
@@ -248,7 +245,7 @@ end
 
 -- Function to check and cleanup stuck aircraft
 
-CleanUpAirports = CLEANUP_AIRBASE:New( { AIRBASE.Caucasus.Sochi_Adler, AIRBASE.Caucasus.Novorossiysk } )
+local CleanUpAirports = CLEANUP_AIRBASE:New( { AIRBASE.Caucasus.Sochi_Adler, AIRBASE.Caucasus.Novorossiysk } )
 
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -256,15 +253,15 @@ CleanUpAirports = CLEANUP_AIRBASE:New( { AIRBASE.Caucasus.Sochi_Adler, AIRBASE.C
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
-blueHQ = STATIC:FindByName("BLUEHQ")
-redHQ = STATIC:FindByName("REDHQ")
+local blueHQ = STATIC:FindByName("BLUEHQ")
+local redHQ = STATIC:FindByName("REDHQ")
 
 ---COMMANDCENTERS
 
 --RED
 
-RU_CC = COMMANDCENTER:New( GROUP:FindByName( "REDCC" ), "Russian Command" )
-US_CC = COMMANDCENTER:New( GROUP:FindByName( "BLUECC" ), "Allied Command")
+local RU_CC = COMMANDCENTER:New( GROUP:FindByName( "REDCC" ), "Russian Command" )
+local US_CC = COMMANDCENTER:New( GROUP:FindByName( "BLUECC" ), "Allied Command")
 
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -273,36 +270,32 @@ US_CC = COMMANDCENTER:New( GROUP:FindByName( "BLUECC" ), "Allied Command")
 
 --BLUE
 
-DetectionSetGroupBlue = SET_GROUP:New()
-DetectionSetGroupBlue:FilterPrefixes( { "EWRBLUE", "AWACSBLUE", "FACBLUE", "JTACBLUE", "366th" } )
-DetectionSetGroupBlue:FilterStart()
+local DetectionSetGroupBlue = SET_GROUP:New()
+  DetectionSetGroupBlue:FilterPrefixes( { "EWRBLUE", "AWACSBLUE", "FACBLUE", "JTACBLUE", "366th" } )
+  DetectionSetGroupBlue:FilterStart()
 
-DetectionBlue = DETECTION_AREAS:New( DetectionSetGroupBlue, 30000 )
+local DetectionBlue = DETECTION_AREAS:New( DetectionSetGroupBlue, 30000 )
 
 --RED
-DetectionSetGroupRed = SET_GROUP:New()
-DetectionSetGroupRed:FilterPrefixes({ "EWRRED", "AWACSRED", "FACRED", "JTACRED" })
-DetectionSetGroupRed:FilterStart()
+local DetectionSetGroupRed = SET_GROUP:New()
+  DetectionSetGroupRed:FilterPrefixes({ "EWRRED", "AWACSRED", "FACRED", "JTACRED" })
+  DetectionSetGroupRed:FilterStart()
 
-DetectionRed = DETECTION_AREAS:New( DetectionSetGroupRed, 30000 )
+local DetectionRed = DETECTION_AREAS:New( DetectionSetGroupRed, 30000 )
 
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ---TODO SCORING
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
---ScoringGroups
+local missionScoring = SCORING:New("Operation Whimsical Whatchamacallit")
 
---Name Scoring Object
-missionScoring = SCORING:New("Operation Whimsical Whatchamacallit")
+  missionScoring:SetScaleDestroyScore( 10 )
+  missionScoring:SetScaleDestroyPenalty( 40 )
 
---Scale Scoring
-missionScoring:SetScaleDestroyScore( 10 )
-missionScoring:SetScaleDestroyPenalty( 40 )
-
-missionScoring:SetMessagesHit(false)
-missionScoring:SetMessagesDestroy(false)
-missionScoring:SetMessagesScore(false)
+  missionScoring:SetMessagesHit(false)
+  missionScoring:SetMessagesDestroy(false)
+  missionScoring:SetMessagesScore(false)
 
 --remember to assign targets after declaration
 
@@ -343,8 +336,6 @@ local redSA10 = MANTIS:New("Fun Factory SA10", "Red SA10", "EWRRED", nil, "red",
 
   redSA10:Start()
 
-
-
 local redSA12 = MANTIS:New("Fun Factory SA12", "Red SA12", "EWRRED", nil, "red", true, "AWACSRED", false)
 
   redSA12:SetSAMRadius(UTILS.NMToMeters(40))
@@ -355,9 +346,6 @@ local redSA12 = MANTIS:New("Fun Factory SA12", "Red SA12", "EWRRED", nil, "red",
   redSA12:SetAutoRelocate(false,false)
 
   redSA12:Start()
-
-
-
 
 local redSA2 = MANTIS:New("Fun Factory SA2", "Red SA2", "EWRRED", nil, "red", true, "AWACSRED", false)
 
