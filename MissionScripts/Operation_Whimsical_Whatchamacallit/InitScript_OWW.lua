@@ -7,8 +7,8 @@ env.info("Moose Loaded")
 dofile(lfs.writedir()..'/Missions/DCS Scripts/MY_MISSIONS/MissionScripts/Operation_Whimsical_Whatchamacallit/mist_4_5_107.lua')
 env.info("Mist Loaded")
 
-dofile(lfs.writedir()..'/Missions/DCS Scripts/MY_MISSIONS/MissionScripts/Operation_Whimsical_Whatchamacallit/GroundCrew_OWW.lua')
-env.info("Ground Crew")
+--dofile(lfs.writedir()..'/Missions/DCS Scripts/MY_MISSIONS/MissionScripts/Operation_Whimsical_Whatchamacallit/GroundCrew_OWW.lua')
+--env.info("Ground Crew")
 
 dofile(lfs.writedir()..'/Missions/DCS Scripts/MY_MISSIONS/MissionScripts/Operation_Whimsical_Whatchamacallit/CTLD_OWW.lua')
 env.info("CTLD Loaded")

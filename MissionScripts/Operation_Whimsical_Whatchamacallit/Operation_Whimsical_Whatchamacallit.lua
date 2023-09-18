@@ -83,17 +83,21 @@ _SETTINGS:SetA2G_BR()
 _SETTINGS:SetA2A_BRAA()
 
 
-local DEBUG = true
-local DEBUG_COMMANDERS = true
-local DEBUG_PARKING = false
-local DEBUG_SHORAD = true
+local DEBUG = false
+local DEBUG_COMMANDERS = false
+local DEBUG_PARKING = true
+local DEBUG_SHORAD = false
+local DEBUG_SCORING = true
 
 if DEBUG then
   BASE:TraceClass("CHIEF")
-  BASE:TraceClass("SCORING")
   BASE:TraceOn()
 end
 
+if DEBUG_SCORING then
+  BASE:TraceClass("SCORING")
+  BASE:TraceOn()
+end
 
 
 if DEBUG_PARKING then
@@ -101,7 +105,7 @@ if DEBUG_PARKING then
 end
 
 --Sochi
-local Parking = ({33, 34, 35, 46, 36, 47, 37, 48, 38, 39, 49, 40, 50, 41, 51, 42, 52, 43, 53, 44, 104, 44, 55})
+local Parking = ({63, 66, 69, 65, 62, 68, 64, 67, 61})
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- TODO SETUP SRS
@@ -179,6 +183,7 @@ clientSet:HandleEvent(EVENTS.Land)
 -- TODO SOUNDS
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+local smokeSound = "Target Smoke.ogg"
 
 
 
@@ -273,13 +278,13 @@ local DetectionRed = DETECTION_AREAS:New( DetectionSetGroupRed, 30000 )
 
 --CLEAN THIS SECTION UP YOU NASTY SLOB
 
-local taskIntel = INTEL:New(DetectionSetGroupBlue, "blue", "TaskIntel")
-
-  taskIntel:SetDetectionTypes()
-  taskIntel:SetClusterAnalysis(true,true,true)
-  
-  
-  taskIntel:Start()
+--local taskIntel = INTEL:New(DetectionSetGroupBlue, "blue", "TaskIntel")
+--
+--  taskIntel:SetDetectionTypes()
+--  taskIntel:SetClusterAnalysis(true,true,true)
+--  
+--  
+--  taskIntel:Start()
   
   
 
@@ -312,18 +317,15 @@ local taskmanager = PLAYERTASKCONTROLLER:New("366th Airwing",coalition.side.BLUE
 
 
 function taskmanager:OnAfterTaskTargetSmoked(From,Event,To,Task)
-  local file = "Target Smoke.ogg"
-  local radio = USERSOUND:New(file):ToCoalition(coalition.side.BLUE)
+  local radio = USERSOUND:New(smokeSound):ToCoalition(coalition.side.BLUE)
 end
 
 function taskmanager:OnAfterTaskTargetFlared(From,Event,To,Task)
-  local file = "Target Smoke.ogg"
-  local radio = USERSOUND:New(file):ToCoalition(coalition.side.BLUE)
+  local radio = USERSOUND:New(smokeSound):ToCoalition(coalition.side.BLUE)
 end
 
 function taskmanager:OnAfterTaskTargetIlluminated(From,Event,To,Task)
-  local file = "Target Smoke.ogg"
-  local radio = USERSOUND:New(file):ToCoalition(coalition.side.BLUE)
+  local radio = USERSOUND:New(smokeSound):ToCoalition(coalition.side.BLUE)
 end
 
 
@@ -339,6 +341,8 @@ local missionScoring = SCORING:New("Operation Whimsical Whatchamacallit")
   missionScoring:SetMessagesHit(false)
   missionScoring:SetMessagesDestroy(false)
   missionScoring:SetMessagesScore(false)
+  
+  
 
 --remember to assign targets after declaration
 
@@ -534,48 +538,63 @@ local sceneryTable = {bridge1, bridge2, bridge3, bridge4, bridge5, bridge6, brid
   end
 
 ]]
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+---TODO HVT's for SCORING
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+local staticZONE = ZONE:FindByName("CAPTUREZONE")
+local HVTstatics = SET_STATIC:New():FilterZones(staticZONE):FilterCoalitions(coalition.side.RED):FilterStart()
+
+HVTstatics:ForEachStatic(
+
+  function(SpawnStatic)
+    local target = SpawnStatic
+    missionScoring:AddStaticScore(target, 250 )
+  end)
+
+
+
+
+
+
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ---TODO TARGET TABLE
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
---[[
+
 --Define Operation Targets
 
 local operationTargets = { 
   [1] = {       
-    TargetName = "EWRRED Tunb Island",
+    TargetName = "EWRRED GIZMO",
     TargetStatic = false,
-    TargetBriefing = "Destroy the Early Warning Radar located on Tunb Island",
+    TargetBriefing = "Destroy the Early Warning Radar",
     TargetAuftrag = AUFTRAG.Type.SEAD,
   },
   [2] = {       
-    TargetName = "EWRRED Qeshm Island",
+    TargetName = "EWRRED GADGET",
     TargetStatic = false,
-    TargetBriefing = "Destroy the Early Warning Radar located on Qeshm Island",
+    TargetBriefing = "Destroy the Early Warning Radar",
     TargetAuftrag = AUFTRAG.Type.SEAD,
   },
   [3] = {       
-    TargetName = "Qeshm Command Center",
-    TargetStatic = true,
-    TargetBriefing = "Destroy the Command Center located on Qeshm Island",
-    TargetAuftrag = AUFTRAG.Type.STRIKE,
+    TargetName = "RU Supply Train Thingie",
+    TargetStatic = false,
+    TargetBriefing = "Destroy the Train",
+    TargetAuftrag = AUFTRAG.Type.GROUNDATTACK,
   },
   [4] = {       
-    TargetName = "EWRRED Larak Island",
+    TargetName = "RU Supply Train Thangie",
     TargetStatic = false,
-    TargetBriefing = "Destroy the Early Warning Radar located on Larak Island",
-    TargetAuftrag = AUFTRAG.Type.SEAD,
+    TargetBriefing = "Destroy the Train",
+    TargetAuftrag = AUFTRAG.Type.GROUNDATTACK,
   },
   [5] = {       
-    TargetName = "Larak Command Center",
+    TargetName = "WarehouseRedAlphaBrigade",
     TargetStatic = true,
-    TargetBriefing = "Destroy the Command Center located on Larak Island",
+    TargetBriefing = "Destroy the Warehouse",
     TargetAuftrag = AUFTRAG.Type.STRIKE,
-  },
-  [6] = {       
-    TargetName = "Red Armor Group",
-    TargetStatic = false,
-    TargetBriefing = "Destroy Redfor Armor Units attacking Khasab Airbase",
-    TargetAuftrag = AUFTRAG.Type.GROUNDATTACK,
   },
   }
   --FINISH ADDING TARGETS HERE
@@ -584,7 +603,7 @@ local operationTargets = {
 --Create TARGET objects
 
 local BlueTargets = {}
-for i=1,6 do
+for i=1,5 do
   if operationTargets[i].TargetStatic then
     -- static
     BlueTargets[i] = TARGET:New(STATIC:FindByName(operationTargets[i].TargetName))
@@ -593,12 +612,12 @@ for i=1,6 do
     BlueTargets[i] = TARGET:New(GROUP:FindByName(operationTargets[i].TargetName))
   end
 end
-]]
+
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- TODO OPERATION PHASES
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
---[[
+
 
 
 --Setup Operation
@@ -611,7 +630,7 @@ end
 
 
 --Add Operation Phases
-for i=1,6 do
+for i=1,5 do
   
   local phase = operation:AddPhase(i)
   
@@ -679,7 +698,7 @@ function operation:OnAfterOver(From,Event,To,Phase)
   local file = "Campaign Victory 1.ogg"
   local radio = USERSOUND:New(file):ToCoalition(coalition.side.BLUE)
 end
-]]
+
 
 
 
@@ -947,75 +966,70 @@ avengerPlatoonAlpha:SetSkill(AI.Skill.EXCELLENT)
 
 local abramsPlatoonAlpha = PLATOON:New( "☮ M1A2 Abrams", 15, "☮ M1A2 Abrams Alpha")
   abramsPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.GROUNDATTACK, 80)
---  abramsPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.CAPTUREZONE, 80)
---  abramsPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.PATROLZONE, 70)
+  abramsPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.CAPTUREZONE, 80)
   abramsPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.ONGUARD, 70)
   abramsPlatoonAlpha:SetSkill(AI.Skill.EXCELLENT)
 
 local strykermgsPlatoonAlpha = PLATOON:New( "☮ Stryker MGS", 15, "☮ Stryker MGS Alpha")
   strykermgsPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.GROUNDATTACK, 80)
   strykermgsPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.CAPTUREZONE, 80)
---  strykermgsPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.PATROLZONE, 70)
---  strykermgsPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.ONGUARD, 70)
   strykermgsPlatoonAlpha:SetSkill(AI.Skill.EXCELLENT)
 
 local strykeratgmPlatoonAlpha = PLATOON:New( "☮ ATGM Stryker", 15, "☮ ATGM Stryker Alpha")
   strykeratgmPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.GROUNDATTACK, 80)
---  strykeratgmPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.CAPTUREZONE, 80)
---  strykeratgmPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.PATROLZONE, 70)
   strykeratgmPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.ONGUARD, 70)
   strykeratgmPlatoonAlpha:SetSkill(AI.Skill.EXCELLENT)
 
 --Blue Armor Brigades
 
 local blueBrigadeArmorAlpha = BRIGADE:New( "WarehouseBlueAlphaBrigade", "Crunchy Peanutbutter")
-blueBrigadeArmorAlpha:AddPlatoon(rolandPlatoonAlpha)
-blueBrigadeArmorAlpha:AddPlatoon(chaparralPlatoonAlpha)
-blueBrigadeArmorAlpha:AddPlatoon(avengerPlatoonAlpha)
-blueBrigadeArmorAlpha:AddPlatoon(abramsPlatoonAlpha)
-blueBrigadeArmorAlpha:AddPlatoon(strykermgsPlatoonAlpha)
-blueBrigadeArmorAlpha:AddPlatoon(strykeratgmPlatoonAlpha)
-blueBrigadeArmorAlpha:SetSpawnZone(zone6)
-blueBrigadeArmorAlpha:Start()
+  blueBrigadeArmorAlpha:AddPlatoon(rolandPlatoonAlpha)
+  blueBrigadeArmorAlpha:AddPlatoon(chaparralPlatoonAlpha)
+  blueBrigadeArmorAlpha:AddPlatoon(avengerPlatoonAlpha)
+  blueBrigadeArmorAlpha:AddPlatoon(abramsPlatoonAlpha)
+  blueBrigadeArmorAlpha:AddPlatoon(strykermgsPlatoonAlpha)
+  blueBrigadeArmorAlpha:AddPlatoon(strykeratgmPlatoonAlpha)
+  blueBrigadeArmorAlpha:SetSpawnZone(zone6)
+  blueBrigadeArmorAlpha:Start()
 
 --BLUE SQUADRONS
 
 --CAP
 local blueCapOne=SQUADRON:New("✈ F18C", 8, "✈ F18C") --Ops.Squadron#SQUADRON
-blueCapOne:AddMissionCapability(AUFTRAG.Type.CAP)
-blueCapOne:SetModex(100)
-blueCapOne:SetCallsign(CALLSIGN.Aircraft.Ford)
-blueCapOne:SetParkingIDs(Parking)
-blueCapOne:SetTakeoffHot()
-blueCapOne:SetDespawnAfterHolding(true)
-blueCapOne:SetSkill(AI.Skill.ACE)
+  blueCapOne:AddMissionCapability(AUFTRAG.Type.CAP)
+  blueCapOne:SetModex(100)
+  blueCapOne:SetCallsign(CALLSIGN.Aircraft.Ford)
+  blueCapOne:SetParkingIDs(Parking)
+  blueCapOne:SetTakeoffHot()
+  blueCapOne:SetDespawnAfterHolding(true)
+  blueCapOne:SetSkill(AI.Skill.ACE)
 
 --INTERCEPT
 local blueIntOne=SQUADRON:New("✈ F14B", 8, "✈ F14B") --Ops.Squadron#SQUADRON
-blueIntOne:AddMissionCapability(AUFTRAG.Type.INTERCEPT)
-blueIntOne:SetModex(100)
-blueIntOne:SetCallsign(CALLSIGN.Aircraft.Pontiac)
-blueIntOne:SetParkingIDs(Parking)
-blueIntOne:SetTakeoffHot()
-blueIntOne:SetDespawnAfterHolding(true)
-blueIntOne:SetSkill(AI.Skill.ACE)
+  blueIntOne:AddMissionCapability(AUFTRAG.Type.INTERCEPT)
+  blueIntOne:SetModex(100)
+  blueIntOne:SetCallsign(CALLSIGN.Aircraft.Pontiac)
+  blueIntOne:SetParkingIDs(Parking)
+  blueIntOne:SetTakeoffHot()
+  blueIntOne:SetDespawnAfterHolding(true)
+  blueIntOne:SetSkill(AI.Skill.ACE)
 
 --CAS
 local blueCasOne=SQUADRON:New("✈ AH64DCAS", 8, "✈ AH64DCAS")
-blueCasOne:AddMissionCapability(AUFTRAG.Type.CAS, 100)
-blueCasOne:SetModex(100)
-blueCasOne:SetSkill(AI.Skill.ACE)
-blueCasOne:SetDespawnAfterHolding(true)
-blueCasOne:SetTakeoffAir()
+  blueCasOne:AddMissionCapability(AUFTRAG.Type.CAS, 100)
+  blueCasOne:SetModex(100)
+  blueCasOne:SetSkill(AI.Skill.ACE)
+  blueCasOne:SetDespawnAfterHolding(true)
+  blueCasOne:SetTakeoffAir()
 --blueCasOne:SetParkingIDs(Parking)
 
 --RECON
 local blueRecon=SQUADRON:New("JTACBLUE Reaper", 8, "JTACBLUE Reaper")
-blueRecon:AddMissionCapability(AUFTRAG.Type.ORBIT, 100)
-blueRecon:SetCallsign(CALLSIGN.JTAC.Deathstar)
-blueRecon:SetSkill(AI.Skill.ACE)
-blueRecon:SetTakeoffAir()
-blueRecon:SetModex(100)
+  blueRecon:AddMissionCapability(AUFTRAG.Type.ORBIT, 100)
+  blueRecon:SetCallsign(CALLSIGN.JTAC.Deathstar)
+  blueRecon:SetSkill(AI.Skill.ACE)
+  blueRecon:SetTakeoffAir()
+  blueRecon:SetModex(100)
 
 
 --BLUE AIRWING
