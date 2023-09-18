@@ -123,6 +123,7 @@ local zone3 = ZONE:New("BLUECAP")
 local zone4 = ZONE:New("REDCAP")
 local zone5 = ZONE:New("REDARMORSPAWN")
 local zone6 = ZONE:New("BLUEARMORSPAWN")
+local zone7 = ZONE:New("DRONEORBIT")
 
 
 local zone10 = ZONE:New("CAPTUREZONE")
@@ -161,6 +162,7 @@ local opszonesSET=SET_OPSZONE:New():FilterPrefixes("CAPTUREZONE"):FilterOnce()
 
 local clientSet = SET_CLIENT:New():FilterPrefixes("366th"):FilterStart()
 
+local noDamageStaticSet = SET_STATIC:New():FilterPrefixes("ND"):FilterStart()
 
 
 
@@ -215,49 +217,7 @@ local atisSochi = ATIS:New(AIRBASE.Caucasus.Sochi_Adler, 131.1)
 
 
 
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
----TODO PLAYER TASK CONTROLLER
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
---CLEAN THIS SECTION UP YOU NASTY SLOB
-
---local menu = MENU_COALITION:New(coalition.side.BLUE,"Ops Menu")
-
-
--- Set up A2G task controller for the blue side named "82nd Airborne"
-local taskmanager = PLAYERTASKCONTROLLER:New("366th Airwing",coalition.side.BLUE,PLAYERTASKCONTROLLER.Type.A2G)
-  taskmanager:DisableTaskInfoMenu()
-  taskmanager:EnableTaskInfoMenu()
-  taskmanager:SetAllowFlashDirection(true)
-  taskmanager:SetCallSignOptions(true,true,{Ford="Yankee"})
-  taskmanager:SetLocale("en")
-  taskmanager:SetMenuName("Inspector Gadget")
--- Set up using SRS
-
---HOW LONG ARE YOU GOING TO LET THIS SRS BULLSHIT BEAT YOU??
-
---taskmanager:SetSRS({130,255},{radio.modulation.AM,radio.modulation.AM},hereSRSPath,"female","en-US",hereSRSPort,"Microsoft Hazel Desktop",0.7,hereSRSGoogle)
-
---taskmanager:SetSRSBroadcast({127.5,305},{radio.modulation.AM,radio.modulation.AM})
-
-  taskmanager:SetTargetRadius(750)
-
-
-
-function taskmanager:OnAfterTaskTargetSmoked(From,Event,To,Task)
-  local file = "Target Smoke.ogg"
-  local radio = USERSOUND:New(file):ToCoalition(coalition.side.BLUE)
-end
-
-function taskmanager:OnAfterTaskTargetFlared(From,Event,To,Task)
-  local file = "Target Smoke.ogg"
-  local radio = USERSOUND:New(file):ToCoalition(coalition.side.BLUE)
-end
-
-function taskmanager:OnAfterTaskTargetIlluminated(From,Event,To,Task)
-  local file = "Target Smoke.ogg"
-  local radio = USERSOUND:New(file):ToCoalition(coalition.side.BLUE)
-end
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- TODO AIRBASE MAINTENANCE
@@ -294,6 +254,9 @@ local US_CC = COMMANDCENTER:New( GROUP:FindByName( "BLUECC" ), "Allied Command")
 local DetectionSetGroupBlue = SET_GROUP:New()
   DetectionSetGroupBlue:FilterPrefixes( { "EWRBLUE", "AWACSBLUE", "FACBLUE", "JTACBLUE", "366th" } )
   DetectionSetGroupBlue:FilterStart()
+  
+
+  
 
 local DetectionBlue = DETECTION_AREAS:New( DetectionSetGroupBlue, 30000 )
 
@@ -303,6 +266,65 @@ local DetectionSetGroupRed = SET_GROUP:New()
   DetectionSetGroupRed:FilterStart()
 
 local DetectionRed = DETECTION_AREAS:New( DetectionSetGroupRed, 30000 )
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+---TODO PLAYER TASK CONTROLLER
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+--CLEAN THIS SECTION UP YOU NASTY SLOB
+
+local taskIntel = INTEL:New(DetectionSetGroupBlue, "blue", "TaskIntel")
+
+  taskIntel:SetDetectionTypes()
+  taskIntel:SetClusterAnalysis(true,true,true)
+  
+  
+  taskIntel:Start()
+  
+  
+
+
+--local menu = MENU_COALITION:New(coalition.side.BLUE,"Ops Menu")
+
+
+-- Set up A2G task controller for the blue side named "82nd Airborne"
+local taskmanager = PLAYERTASKCONTROLLER:New("366th Airwing",coalition.side.BLUE,PLAYERTASKCONTROLLER.Type.A2G)
+  taskmanager:DisableTaskInfoMenu()
+  taskmanager:EnableTaskInfoMenu()
+  taskmanager:SetAllowFlashDirection(true)
+  taskmanager:SetCallSignOptions(true,true,{Ford="Yankee"})
+  taskmanager:SetLocale("en")
+  taskmanager:SetMenuName("Inspector Gadget")
+  taskmanager:SetupIntel("JTACBLUE")
+  taskmanager:AddAcceptZone(zone10)
+
+-- Set up using SRS
+
+--HOW LONG ARE YOU GOING TO LET THIS SRS BULLSHIT BEAT YOU??
+
+--taskmanager:SetSRS({130,255},{radio.modulation.AM,radio.modulation.AM},hereSRSPath,"female","en-US",hereSRSPort,"Microsoft Hazel Desktop",0.7,hereSRSGoogle)
+
+--taskmanager:SetSRSBroadcast({127.5,305},{radio.modulation.AM,radio.modulation.AM})
+
+  taskmanager:SetTargetRadius(750)
+  --add detection to inspectorgadget
+  taskmanager:AddAgentSet(DetectionSetGroupBlue)
+
+
+function taskmanager:OnAfterTaskTargetSmoked(From,Event,To,Task)
+  local file = "Target Smoke.ogg"
+  local radio = USERSOUND:New(file):ToCoalition(coalition.side.BLUE)
+end
+
+function taskmanager:OnAfterTaskTargetFlared(From,Event,To,Task)
+  local file = "Target Smoke.ogg"
+  local radio = USERSOUND:New(file):ToCoalition(coalition.side.BLUE)
+end
+
+function taskmanager:OnAfterTaskTargetIlluminated(From,Event,To,Task)
+  local file = "Target Smoke.ogg"
+  local radio = USERSOUND:New(file):ToCoalition(coalition.side.BLUE)
+end
 
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -571,10 +593,13 @@ for i=1,6 do
     BlueTargets[i] = TARGET:New(GROUP:FindByName(operationTargets[i].TargetName))
   end
 end
-
+]]
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- TODO OPERATION PHASES
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+--[[
+
 
 --Setup Operation
 local operation = OPERATION:New("Operation Whimsical Whatchamacallit")
@@ -654,8 +679,13 @@ function operation:OnAfterOver(From,Event,To,Phase)
   local file = "Campaign Victory 1.ogg"
   local radio = USERSOUND:New(file):ToCoalition(coalition.side.BLUE)
 end
-
 ]]
+
+
+
+
+
+
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ---TODO REDFOR
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -979,16 +1009,26 @@ blueCasOne:SetDespawnAfterHolding(true)
 blueCasOne:SetTakeoffAir()
 --blueCasOne:SetParkingIDs(Parking)
 
+--RECON
+local blueRecon=SQUADRON:New("JTACBLUE Reaper", 8, "JTACBLUE Reaper")
+blueRecon:AddMissionCapability(AUFTRAG.Type.ORBIT, 100)
+blueRecon:SetCallsign(CALLSIGN.JTAC.Deathstar)
+blueRecon:SetSkill(AI.Skill.ACE)
+blueRecon:SetTakeoffAir()
+blueRecon:SetModex(100)
+
+
 --BLUE AIRWING
 
 local blueAirwing = AIRWING:New("WarehouseSochiAirwing", "Peanut Butter Crackers")
 
   blueAirwing:NewPayload("✈ F14B", 99, AUFTRAG.Type.INTERCEPT, 100)
   blueAirwing:NewPayload("✈ F18C", 99, AUFTRAG.Type.CAP, 100)
+  blueAirwing:NewPayload("JTACBLUE Reaper", 99, AUFTRAG.Type.ORBIT, 100)
 
   blueAirwing:AddSquadron(blueCapOne)
   blueAirwing:AddSquadron(blueIntOne)
-
+  blueAirwing:AddSquadron(blueRecon)
   blueAirwing:Start()
 
 --Tarawa Airwing
@@ -997,6 +1037,7 @@ local blueCasAirwing = AIRWING:New("AITarawa", "Jolly Ranchers")
 
   blueCasAirwing:NewPayload("✈ AH64DCAS", 99, AUFTRAG.Type.CAS, 100)
   blueCasAirwing:AddSquadron(blueCasOne)
+
   
   blueCasAirwing:Start()
 
@@ -1079,6 +1120,13 @@ missionBlueAirDefenseOne:SetRequiredAssets(6)
 missionBlueAirDefenseOne:SetRepeatOnFailure(5)
 missionBlueAirDefenseOne:SetROE(ENUMS.ROE.OpenFireWeaponFree)
 
+--Blue RECON Mission for Drone
+local missionBlueRecon = AUFTRAG:NewORBIT(zone7:GetCoordinate(), 45000, 300, 90, 30)
+missionBlueRecon:SetRequiredAssets(1)
+missionBlueRecon:SetRepeatOnFailure(99)
+missionBlueRecon:SetROE(ENUMS.ROE.OpenFireWeaponFree)
+
+
 
 --BLUE
 --Agents
@@ -1120,6 +1168,7 @@ USChief:AddMission(missionBlueCaptureZone6)
 USChief:AddMission(missionBlueCAPzone2)
 
 USChief:AddMission(missionBlueCASzone2)
+USChief:AddMission(missionBlueRecon)
 
 USChief:AddMission(missionBlueAirDefenseOne)
 
@@ -1129,9 +1178,10 @@ USChief:SetLimitMission(2, AUFTRAG.Type.CAS)
 USChief:SetLimitMission(2, AUFTRAG.Type.CAP)
 USChief:SetLimitMission(2, AUFTRAG.Type.INTERCEPT)
 USChief:SetLimitMission(2, AUFTRAG.Type.AIRDEFENSE)
-USChief:SetLimitMission(2, AUFTRAG.Type.CAPTUREZONE)
-USChief:SetLimitMission(2, AUFTRAG.Type.GROUNDATTACK)
+USChief:SetLimitMission(4, AUFTRAG.Type.CAPTUREZONE)
+USChief:SetLimitMission(4, AUFTRAG.Type.GROUNDATTACK)
 USChief:SetLimitMission(5, AUFTRAG.Type.PATROLZONE)
+USChief:SetLimitMission(1, AUFTRAG.Type.ORBIT)
 
 
 
@@ -1332,3 +1382,6 @@ function blueTankerWing:OnAfterFlightOnMission(From, Event, To, Flightgroup, Mis
   
   flightgroup:SetFuelLowThreshold(25)
 end
+
+
+
