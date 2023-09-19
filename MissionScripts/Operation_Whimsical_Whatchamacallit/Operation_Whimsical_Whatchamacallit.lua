@@ -184,6 +184,9 @@ clientSet:HandleEvent(EVENTS.Land)
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 local smokeSound = "Target Smoke.ogg"
+local startSound = "Korean War 3.ogg"
+local taskQueueSound = "That Is Our Target.ogg"
+local victorySound = "Campaign Victory 1.ogg"
 
 
 
@@ -381,6 +384,7 @@ local redSA10 = MANTIS:New("Fun Factory SA10", "Red SA10", "EWRRED", nil, "red",
 --  redSA10:SetAdvancedMode(true,90)
   redSA10:SetAutoRelocate(false,false)
 
+
   redSA10:Start()
 
 local redSA12 = MANTIS:New("Fun Factory SA12", "Red SA12", "EWRRED", nil, "red", true, "AWACSRED", false)
@@ -543,16 +547,59 @@ local sceneryTable = {bridge1, bridge2, bridge3, bridge4, bridge5, bridge6, brid
 ---TODO HVT's for SCORING
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+--static zoneset
+local staticZONE = SET_ZONE:New():FilterPrefixes("CAPTUREZONE"):FilterStart()
+--static set filtered by zone
+local HVTstatics = SET_STATIC:New():FilterZones(staticZONE):FilterCoalitions("red"):FilterStart()
 
-local staticZONE = ZONE:FindByName("CAPTUREZONE")
-local HVTstatics = SET_STATIC:New():FilterZones(staticZONE):FilterCoalitions(coalition.side.RED):FilterStart()
 
+--function called for each red static in zone
 HVTstatics:ForEachStatic(
 
   function(SpawnStatic)
     local target = SpawnStatic
-    missionScoring:AddStaticScore(target, 250 )
+    local name = target:GetName()
+    
+    if DEBUG_SCORING then
+    local message = MESSAGE:New(string.format(name),10,"DEBUGINFO")
+          message:ToAll()
+    end
+    
+    local staticObj = STATIC:FindByName(string.format(name))
+    
+      missionScoring:AddStaticScore(staticObj, 250 )
+
   end)
+  
+  
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+---TODO CIV BUILDINGS for SCORING
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+local civBuild = SET_STATIC:New():FilterZones(staticZONE):FilterCoalitions("neutral"):FilterStart()
+
+
+  civBuild:ForEachStatic(
+    
+    function(SpawnStatic)
+      
+      local static = SpawnStatic
+      local name = static:GetName()
+      
+      if DEBUG_SCORING then
+      local message = MESSAGE:New(string.format(name),10,"DEBUGINFO")
+        message:ToAll()
+        
+      end
+    
+      local staticObj = STATIC:FindByName(string.format(name))
+      
+        missionScoring:AddStaticScore(staticObj, -500)
+      
+  
+    end)
+
+
 
 
 
@@ -653,8 +700,7 @@ operation:__Start(30)
 
 --Operation Start Sound
 function InitialSound()
-  local file = "Korean War 3.ogg"
-  local radio = USERSOUND:New(file):ToCoalition(coalition.side.BLUE)
+  local radio = USERSOUND:New(startSound):ToCoalition(coalition.side.BLUE)
 end
 
 local Stimer = TIMER:New(InitialSound)
@@ -687,16 +733,14 @@ function operation:OnAfterPhaseChange(From,Event,To,Phase)
     task.verbose = true
   end
   taskmanager:AddPlayerTaskToQueue(task)
-  local file = "That Is Our Target.ogg"
-  local radio = USERSOUND:New(file):ToCoalition(coalition.side.BLUE)
+  local radio = USERSOUND:New(taskQueueSound):ToCoalition(coalition.side.BLUE)
 end 
   
   
 -- Operation finished
 function operation:OnAfterOver(From,Event,To,Phase)
   MESSAGE:New("Operation Whimsical Whatchamacallit Victory!!",15):ToBlue()
-  local file = "Campaign Victory 1.ogg"
-  local radio = USERSOUND:New(file):ToCoalition(coalition.side.BLUE)
+  local radio = USERSOUND:New(victorySound):ToCoalition(coalition.side.BLUE)
 end
 
 
