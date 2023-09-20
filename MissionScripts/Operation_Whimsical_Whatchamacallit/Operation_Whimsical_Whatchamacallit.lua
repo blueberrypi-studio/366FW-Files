@@ -279,22 +279,6 @@ local DetectionRed = DETECTION_AREAS:New( DetectionSetGroupRed, 30000 )
 ---TODO PLAYER TASK CONTROLLER
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
---CLEAN THIS SECTION UP YOU NASTY SLOB
-
---local taskIntel = INTEL:New(DetectionSetGroupBlue, "blue", "TaskIntel")
---
---  taskIntel:SetDetectionTypes()
---  taskIntel:SetClusterAnalysis(true,true,true)
---  
---  
---  taskIntel:Start()
-  
-  
-
-
---local menu = MENU_COALITION:New(coalition.side.BLUE,"Ops Menu")
-
-
 -- Set up A2G task controller for the blue side named "82nd Airborne"
 local taskmanager = PLAYERTASKCONTROLLER:New("366th Airwing",coalition.side.BLUE,PLAYERTASKCONTROLLER.Type.A2G)
   taskmanager:DisableTaskInfoMenu()
@@ -304,7 +288,7 @@ local taskmanager = PLAYERTASKCONTROLLER:New("366th Airwing",coalition.side.BLUE
   taskmanager:SetLocale("en")
   taskmanager:SetMenuName("Inspector Gadget")
   taskmanager:SetupIntel("JTACBLUE")
-  taskmanager:AddAcceptZone(zone10)
+
 
 -- Set up using SRS
 
@@ -314,9 +298,9 @@ local taskmanager = PLAYERTASKCONTROLLER:New("366th Airwing",coalition.side.BLUE
 
 --taskmanager:SetSRSBroadcast({127.5,305},{radio.modulation.AM,radio.modulation.AM})
 
-  taskmanager:SetTargetRadius(750)
+  taskmanager:SetTargetRadius(5000)
   --add detection to inspectorgadget
-  taskmanager:AddAgentSet(DetectionSetGroupBlue)
+
 
 
 function taskmanager:OnAfterTaskTargetSmoked(From,Event,To,Task)
@@ -547,10 +531,19 @@ local sceneryTable = {bridge1, bridge2, bridge3, bridge4, bridge5, bridge6, brid
 ---TODO HVT's for SCORING
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+--local smokeZONE = ZONE:New("SMOKEZONE")
+--  
+--  smokeZONE:Scan(Object.Category.UNIT, Unit.Category.GROUND_UNIT)
+--  
+--local clientInZone = smokeZONE:IsSomeInZoneOfCoalition(1)
+
+--[[
+
+
 --static zoneset
-local staticZONE = SET_ZONE:New():FilterPrefixes("CAPTUREZONE"):FilterStart()
+local staticZONE = SET_ZONE:New():FilterPrefixes("CAPTUREZONE"):FilterOnce()
 --static set filtered by zone
-local HVTstatics = SET_STATIC:New():FilterZones(staticZONE):FilterCoalitions("red"):FilterStart()
+local HVTstatics = SET_STATIC:New():FilterZones(staticZONE):FilterCoalitions("red"):FilterOnce()
 
 
 --function called for each red static in zone
@@ -568,6 +561,7 @@ HVTstatics:ForEachStatic(
     local staticObj = STATIC:FindByName(string.format(name))
     
       missionScoring:AddStaticScore(staticObj, 250 )
+      
 
   end)
   
@@ -576,13 +570,15 @@ HVTstatics:ForEachStatic(
 ---TODO CIV BUILDINGS for SCORING
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-local civBuild = SET_STATIC:New():FilterZones(staticZONE):FilterCoalitions("neutral"):FilterStart()
+local civBuild = SET_STATIC:New():FilterZones(staticZONE):FilterCoalitions("neutral"):FilterOnce()
+
 
 
   civBuild:ForEachStatic(
     
     function(SpawnStatic)
       
+
       local static = SpawnStatic
       local name = static:GetName()
       
@@ -595,12 +591,16 @@ local civBuild = SET_STATIC:New():FilterZones(staticZONE):FilterCoalitions("neut
       local staticObj = STATIC:FindByName(string.format(name))
       
         missionScoring:AddStaticScore(staticObj, -500)
-      
-  
+        
+
     end)
 
 
 
+  
+]]
+  
+ 
 
 
 
@@ -756,22 +756,22 @@ end
 --Red Platoons
 
 --Red Alpha Air Defense
-local strelaPlatoonAlpha = PLATOON:New( "☢ Strela", 15, "☢ Strela Alpha" )
+local strelaPlatoonAlpha = PLATOON:New( "Strela", 15, "Strela Alpha" )
   strelaPlatoonAlpha:AddMissionCapability( AUFTRAG.Type.AIRDEFENSE, 100 )
   strelaPlatoonAlpha:SetSkill(AI.Skill.EXCELLENT)
 
 
-local geckoPlatoonAlpha = PLATOON:New( "☢ SA8 Gecko", 15, "☢ SA8 Gecko Alpha" )
+local geckoPlatoonAlpha = PLATOON:New( "SA8 Gecko", 15, "SA8 Gecko Alpha" )
   geckoPlatoonAlpha:AddMissionCapability( AUFTRAG.Type.AIRDEFENSE, 100 )
   geckoPlatoonAlpha:SetSkill(AI.Skill.EXCELLENT)
 
-local shilkaPlatoonAlpha = PLATOON:New( "☢ ZSU-23 Shilka", 15, "☢ ZSU-23 Shilka Alpha" )
+local shilkaPlatoonAlpha = PLATOON:New( "ZSU-23 Shilka", 15, "ZSU-23 Shilka Alpha" )
   shilkaPlatoonAlpha:AddMissionCapability( AUFTRAG.Type.AIRDEFENSE, 100 )
   shilkaPlatoonAlpha:SetSkill(AI.Skill.EXCELLENT)
 
 --Red Tanks
 
-local t80uPlatoonAlpha = PLATOON:New( "☮ T80U", 35, "☮ T80U Alpha")
+local t80uPlatoonAlpha = PLATOON:New( "T80U", 35, "T80U Alpha")
 --  t80uPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.GROUNDATTACK, 80)
 --  t80uPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.CAPTUREZONE, 80)
   t80uPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.PATROLZONE, 70)
@@ -779,14 +779,14 @@ local t80uPlatoonAlpha = PLATOON:New( "☮ T80U", 35, "☮ T80U Alpha")
   t80uPlatoonAlpha:SetSkill(AI.Skill.EXCELLENT)
 
 
-local t90PlatoonAlpha = PLATOON:New( "☮ T90", 35, "☮ T90 Alpha")
+local t90PlatoonAlpha = PLATOON:New( "T90", 35, "T90 Alpha")
   t90PlatoonAlpha:AddMissionCapability(AUFTRAG.Type.GROUNDATTACK, 80)
   t90PlatoonAlpha:AddMissionCapability(AUFTRAG.Type.CAPTUREZONE, 80)
 --  t90PlatoonAlpha:AddMissionCapability(AUFTRAG.Type.PATROLZONE, 80)
 --  t90PlatoonAlpha:AddMissionCapability(AUFTRAG.Type.ONGUARD, 80)
   t90PlatoonAlpha:SetSkill(AI.Skill.EXCELLENT)
 
-local t72PlatoonAlpha = PLATOON:New( "☮ T72B3", 35, "☮ T72B3 Alpha")
+local t72PlatoonAlpha = PLATOON:New( "T72B3", 35, "T72B3 Alpha")
 --  t72PlatoonAlpha:AddMissionCapability(AUFTRAG.Type.GROUNDATTACK, 80)
 --  t72PlatoonAlpha:AddMissionCapability(AUFTRAG.Type.CAPTUREZONE, 80)
   t72PlatoonAlpha:AddMissionCapability(AUFTRAG.Type.PATROLZONE, 80)
@@ -807,7 +807,7 @@ local redBrigadeArmorAlpha = BRIGADE:New( "WarehouseRedAlphaBrigade", "Jelly Rol
 --REDFOR SQUADRONS
 
 --CAP
-local redCapOne=SQUADRON:New("✈ MIG29S", 16, "✈ MIG29S") --Ops.Squadron#SQUADRON
+local redCapOne=SQUADRON:New("MIG29S", 16, "MIG29S") --Ops.Squadron#SQUADRON
   redCapOne:AddMissionCapability(AUFTRAG.Type.CAP)
   redCapOne:SetModex(100)
   redCapOne:SetSkill(AI.Skill.ACE)
@@ -815,7 +815,7 @@ local redCapOne=SQUADRON:New("✈ MIG29S", 16, "✈ MIG29S") --Ops.Squadron#SQUA
   redCapOne:SetDespawnAfterHolding(true)
 
 --INTERCEPT
-local redIntOne=SQUADRON:New("✈ MIG31", 16, "✈ MIG31") --Ops.Squadron#SQUADRON
+local redIntOne=SQUADRON:New("MIG31", 16, "MIG31") --Ops.Squadron#SQUADRON
   redIntOne:AddMissionCapability(AUFTRAG.Type.INTERCEPT)
   redIntOne:SetModex(100)
   redIntOne:SetSkill(AI.Skill.ACE)
@@ -823,7 +823,7 @@ local redIntOne=SQUADRON:New("✈ MIG31", 16, "✈ MIG31") --Ops.Squadron#SQUADR
   redIntOne:SetDespawnAfterHolding(true)
 
 --CAS
-local redCasOne=SQUADRON:New("✈ KA50", 16, "✈ KA50")
+local redCasOne=SQUADRON:New("KA50", 16, "KA50")
   redCasOne:AddMissionCapability(AUFTRAG.Type.CAS, 80)
   redCasOne:SetTakeoffAir()
   redCasOne:SetModex(100)
@@ -852,7 +852,7 @@ local AwacsRedSquadron = SQUADRON:New("AWACSRED", 2, "AWACSRED")
 
 
 -- Escorts
-local AwacsEscortsRed = SQUADRON:New("✈ SU35SESCORT",4,"✈ SU35SESCORT")
+local AwacsEscortsRed = SQUADRON:New("SU35SESCORT",4,"SU35SESCORT")
   AwacsEscortsRed:AddMissionCapability({AUFTRAG.Type.ESCORT})
   AwacsEscortsRed:SetFuelLowRefuel(true)
   AwacsEscortsRed:SetFuelLowThreshold(0.3)
@@ -860,7 +860,7 @@ local AwacsEscortsRed = SQUADRON:New("✈ SU35SESCORT",4,"✈ SU35SESCORT")
   AwacsEscortsRed:SetTakeoffAir()
   AwacsEscortsRed:SetRadio(275,radio.modulation.AM)
   AwacsRed:AddSquadron(AwacsEscortsRed)
-  AwacsRed:NewPayload("✈ SU35SESCORT",-1,{AUFTRAG.Type.ESCORT},100)
+  AwacsRed:NewPayload("SU35SESCORT",-1,{AUFTRAG.Type.ESCORT},100)
 
 
 local RedAwacs = AWACS:New("Awacs-Red", AwacsRed, "red", AIRBASE.Caucasus.Novorossiysk, "REDAWACSORBIT", ZONE:FindByName("REDCHIEF"), "REDCAP", 275, radio.modulation.AM )
@@ -876,9 +876,9 @@ local RedAwacs = AWACS:New("Awacs-Red", AwacsRed, "red", AIRBASE.Caucasus.Novoro
 local redAirwing = AIRWING:New("WarehouseNovoAirwing", "Jelly Smashers")
 
 
-  redAirwing:NewPayload("✈ MIG31", 99, AUFTRAG.Type.INTERCEPT, 100)
-  redAirwing:NewPayload("✈ MIG29S", 99, AUFTRAG.Type.CAP, 100)
-  redAirwing:NewPayload("✈ KA50", 99, AUFTRAG.Type.CAS, 100)
+  redAirwing:NewPayload("MIG31", 99, AUFTRAG.Type.INTERCEPT, 100)
+  redAirwing:NewPayload("MIG29S", 99, AUFTRAG.Type.CAP, 100)
+  redAirwing:NewPayload("KA50", 99, AUFTRAG.Type.CAS, 100)
 
   redAirwing:AddSquadron(redCapOne)
   redAirwing:AddSquadron(redIntOne)
@@ -990,16 +990,16 @@ RUChief:Start(5)
 
 --Blue Mobile Air Defense
 --Alpha Platoon
-local rolandPlatoonAlpha = PLATOON:New( "☢ Roland", 15, "☢ Roland Alpha" )
+local rolandPlatoonAlpha = PLATOON:New( "Roland", 15, "Roland Alpha" )
 rolandPlatoonAlpha:AddMissionCapability( AUFTRAG.Type.AIRDEFENSE, 100 )
 rolandPlatoonAlpha:SetSkill(AI.Skill.EXCELLENT)
 
-local chaparralPlatoonAlpha = PLATOON:New( "☢ Chaparral", 15, "☢ Chaparral Alpha" )
+local chaparralPlatoonAlpha = PLATOON:New( "Chaparral", 15, "Chaparral Alpha" )
 chaparralPlatoonAlpha:AddMissionCapability( AUFTRAG.Type.AIRDEFENSE, 100 )
 chaparralPlatoonAlpha:SetSkill(AI.Skill.EXCELLENT)
 
 
-local avengerPlatoonAlpha = PLATOON:New( "☢ Avenger", 15, "☢ Avenger Alpha" )
+local avengerPlatoonAlpha = PLATOON:New( "Avenger", 15, "Avenger Alpha" )
 avengerPlatoonAlpha:AddMissionCapability( AUFTRAG.Type.AIRDEFENSE, 100 )
 avengerPlatoonAlpha:SetSkill(AI.Skill.EXCELLENT)
 
@@ -1008,18 +1008,18 @@ avengerPlatoonAlpha:SetSkill(AI.Skill.EXCELLENT)
 --☮
 --Alpha Platoons
 
-local abramsPlatoonAlpha = PLATOON:New( "☮ M1A2 Abrams", 15, "☮ M1A2 Abrams Alpha")
+local abramsPlatoonAlpha = PLATOON:New( "M1A2 Abrams", 15, "M1A2 Abrams Alpha")
   abramsPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.GROUNDATTACK, 80)
   abramsPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.CAPTUREZONE, 80)
   abramsPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.ONGUARD, 70)
   abramsPlatoonAlpha:SetSkill(AI.Skill.EXCELLENT)
 
-local strykermgsPlatoonAlpha = PLATOON:New( "☮ Stryker MGS", 15, "☮ Stryker MGS Alpha")
+local strykermgsPlatoonAlpha = PLATOON:New( "Stryker MGS", 15, "Stryker MGS Alpha")
   strykermgsPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.GROUNDATTACK, 80)
   strykermgsPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.CAPTUREZONE, 80)
   strykermgsPlatoonAlpha:SetSkill(AI.Skill.EXCELLENT)
 
-local strykeratgmPlatoonAlpha = PLATOON:New( "☮ ATGM Stryker", 15, "☮ ATGM Stryker Alpha")
+local strykeratgmPlatoonAlpha = PLATOON:New( "ATGM Stryker", 15, "ATGM Stryker Alpha")
   strykeratgmPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.GROUNDATTACK, 80)
   strykeratgmPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.ONGUARD, 70)
   strykeratgmPlatoonAlpha:SetSkill(AI.Skill.EXCELLENT)
@@ -1039,7 +1039,7 @@ local blueBrigadeArmorAlpha = BRIGADE:New( "WarehouseBlueAlphaBrigade", "Crunchy
 --BLUE SQUADRONS
 
 --CAP
-local blueCapOne=SQUADRON:New("✈ F18C", 8, "✈ F18C") --Ops.Squadron#SQUADRON
+local blueCapOne=SQUADRON:New("F18C", 8, "F18C") --Ops.Squadron#SQUADRON
   blueCapOne:AddMissionCapability(AUFTRAG.Type.CAP)
   blueCapOne:SetModex(100)
   blueCapOne:SetCallsign(CALLSIGN.Aircraft.Ford)
@@ -1049,7 +1049,7 @@ local blueCapOne=SQUADRON:New("✈ F18C", 8, "✈ F18C") --Ops.Squadron#SQUADRON
   blueCapOne:SetSkill(AI.Skill.ACE)
 
 --INTERCEPT
-local blueIntOne=SQUADRON:New("✈ F14B", 8, "✈ F14B") --Ops.Squadron#SQUADRON
+local blueIntOne=SQUADRON:New("F14B", 8, "F14B") --Ops.Squadron#SQUADRON
   blueIntOne:AddMissionCapability(AUFTRAG.Type.INTERCEPT)
   blueIntOne:SetModex(100)
   blueIntOne:SetCallsign(CALLSIGN.Aircraft.Pontiac)
@@ -1059,7 +1059,7 @@ local blueIntOne=SQUADRON:New("✈ F14B", 8, "✈ F14B") --Ops.Squadron#SQUADRON
   blueIntOne:SetSkill(AI.Skill.ACE)
 
 --CAS
-local blueCasOne=SQUADRON:New("✈ AH64DCAS", 8, "✈ AH64DCAS")
+local blueCasOne=SQUADRON:New("AH64DCAS", 8, "AH64DCAS")
   blueCasOne:AddMissionCapability(AUFTRAG.Type.CAS, 100)
   blueCasOne:SetModex(100)
   blueCasOne:SetSkill(AI.Skill.ACE)
@@ -1080,8 +1080,8 @@ local blueRecon=SQUADRON:New("JTACBLUE Reaper", 8, "JTACBLUE Reaper")
 
 local blueAirwing = AIRWING:New("WarehouseSochiAirwing", "Peanut Butter Crackers")
 
-  blueAirwing:NewPayload("✈ F14B", 99, AUFTRAG.Type.INTERCEPT, 100)
-  blueAirwing:NewPayload("✈ F18C", 99, AUFTRAG.Type.CAP, 100)
+  blueAirwing:NewPayload("F14B", 99, AUFTRAG.Type.INTERCEPT, 100)
+  blueAirwing:NewPayload("F18C", 99, AUFTRAG.Type.CAP, 100)
   blueAirwing:NewPayload("JTACBLUE Reaper", 99, AUFTRAG.Type.ORBIT, 100)
 
   blueAirwing:AddSquadron(blueCapOne)
@@ -1093,7 +1093,7 @@ local blueAirwing = AIRWING:New("WarehouseSochiAirwing", "Peanut Butter Crackers
 
 local blueCasAirwing = AIRWING:New("AITarawa", "Jolly Ranchers")
 
-  blueCasAirwing:NewPayload("✈ AH64DCAS", 99, AUFTRAG.Type.CAS, 100)
+  blueCasAirwing:NewPayload("AH64DCAS", 99, AUFTRAG.Type.CAS, 100)
   blueCasAirwing:AddSquadron(blueCasOne)
 
   
@@ -1120,7 +1120,7 @@ AwacsBlue:NewPayload("AWACSBLUE",-1,{AUFTRAG.Type.ORBIT},100)
 
 
 -- Escorts
-local AwacsEscortsRed = SQUADRON:New("✈ F14BESCORT",4,"✈ F14BESCORT")
+local AwacsEscortsRed = SQUADRON:New("F14BESCORT",4,"F14BESCORT")
 AwacsEscortsRed:AddMissionCapability({AUFTRAG.Type.ESCORT})
 AwacsEscortsRed:SetFuelLowRefuel(true)
 AwacsEscortsRed:SetFuelLowThreshold(0.3)
@@ -1128,7 +1128,7 @@ AwacsEscortsRed:SetTurnoverTime(10,20)
 AwacsEscortsRed:SetTakeoffAir()
 AwacsEscortsRed:SetRadio(275,radio.modulation.AM)
 AwacsBlue:AddSquadron(AwacsEscortsRed)
-AwacsBlue:NewPayload("✈ F14BESCORT",-1,{AUFTRAG.Type.ESCORT},100)
+AwacsBlue:NewPayload("F14BESCORT",-1,{AUFTRAG.Type.ESCORT},100)
 
 
 local AwacsBlue = AWACS:New("Awacs-Blue", AwacsBlue, "blue", AIRBASE.Caucasus.Sochi_Adler, "BLUEAWACSORBIT", ZONE:FindByName("BLUECHIEF"), "BLUECAP", 264, radio.modulation.AM )
@@ -1351,7 +1351,7 @@ local ZonePointBoom=ZONE:FindByName("Point Boom")
 local ZonePointProbe=ZONE:FindByName("Point Probe")
 
 -- KC-135 squadron, callsign "Arco".
-local kc135=SQUADRON:New("✈ KC135", 5, "✈ KC135") --Ops.Squadron#SQUADRON
+local kc135=SQUADRON:New("KC135", 5, "KC135") --Ops.Squadron#SQUADRON
 kc135:SetModex(100)
 kc135:SetCallsign(CALLSIGN.Tanker.Arco)
 kc135:SetRadio(260)
@@ -1360,7 +1360,7 @@ kc135:AddMissionCapability({AUFTRAG.Type.TANKER}, 100)
 kc135:AddTacanChannel(70, 75)
 
 -- KC-130 squadron, callsign "Texaco".
-local kc130=SQUADRON:New("✈ KC130", 5, "✈ KC130") --Ops.Squadron#SQUADRON
+local kc130=SQUADRON:New("KC130", 5, "KC130") --Ops.Squadron#SQUADRON
 kc130:SetModex(200)
 kc130:SetCallsign(CALLSIGN.Tanker.Texaco)
 kc130:SetRadio(261)
