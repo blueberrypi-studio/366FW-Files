@@ -287,7 +287,7 @@ local taskmanager = PLAYERTASKCONTROLLER:New("366th Airwing",coalition.side.BLUE
   taskmanager:SetCallSignOptions(true,true,{Ford="Yankee"})
   taskmanager:SetLocale("en")
   taskmanager:SetMenuName("Inspector Gadget")
-  taskmanager:SetupIntel("JTACBLUE")
+--  taskmanager:SetupIntel("JTACBLUE")
 
 
 -- Set up using SRS
@@ -537,7 +537,7 @@ local sceneryTable = {bridge1, bridge2, bridge3, bridge4, bridge5, bridge6, brid
 --  
 --local clientInZone = smokeZONE:IsSomeInZoneOfCoalition(1)
 
---[[
+
 
 
 --static zoneset
@@ -598,7 +598,7 @@ local civBuild = SET_STATIC:New():FilterZones(staticZONE):FilterCoalitions("neut
 
 
   
-]]
+
   
  
 
