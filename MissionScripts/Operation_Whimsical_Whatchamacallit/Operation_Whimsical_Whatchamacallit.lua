@@ -68,7 +68,7 @@ address the brigades and specialize the units as to see a more diverse battlefie
 change names of chief zones, as they are displayed in messages
 
 
-]]
+]]  
 
 
 
@@ -83,11 +83,11 @@ _SETTINGS:SetA2G_BR()
 _SETTINGS:SetA2A_BRAA()
 
 
-local DEBUG = false
+local DEBUG = true
 local DEBUG_COMMANDERS = false
-local DEBUG_PARKING = true
+local DEBUG_PARKING = false
 local DEBUG_SHORAD = false
-local DEBUG_SCORING = true
+local DEBUG_SCORING = false
 
 if DEBUG then
   BASE:TraceClass("CHIEF")
@@ -1059,13 +1059,13 @@ local blueIntOne=SQUADRON:New("F14B", 8, "F14B") --Ops.Squadron#SQUADRON
   blueIntOne:SetSkill(AI.Skill.ACE)
 
 --CAS
-local blueCasOne=SQUADRON:New("AH64DCAS", 8, "AH64DCAS")
-  blueCasOne:AddMissionCapability(AUFTRAG.Type.CAS, 100)
-  blueCasOne:SetModex(100)
-  blueCasOne:SetSkill(AI.Skill.ACE)
-  blueCasOne:SetDespawnAfterHolding(true)
-  blueCasOne:SetTakeoffAir()
---blueCasOne:SetParkingIDs(Parking)
+--local blueCasOne=SQUADRON:New("AH64DCAS", 8, "AH64DCAS")
+--  blueCasOne:AddMissionCapability(AUFTRAG.Type.CAS, 100)
+--  blueCasOne:SetModex(100)
+--  blueCasOne:SetSkill(AI.Skill.ACE)
+--  blueCasOne:SetDespawnAfterHolding(true)
+--  blueCasOne:SetTakeoffAir()
+--  blueCasOne:SetParkingIDs(Parking)
 
 --RECON
 local blueRecon=SQUADRON:New("JTACBLUE Reaper", 8, "JTACBLUE Reaper")
@@ -1091,13 +1091,13 @@ local blueAirwing = AIRWING:New("WarehouseSochiAirwing", "Peanut Butter Crackers
 
 --Tarawa Airwing
 
-local blueCasAirwing = AIRWING:New("AITarawa", "Jolly Ranchers")
-
-  blueCasAirwing:NewPayload("AH64DCAS", 99, AUFTRAG.Type.CAS, 100)
-  blueCasAirwing:AddSquadron(blueCasOne)
-
-  
-  blueCasAirwing:Start()
+--local blueCasAirwing = AIRWING:New("APACHEWAREHOUSE", "Jolly Ranchers")
+--
+--  blueCasAirwing:NewPayload("AH64DCAS", 99, AUFTRAG.Type.CAS, 100)
+--  blueCasAirwing:AddSquadron(blueCasOne)
+--
+--  
+--  blueCasAirwing:Start()
 
 --BLUE AWACS
 -- We need an AirWing
@@ -1167,10 +1167,10 @@ missionBlueCAPzone2:SetRepeatOnFailure(20)
 missionBlueCAPzone2:SetROE(ENUMS.ROE.OpenFireWeaponFree)
 
 --Blue CAS Mission for MainClashZone
-local missionBlueCASzone2 = AUFTRAG:NewCAS(zone10, 5000, 250, nil, 90, 5, {"Ground Units"})
-missionBlueCASzone2:SetRequiredAssets(2)
-missionBlueCASzone2:SetRepeatOnFailure(15)
-missionBlueCASzone2:SetROE(ENUMS.ROE.OpenFireWeaponFree)
+--local missionBlueCASzone2 = AUFTRAG:NewCAS(zone10, 5000, 250, nil, 90, 5, {"Ground Units"})
+--missionBlueCASzone2:SetRequiredAssets(2)
+--missionBlueCASzone2:SetRepeatOnFailure(15)
+--missionBlueCASzone2:SetROE(ENUMS.ROE.OpenFireWeaponFree)
 
 --Air Defense Missions -- use Capzones Zone7 Zone8 Zone9
 local missionBlueAirDefenseOne = AUFTRAG:NewAIRDEFENSE( zone10 )
@@ -1202,7 +1202,7 @@ end
 --Response on targets
 
 USChief:SetResponseOnTarget(2, 2, 2, TARGET.Category.AIRCRAFT, AUFTRAG.Type.INTERCEPT)
-USChief:SetResponseOnTarget(2, 4, 2, TARGET.Category.GROUND, AUFTRAG.Type.CAS)
+--USChief:SetResponseOnTarget(2, 4, 2, TARGET.Category.GROUND, AUFTRAG.Type.CAS)
 USChief:SetResponseOnTarget(2, 4, 3, TARGET.Category.ZONE, AUFTRAG.Type.CAPTUREZONE)
 
 
@@ -1218,14 +1218,14 @@ USChief:AddBrigade(blueBrigadeArmorAlpha)
 --ADD AIRWINGS
 
 USChief:AddAirwing(blueAirwing)
-USChief:AddAirwing(blueCasAirwing)
+--USChief:AddAirwing(blueCasAirwing)
 
 --ADD MISSIONS
 
 USChief:AddMission(missionBlueCaptureZone6)
 USChief:AddMission(missionBlueCAPzone2)
 
-USChief:AddMission(missionBlueCASzone2)
+--USChief:AddMission(missionBlueCASzone2)
 USChief:AddMission(missionBlueRecon)
 
 USChief:AddMission(missionBlueAirDefenseOne)
