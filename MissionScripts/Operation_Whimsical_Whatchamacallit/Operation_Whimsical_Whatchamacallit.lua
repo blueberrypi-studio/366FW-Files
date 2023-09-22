@@ -83,14 +83,20 @@ _SETTINGS:SetA2G_BR()
 _SETTINGS:SetA2A_BRAA()
 
 
-local DEBUG = true
-local DEBUG_COMMANDERS = false
+local DEBUG = false
+local DEBUG_CHIEF = false
+local DEBUG_COMMANDERS = true
 local DEBUG_PARKING = false
 local DEBUG_SHORAD = false
 local DEBUG_SCORING = false
 
-if DEBUG then
+if DEBUG_CHIEF then
   BASE:TraceClass("CHIEF")
+  BASE:TraceOn()
+end
+
+if DEBUG_COMMANDERS then
+  BASE:TraceClass("COMMANDER")
   BASE:TraceOn()
 end
 
@@ -866,7 +872,7 @@ local AwacsEscortsRed = SQUADRON:New("SU35SESCORT",4,"SU35SESCORT")
 local RedAwacs = AWACS:New("Awacs-Red", AwacsRed, "red", AIRBASE.Caucasus.Novorossiysk, "REDAWACSORBIT", ZONE:FindByName("REDCHIEF"), "REDCAP", 275, radio.modulation.AM )
 
   RedAwacs:SetEscort(2)
-  RedAwacs:SetAwacsDetails(CALLSIGN.AWACS.Magic,1,30,280,88,25)
+--  RedAwacs:SetAwacsDetails(CALLSIGN.AWACS.Magic,1,30,280,88,25)
 
   RedAwacs:__Start(5)
   
@@ -945,6 +951,7 @@ RUChief:AddBrigade(redBrigadeArmorAlpha)
 --ADD AIRWINGS
 
 RUChief:AddAirwing(redAirwing)
+RUChief:AddAirwing(AwacsRed)
 
 
 --ADD MISSIONS
@@ -955,9 +962,10 @@ RUChief:AddMission(missionRedAirDefenseOne)
 
 RUChief:SetLimitMission(2, AUFTRAG.Type.CAS)
 RUChief:SetLimitMission(2, AUFTRAG.Type.CAP)
-RUChief:SetLimitMission(8, AUFTRAG.Type.CAPTUREZONE)
+RUChief:SetLimitMission(6, AUFTRAG.Type.CAPTUREZONE)
 RUChief:SetLimitMission(2, AUFTRAG.Type.INTERCEPT)
 RUChief:SetLimitMission(6, AUFTRAG.Type.AIRDEFENSE)
+--RUChief:SetLimitMission(4, AUFTRAG.TYpe.PATROLZONE)
 
 --RED RESOURCES
 -- Add strategic (OPS) zones.
@@ -966,12 +974,12 @@ local RedStratZone1 =RUChief:AddStrategicZone(opzone1, 100, 100)
 --Red Chief Resources
 
 local RedCAPTUREResourceOccupied = RUChief:CreateResource(AUFTRAG.Type.CAPTUREZONE, 10, 16, nil, nil)
-RUChief:AddToResource(RedCAPTUREResourceOccupied, AUFTRAG.Type.PATROLZONE, 10, 16, nil, nil)
-RUChief:AddToResource(RedCAPTUREResourceOccupied, AUFTRAG.Type.AIRDEFENSE, 6, 8, nil, nil)
+--RUChief:AddToResource(RedCAPTUREResourceOccupied, AUFTRAG.Type.PATROLZONE, 10, 16, nil, nil)
+--RUChief:AddToResource(RedCAPTUREResourceOccupied, AUFTRAG.Type.AIRDEFENSE, 6, 8, nil, nil)
 
 local RedCAPTUREResourceEmpty = RUChief:CreateResource(AUFTRAG.Type.ONGUARD, 10, 16)
-RUChief:AddToResource(RedCAPTUREResourceEmpty, AUFTRAG.Type.PATROLZONE, 10, 13)
-RUChief:AddToResource(RedCAPTUREResourceEmpty, AUFTRAG.Type.AIRDEFENSE, 6, 8, nil, nil)
+--RUChief:AddToResource(RedCAPTUREResourceEmpty, AUFTRAG.Type.PATROLZONE, 10, 13)
+--RUChief:AddToResource(RedCAPTUREResourceEmpty, AUFTRAG.Type.AIRDEFENSE, 6, 8, nil, nil)
 
 --Assign StratZones to resource lists
 
@@ -1059,13 +1067,12 @@ local blueIntOne=SQUADRON:New("F14B", 8, "F14B") --Ops.Squadron#SQUADRON
   blueIntOne:SetSkill(AI.Skill.ACE)
 
 --CAS
---local blueCasOne=SQUADRON:New("AH64DCAS", 8, "AH64DCAS")
---  blueCasOne:AddMissionCapability(AUFTRAG.Type.CAS, 100)
---  blueCasOne:SetModex(100)
---  blueCasOne:SetSkill(AI.Skill.ACE)
---  blueCasOne:SetDespawnAfterHolding(true)
---  blueCasOne:SetTakeoffAir()
---  blueCasOne:SetParkingIDs(Parking)
+local blueCasOne=SQUADRON:New("AH64DCAS", 16, "AH64DCAS")
+  blueCasOne:AddMissionCapability(AUFTRAG.Type.CAS, 100)
+  blueCasOne:SetModex(100)
+  blueCasOne:SetSkill(AI.Skill.ACE)
+  blueCasOne:SetTakeoffAir()
+
 
 --RECON
 local blueRecon=SQUADRON:New("JTACBLUE Reaper", 8, "JTACBLUE Reaper")
@@ -1086,59 +1093,57 @@ local blueAirwing = AIRWING:New("WarehouseSochiAirwing", "Peanut Butter Crackers
 
   blueAirwing:AddSquadron(blueCapOne)
   blueAirwing:AddSquadron(blueIntOne)
-  blueAirwing:AddSquadron(blueRecon)
+--  blueAirwing:AddSquadron(blueRecon)
   blueAirwing:Start()
 
 --Tarawa Airwing
 
---local blueCasAirwing = AIRWING:New("APACHEWAREHOUSE", "Jolly Ranchers")
---
---  blueCasAirwing:NewPayload("AH64DCAS", 99, AUFTRAG.Type.CAS, 100)
---  blueCasAirwing:AddSquadron(blueCasOne)
---
---  
---  blueCasAirwing:Start()
+local blueCasAirwing = AIRWING:New("APACHEWAREHOUSE", "Jolly Ranchers")
+
+  blueCasAirwing:NewPayload("AH64DCAS", 99, AUFTRAG.Type.CAS, 100)
+  blueCasAirwing:AddSquadron(blueCasOne)
+
+  
+  blueCasAirwing:Start()
 
 --BLUE AWACS
 -- We need an AirWing
 local AwacsBlue = AIRWING:New("WarehouseSochiAwacsAirwing", "AWACSBLUE")
---AwacsAW:SetReportOn()
-AwacsBlue:SetMarker(false)
-AwacsBlue:SetAirbase(AIRBASE:FindByName(AIRBASE.Caucasus.Sochi_Adler))
-AwacsBlue:SetRespawnAfterDestroyed(300)
-AwacsBlue:SetTakeoffAir()
-AwacsBlue:__Start(2)
+  --AwacsAW:SetReportOn()
+  AwacsBlue:SetMarker(false)
+  AwacsBlue:SetAirbase(AIRBASE:FindByName(AIRBASE.Caucasus.Sochi_Adler))
+  AwacsBlue:SetRespawnAfterDestroyed(300)
+  AwacsBlue:SetTakeoffAir()
+  AwacsBlue:__Start(2)
 
 -- AWACS itself
 local AwacsBlueSquadron = SQUADRON:New("AWACSBLUE", 2, "AWACSBLUE")
-AwacsBlueSquadron:AddMissionCapability({AUFTRAG.Type.ORBIT},100)
-AwacsBlueSquadron:SetFuelLowRefuel(true)
-AwacsBlueSquadron:SetFuelLowThreshold(0.2)
-AwacsBlueSquadron:SetTurnoverTime(10,20)
-AwacsBlue:AddSquadron(AwacsBlueSquadron)
-AwacsBlue:NewPayload("AWACSBLUE",-1,{AUFTRAG.Type.ORBIT},100)
+  AwacsBlueSquadron:AddMissionCapability({AUFTRAG.Type.ORBIT},100)
+  AwacsBlueSquadron:SetFuelLowRefuel(true)
+  AwacsBlueSquadron:SetFuelLowThreshold(0.2)
+  AwacsBlueSquadron:SetTurnoverTime(10,20)
+  AwacsBlue:AddSquadron(AwacsBlueSquadron)
+  AwacsBlue:NewPayload("AWACSBLUE",-1,{AUFTRAG.Type.ORBIT},100)
 
 
 -- Escorts
 local AwacsEscortsRed = SQUADRON:New("F14BESCORT",4,"F14BESCORT")
-AwacsEscortsRed:AddMissionCapability({AUFTRAG.Type.ESCORT})
-AwacsEscortsRed:SetFuelLowRefuel(true)
-AwacsEscortsRed:SetFuelLowThreshold(0.3)
-AwacsEscortsRed:SetTurnoverTime(10,20)
-AwacsEscortsRed:SetTakeoffAir()
-AwacsEscortsRed:SetRadio(275,radio.modulation.AM)
-AwacsBlue:AddSquadron(AwacsEscortsRed)
-AwacsBlue:NewPayload("F14BESCORT",-1,{AUFTRAG.Type.ESCORT},100)
+  AwacsEscortsRed:AddMissionCapability({AUFTRAG.Type.ESCORT})
+  AwacsEscortsRed:SetFuelLowRefuel(true)
+  AwacsEscortsRed:SetFuelLowThreshold(0.3)
+  AwacsEscortsRed:SetTurnoverTime(10,20)
+  AwacsEscortsRed:SetTakeoffAir()
+  AwacsEscortsRed:SetRadio(275,radio.modulation.AM)
+  AwacsBlue:AddSquadron(AwacsEscortsRed)
+  AwacsBlue:NewPayload("F14BESCORT",-1,{AUFTRAG.Type.ESCORT},100)
 
 
 local AwacsBlue = AWACS:New("Awacs-Blue", AwacsBlue, "blue", AIRBASE.Caucasus.Sochi_Adler, "BLUEAWACSORBIT", ZONE:FindByName("BLUECHIEF"), "BLUECAP", 264, radio.modulation.AM )
 
-AwacsBlue:SetEscort(2)
-AwacsBlue:SetAwacsDetails(CALLSIGN.AWACS.Darkstar,1,30,280,88,25)
-AwacsBlue:SetTOS(4, 4)
-
-
-AwacsBlue:__Start(5)
+  AwacsBlue:SetEscort(2)
+  AwacsBlue:SetAwacsDetails(CALLSIGN.AWACS.Darkstar,1,30,280,88,25)
+  AwacsBlue:SetTOS(4, 4)
+  AwacsBlue:__Start(5)
 
 -- Set up SRS
 --if hereSRSGoogle then
@@ -1146,7 +1151,7 @@ AwacsBlue:__Start(5)
 --  AwacsBlue:SetSRS(hereSRSPath,"female","en-US",hereSRSPort,"en-US-Wavenet-F",0.9,hereSRSGoogle)
 --else
    --use Windows
-AwacsBlue:SetSRS(hereSRSPath,"male","en-US",hereSRSPort, nil, 0.9)
+  AwacsBlue:SetSRS(hereSRSPath,"male","en-US",hereSRSPort, nil, 0.9)
 --end
 
 
@@ -1156,33 +1161,52 @@ AwacsBlue:SetSRS(hereSRSPath,"male","en-US",hereSRSPort, nil, 0.9)
 --MISSIONS
 --Blue Capture Mission to Take Main Clash Zone
 local missionBlueCaptureZone6 = AUFTRAG:NewCAPTUREZONE(opzone1, coalition.side.BLUE)
-missionBlueCaptureZone6:SetROE(ENUMS.ROE.OpenFireWeaponFree)
-missionBlueCaptureZone6:SetRequiredAssets(6)
-missionBlueCaptureZone6:SetRepeatOnFailure(10)
+  missionBlueCaptureZone6:SetROE(ENUMS.ROE.OpenFireWeaponFree)
+  missionBlueCaptureZone6:SetRequiredAssets(6)
+  missionBlueCaptureZone6:SetRepeatOnFailure(10)
 
 --Blue CAP Mission for MainClashZone
 local missionBlueCAPzone2 = AUFTRAG:NewCAP(zone3, 15000, 350, nil, 90, 20, {"Air"})
-missionBlueCAPzone2:SetRequiredAssets(2)
-missionBlueCAPzone2:SetRepeatOnFailure(20)
-missionBlueCAPzone2:SetROE(ENUMS.ROE.OpenFireWeaponFree)
+  missionBlueCAPzone2:SetRequiredAssets(2)
+  missionBlueCAPzone2:SetRepeatOnFailure(20)
+  missionBlueCAPzone2:SetROE(ENUMS.ROE.OpenFireWeaponFree)
 
 --Blue CAS Mission for MainClashZone
---local missionBlueCASzone2 = AUFTRAG:NewCAS(zone10, 5000, 250, nil, 90, 5, {"Ground Units"})
---missionBlueCASzone2:SetRequiredAssets(2)
---missionBlueCASzone2:SetRepeatOnFailure(15)
---missionBlueCASzone2:SetROE(ENUMS.ROE.OpenFireWeaponFree)
+local missionBlueCASzone2 = AUFTRAG:NewCAS(zone10, 5000, 250, nil, 90, 5, {"Ground Units"})
+  missionBlueCASzone2:SetRequiredAssets(2)
+  missionBlueCASzone2:SetRepeatOnFailure(15)
+  missionBlueCASzone2:SetROE(ENUMS.ROE.OpenFireWeaponFree)
 
 --Air Defense Missions -- use Capzones Zone7 Zone8 Zone9
 local missionBlueAirDefenseOne = AUFTRAG:NewAIRDEFENSE( zone10 )
-missionBlueAirDefenseOne:SetRequiredAssets(6)
-missionBlueAirDefenseOne:SetRepeatOnFailure(5)
-missionBlueAirDefenseOne:SetROE(ENUMS.ROE.OpenFireWeaponFree)
+  missionBlueAirDefenseOne:SetRequiredAssets(6)
+  missionBlueAirDefenseOne:SetRepeatOnFailure(5)
+  missionBlueAirDefenseOne:SetROE(ENUMS.ROE.OpenFireWeaponFree)
 
 --Blue RECON Mission for Drone
 local missionBlueRecon = AUFTRAG:NewORBIT(zone7:GetCoordinate(), 45000, 300, 90, 30)
-missionBlueRecon:SetRequiredAssets(1)
-missionBlueRecon:SetRepeatOnFailure(99)
-missionBlueRecon:SetROE(ENUMS.ROE.OpenFireWeaponFree)
+  missionBlueRecon:SetRequiredAssets(1)
+  missionBlueRecon:SetRepeatOnFailure(99)
+  missionBlueRecon:SetROE(ENUMS.ROE.OpenFireWeaponFree)
+
+
+--Apache Commander for testing
+
+local ApCommander = COMMANDER:New(coalition.side.BLUE, "Apache Command")
+
+
+  ApCommander:AddAirwing(blueCasAirwing)
+  
+  ApCommander:AddMission(missionBlueCASzone2)
+  
+  
+  ApCommander:Start()
+
+
+
+
+
+
 
 
 
@@ -1201,19 +1225,17 @@ end
 
 --Response on targets
 
-USChief:SetResponseOnTarget(2, 2, 2, TARGET.Category.AIRCRAFT, AUFTRAG.Type.INTERCEPT)
+--USChief:SetResponseOnTarget(2, 2, 2, TARGET.Category.AIRCRAFT, AUFTRAG.Type.INTERCEPT)
 --USChief:SetResponseOnTarget(2, 4, 2, TARGET.Category.GROUND, AUFTRAG.Type.CAS)
-USChief:SetResponseOnTarget(2, 4, 3, TARGET.Category.ZONE, AUFTRAG.Type.CAPTUREZONE)
-
+--USChief:SetResponseOnTarget(2, 4, 3, TARGET.Category.ZONE, AUFTRAG.Type.CAPTUREZONE)
 
 --Strategy--  ADJUST THIS IF TOO MUCH
+
 USChief:SetStrategy(USChief.Strategy.AGGRESSIVE)
 
 --ADD BRIGADES
 
 USChief:AddBrigade(blueBrigadeArmorAlpha)
-
-
 
 --ADD AIRWINGS
 
@@ -1224,22 +1246,20 @@ USChief:AddAirwing(blueAirwing)
 
 USChief:AddMission(missionBlueCaptureZone6)
 USChief:AddMission(missionBlueCAPzone2)
-
 --USChief:AddMission(missionBlueCASzone2)
-USChief:AddMission(missionBlueRecon)
-
+--USChief:AddMission(missionBlueRecon)
 USChief:AddMission(missionBlueAirDefenseOne)
 
 
 --USChief:SetLimitMission(5)
-USChief:SetLimitMission(2, AUFTRAG.Type.CAS)
+--USChief:SetLimitMission(2, AUFTRAG.Type.CAS)
 USChief:SetLimitMission(2, AUFTRAG.Type.CAP)
 USChief:SetLimitMission(2, AUFTRAG.Type.INTERCEPT)
 USChief:SetLimitMission(2, AUFTRAG.Type.AIRDEFENSE)
 USChief:SetLimitMission(4, AUFTRAG.Type.CAPTUREZONE)
 USChief:SetLimitMission(4, AUFTRAG.Type.GROUNDATTACK)
 USChief:SetLimitMission(5, AUFTRAG.Type.PATROLZONE)
-USChief:SetLimitMission(1, AUFTRAG.Type.ORBIT)
+--USChief:SetLimitMission(1, AUFTRAG.Type.ORBIT)
 
 
 
@@ -1250,10 +1270,10 @@ local BlueStratZone1 = USChief:AddStrategicZone(opzone1, 100, 100)
 --Blue Chief Resources
 
 local BlueCAPTUREResourceOccupied = USChief:CreateResource(AUFTRAG.Type.CAPTUREZONE, 3, 6, nil, nil)
-USChief:AddToResource(BlueCAPTUREResourceOccupied, AUFTRAG.Type.PATROLZONE, 3, 6, nil, nil)
+--USChief:AddToResource(BlueCAPTUREResourceOccupied, AUFTRAG.Type.PATROLZONE, 3, 6, nil, nil)
 
 local BlueCAPTUREResourceEmpty = USChief:CreateResource(AUFTRAG.Type.ONGUARD, 3, 5)
-USChief:AddToResource(BlueCAPTUREResourceEmpty, AUFTRAG.Type.PATROLZONE, 2, 4)
+--USChief:AddToResource(BlueCAPTUREResourceEmpty, AUFTRAG.Type.PATROLZONE, 2, 4)
 
 
 --Assign StratZones to resource lists
