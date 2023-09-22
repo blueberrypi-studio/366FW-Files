@@ -845,6 +845,7 @@ local AwacsRed = AIRWING:New("WarehouseGeleAwacsAirwing", "AWACSRED")
   AwacsRed:SetRespawnAfterDestroyed(300)
   AwacsRed:SetTakeoffAir()
   AwacsRed:__Start(2)
+  AwacsRed:SetNumberAWACS(1)
 
 -- AWACS itself
 local AwacsRedSquadron = SQUADRON:New("AWACSRED", 2, "AWACSRED")
@@ -869,12 +870,12 @@ local AwacsEscortsRed = SQUADRON:New("SU35SESCORT",4,"SU35SESCORT")
   AwacsRed:NewPayload("SU35SESCORT",-1,{AUFTRAG.Type.ESCORT},100)
 
 
-local RedAwacs = AWACS:New("Awacs-Red", AwacsRed, "red", AIRBASE.Caucasus.Novorossiysk, "REDAWACSORBIT", ZONE:FindByName("REDCHIEF"), "REDCAP", 275, radio.modulation.AM )
-
-  RedAwacs:SetEscort(2)
+--local RedAwacs = AWACS:New("Awacs-Red", AwacsRed, "red", AIRBASE.Caucasus.Novorossiysk, "REDAWACSORBIT", ZONE:FindByName("REDCHIEF"), "REDCAP", 275, radio.modulation.AM )
+--
+--  RedAwacs:SetEscort(2)
 --  RedAwacs:SetAwacsDetails(CALLSIGN.AWACS.Magic,1,30,280,88,25)
-
-  RedAwacs:__Start(5)
+--
+--  RedAwacs:__Start(5)
   
   
 --RED AIRWING
@@ -893,6 +894,11 @@ local redAirwing = AIRWING:New("WarehouseNovoAirwing", "Jelly Smashers")
   redAirwing:Start()
   
 --MISSIONS
+local missionRedAwacsOrbit = AUFTRAG:NewORBIT(ZONE:FindByName("REDAWACSORBIT"):GetCoordinate(), 35000, 350, 90, 40)
+  missionRedAwacsOrbit:SetRequiredAssets(1)
+  missionRedAwacsOrbit:SetRepeatOnFailure(99)
+
+
 
 --Red Capture Mission
 local missionRedCaptureZone1=AUFTRAG:NewCAPTUREZONE(opzone1, coalition.side.RED)
@@ -927,45 +933,49 @@ local RedAgents = DetectionSetGroupRed
 local RUChief=CHIEF:New(coalition.side.RED, RedAgents)
 
 --Add border zone.
-RUChief:AddBorderZone(zone2)
+  RUChief:AddBorderZone(zone2)
 
 --Enable tactical overview.
 --RUChief:SetTacticalOverviewOn()
 
 --Response on targets
-RUChief:SetResponseOnTarget(1, 2, 1, TARGET.Category.AIRCRAFT, AUFTRAG.Type.INTERCEPT)
-RUChief:SetResponseOnTarget(8, 10, 0, TARGET.Category.ZONE, AUFTRAG.Type.CAPTUREZONE)
-RUChief:SetResponseOnTarget(5, 10, 2, TARGET.Category.GROUND, AUFTRAG.Type.PATROLZONE)
+  RUChief:SetResponseOnTarget(1, 2, 1, TARGET.Category.AIRCRAFT, AUFTRAG.Type.INTERCEPT)
+  RUChief:SetResponseOnTarget(8, 10, 0, TARGET.Category.ZONE, AUFTRAG.Type.CAPTUREZONE)
+
 
 
 
 --Strategy--  ADJUST THIS IF TOO MUCH
-RUChief:SetStrategy(RUChief.Strategy.TOTALWAR)
+  RUChief:SetStrategy(RUChief.Strategy.TOTALWAR)
 
 --ADD BRIGADES
 
-RUChief:AddBrigade(redBrigadeArmorAlpha)
+  RUChief:AddBrigade(redBrigadeArmorAlpha)
 
 
 
 --ADD AIRWINGS
 
-RUChief:AddAirwing(redAirwing)
-RUChief:AddAirwing(AwacsRed)
+  RUChief:AddAirwing(redAirwing)
+  RUChief:AddAirwing(AwacsRed)
+  
+  
 
 
 --ADD MISSIONS
-RUChief:AddMission(missionRedCaptureZone1)
-RUChief:AddMission(missionRedCAPzone2)
-RUChief:AddMission(missionRedCASzone2)
-RUChief:AddMission(missionRedAirDefenseOne)
+  RUChief:AddMission(missionRedCaptureZone1)
+  RUChief:AddMission(missionRedCAPzone2)
+  RUChief:AddMission(missionRedCASzone2)
+  RUChief:AddMission(missionRedAirDefenseOne)
+  RUChief:AddMission(missionRedAwacsOrbit)
 
-RUChief:SetLimitMission(2, AUFTRAG.Type.CAS)
-RUChief:SetLimitMission(2, AUFTRAG.Type.CAP)
-RUChief:SetLimitMission(6, AUFTRAG.Type.CAPTUREZONE)
-RUChief:SetLimitMission(2, AUFTRAG.Type.INTERCEPT)
-RUChief:SetLimitMission(6, AUFTRAG.Type.AIRDEFENSE)
---RUChief:SetLimitMission(4, AUFTRAG.TYpe.PATROLZONE)
+  RUChief:SetLimitMission(2, AUFTRAG.Type.CAS)
+  RUChief:SetLimitMission(2, AUFTRAG.Type.CAP)
+  RUChief:SetLimitMission(6, AUFTRAG.Type.CAPTUREZONE)
+  RUChief:SetLimitMission(2, AUFTRAG.Type.INTERCEPT)
+  RUChief:SetLimitMission(6, AUFTRAG.Type.AIRDEFENSE)
+
+  RUChief:SetLimitMission(1, AUFTRAG.Type.ORBIT)
 
 --RED RESOURCES
 -- Add strategic (OPS) zones.
@@ -984,12 +994,12 @@ local RedCAPTUREResourceEmpty = RUChief:CreateResource(AUFTRAG.Type.ONGUARD, 10,
 --Assign StratZones to resource lists
 
 --StratZone1 - CAPTUREZONE
-RUChief:SetStrategicZoneResourceOccupied(RedStratZone1, RedCAPTUREResourceOccupied)
-RUChief:SetStrategicZoneResourceEmpty(RedStratZone1, RedCAPTUREResourceEmpty)
+  RUChief:SetStrategicZoneResourceOccupied(RedStratZone1, RedCAPTUREResourceOccupied)
+  RUChief:SetStrategicZoneResourceEmpty(RedStratZone1, RedCAPTUREResourceEmpty)
 
 
 --Start Chief
-RUChief:Start(5)
+  RUChief:Start(5)
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ---TODO BLUEFOR
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1192,15 +1202,15 @@ local missionBlueRecon = AUFTRAG:NewORBIT(zone7:GetCoordinate(), 45000, 300, 90,
 
 --Apache Commander for testing
 
-local ApCommander = COMMANDER:New(coalition.side.BLUE, "Apache Command")
-
-
-  ApCommander:AddAirwing(blueCasAirwing)
-  
-  ApCommander:AddMission(missionBlueCASzone2)
-  
-  
-  ApCommander:Start()
+--local ApCommander = COMMANDER:New(coalition.side.BLUE, "Apache Command")
+--
+--
+--  ApCommander:AddAirwing(blueCasAirwing)
+--  
+--  ApCommander:AddMission(missionBlueCASzone2)
+--  
+--  
+--  ApCommander:Start()
 
 
 
@@ -1225,9 +1235,9 @@ end
 
 --Response on targets
 
---USChief:SetResponseOnTarget(2, 2, 2, TARGET.Category.AIRCRAFT, AUFTRAG.Type.INTERCEPT)
+USChief:SetResponseOnTarget(2, 2, 2, TARGET.Category.AIRCRAFT, AUFTRAG.Type.INTERCEPT)
 --USChief:SetResponseOnTarget(2, 4, 2, TARGET.Category.GROUND, AUFTRAG.Type.CAS)
---USChief:SetResponseOnTarget(2, 4, 3, TARGET.Category.ZONE, AUFTRAG.Type.CAPTUREZONE)
+USChief:SetResponseOnTarget(2, 4, 3, TARGET.Category.ZONE, AUFTRAG.Type.CAPTUREZONE)
 
 --Strategy--  ADJUST THIS IF TOO MUCH
 
@@ -1247,7 +1257,7 @@ USChief:AddAirwing(blueAirwing)
 USChief:AddMission(missionBlueCaptureZone6)
 USChief:AddMission(missionBlueCAPzone2)
 --USChief:AddMission(missionBlueCASzone2)
---USChief:AddMission(missionBlueRecon)
+USChief:AddMission(missionBlueRecon)
 USChief:AddMission(missionBlueAirDefenseOne)
 
 
@@ -1259,7 +1269,7 @@ USChief:SetLimitMission(2, AUFTRAG.Type.AIRDEFENSE)
 USChief:SetLimitMission(4, AUFTRAG.Type.CAPTUREZONE)
 USChief:SetLimitMission(4, AUFTRAG.Type.GROUNDATTACK)
 USChief:SetLimitMission(5, AUFTRAG.Type.PATROLZONE)
---USChief:SetLimitMission(1, AUFTRAG.Type.ORBIT)
+USChief:SetLimitMission(1, AUFTRAG.Type.ORBIT)
 
 
 
