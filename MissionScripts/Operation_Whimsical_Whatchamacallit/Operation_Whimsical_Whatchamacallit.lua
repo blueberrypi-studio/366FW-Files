@@ -61,6 +61,12 @@ should have already completed set tasks.  Use this as a mission failure.
 the main battle was fucking awesome to watch, if my machine can run it without stutters the server will be fine
 
 
+FlightTest One
+
+timing of sounds in the beginning of mission needs adjustment
+static scores are working, check the factories, they may be made of multiple pieces.
+set waypoints for all jets
+
 TODO
 reduce the number of blue cas in air, also move their spawns to a dedicated tarawa
 address the brigades and specialize the units as to see a more diverse battlefield --done needs testing
@@ -85,7 +91,7 @@ _SETTINGS:SetA2A_BRAA()
 
 local DEBUG = false
 local DEBUG_CHIEF = false
-local DEBUG_COMMANDERS = true
+local DEBUG_COMMANDERS = false
 local DEBUG_PARKING = false
 local DEBUG_SHORAD = false
 local DEBUG_SCORING = false
