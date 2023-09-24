@@ -903,6 +903,8 @@ local redAirwing = AIRWING:New("WarehouseNovoAirwing", "Jelly Smashers")
 local missionRedAwacsOrbit = AUFTRAG:NewORBIT(ZONE:FindByName("REDAWACSORBIT"):GetCoordinate(), 35000, 350, 90, 40)
   missionRedAwacsOrbit:SetRequiredAssets(1)
   missionRedAwacsOrbit:SetRepeatOnFailure(99)
+  
+
 
 
 
@@ -1047,6 +1049,11 @@ local strykeratgmPlatoonAlpha = PLATOON:New( "ATGM Stryker", 15, "ATGM Stryker A
   strykeratgmPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.GROUNDATTACK, 80)
   strykeratgmPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.ONGUARD, 70)
   strykeratgmPlatoonAlpha:SetSkill(AI.Skill.EXCELLENT)
+  
+  
+local jtacPlatoon = PLATOON:New("JTACBLUE",25,"JTACBLUE")
+  jtacPlatoon:AddMissionCapability(AUFTRAG.Type.RECON,100)
+  jtacPlatoon:SetSkill(AI.Skill.EXCELLENT)
 
 --Blue Armor Brigades
 
@@ -1057,6 +1064,7 @@ local blueBrigadeArmorAlpha = BRIGADE:New( "WarehouseBlueAlphaBrigade", "Crunchy
   blueBrigadeArmorAlpha:AddPlatoon(abramsPlatoonAlpha)
   blueBrigadeArmorAlpha:AddPlatoon(strykermgsPlatoonAlpha)
   blueBrigadeArmorAlpha:AddPlatoon(strykeratgmPlatoonAlpha)
+  blueBrigadeArmorAlpha:AddPlatoon(jtacPlatoon)
   blueBrigadeArmorAlpha:SetSpawnZone(zone6)
   blueBrigadeArmorAlpha:Start()
 
@@ -1125,7 +1133,7 @@ local blueCasAirwing = AIRWING:New("APACHEWAREHOUSE", "Jolly Ranchers")
 --BLUE AWACS
 -- We need an AirWing
 local AwacsBlue = AIRWING:New("WarehouseSochiAwacsAirwing", "AWACSBLUE")
-  --AwacsAW:SetReportOn()
+--  AwacsBlue:SetReportOn()
   AwacsBlue:SetMarker(false)
   AwacsBlue:SetAirbase(AIRBASE:FindByName(AIRBASE.Caucasus.Sochi_Adler))
   AwacsBlue:SetRespawnAfterDestroyed(300)
@@ -1204,7 +1212,16 @@ local missionBlueRecon = AUFTRAG:NewORBIT(zone7:GetCoordinate(), 45000, 300, 90,
   missionBlueRecon:SetRequiredAssets(1)
   missionBlueRecon:SetRepeatOnFailure(99)
   missionBlueRecon:SetROE(ENUMS.ROE.OpenFireWeaponFree)
+  
+--Blue Recon Mission for JTAC
 
+--create zoneset for recon
+local reconZoneSet = SET_ZONE:New():FilterPrefixes("wpzone"):FilterOnce()
+
+local missionBlueJtac = AUFTRAG:NewRECON(reconZoneSet, 23, nil, true, true, nil)
+  missionBlueJtac:SetRequiredAssets(1)
+  missionBlueJtac:SetRepeatOnFailure(99)
+  missionBlueJtac:SetROE(ENUMS.ROE.ReturnFire)
 
 --Apache Commander for testing
 
@@ -1265,6 +1282,7 @@ USChief:AddMission(missionBlueCAPzone2)
 --USChief:AddMission(missionBlueCASzone2)
 USChief:AddMission(missionBlueRecon)
 USChief:AddMission(missionBlueAirDefenseOne)
+USChief:AddMission(missionBlueJtac)
 
 
 --USChief:SetLimitMission(5)
@@ -1276,6 +1294,7 @@ USChief:SetLimitMission(4, AUFTRAG.Type.CAPTUREZONE)
 USChief:SetLimitMission(4, AUFTRAG.Type.GROUNDATTACK)
 USChief:SetLimitMission(5, AUFTRAG.Type.PATROLZONE)
 USChief:SetLimitMission(1, AUFTRAG.Type.ORBIT)
+USChief:SetLimitMission(2, AUFTRAG.Type.RECON)
 
 
 
