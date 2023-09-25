@@ -7,11 +7,11 @@ TODO
 1.  Add air defense platoons to the brigades--done
 2.  Thin out me templates
 3.  Rebuild battlezone --nearly done
-4.  Build Target List
+4.  Build Target List--done
 5.  Build commander interface --done
-6.  Build reaper set
+6.  Build reaper set--not using more than likely
 7.  Build ctld setup --done
-8.  Build csar setup
+8.  Build csar setup --NA
 9.  Rebuild zone structure - check from zone list --zone structure tested in aitest1--done
 10.  Add sounds to miz
 11.  Build Script Load Triggers
@@ -73,6 +73,16 @@ address the brigades and specialize the units as to see a more diverse battlefie
 
 change names of chief zones, as they are displayed in messages
 
+
+
+Possible Future Changes,
+
+It may be possible to make multiple target lists, this would allow for creating a strike package tailored to airframes.
+
+Create sets of clients, use either a strike target name ie. ECHO, FOXTROT some shit.  Then for each of those clients run the sequencing of targets.
+
+FOr this type of mission it would allow for sequential completion.  The cas guys would have their role and their targets, and the sead and strike guys would have their and so on.
+For future missions.  DO THIS!
 
 ]]  
 
@@ -707,7 +717,7 @@ end
 
 
 --Start Operation
-operation:__Start(30)
+operation:__Start(20)
 
 
 --Operation Start Sound
@@ -716,7 +726,7 @@ function InitialSound()
 end
 
 local Stimer = TIMER:New(InitialSound)
-Stimer:Start(11)
+Stimer:Start(60)
 
   
 
@@ -771,42 +781,44 @@ end
 local strelaPlatoonAlpha = PLATOON:New( "Strela", 15, "Strela Alpha" )
   strelaPlatoonAlpha:AddMissionCapability( AUFTRAG.Type.AIRDEFENSE, 100 )
   strelaPlatoonAlpha:SetSkill(AI.Skill.EXCELLENT)
+  strelaPlatoonAlpha:SetMissionRange(4)
 
 
 local geckoPlatoonAlpha = PLATOON:New( "SA8 Gecko", 15, "SA8 Gecko Alpha" )
   geckoPlatoonAlpha:AddMissionCapability( AUFTRAG.Type.AIRDEFENSE, 100 )
   geckoPlatoonAlpha:SetSkill(AI.Skill.EXCELLENT)
+  geckoPlatoonAlpha:SetMissionRange(4)
 
 local shilkaPlatoonAlpha = PLATOON:New( "ZSU-23 Shilka", 15, "ZSU-23 Shilka Alpha" )
   shilkaPlatoonAlpha:AddMissionCapability( AUFTRAG.Type.AIRDEFENSE, 100 )
   shilkaPlatoonAlpha:SetSkill(AI.Skill.EXCELLENT)
+  shilkaPlatoonAlpha:SetMissionRange(4)
 
 --Red Tanks
 
 local t80uPlatoonAlpha = PLATOON:New( "T80U", 35, "T80U Alpha")
---  t80uPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.GROUNDATTACK, 80)
---  t80uPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.CAPTUREZONE, 80)
-  t80uPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.PATROLZONE, 70)
-  t80uPlatoonAlpha:AddMissionCapability(AUFTRAG.Type.ONGUARD, 70)
+  t80uPlatoonAlpha:AddMissionCapability({AUFTRAG.Type.PATROLZONE, AUFTRAG.Type.GROUNDATTACK, AUFTRAG.Type.CAPTUREZONE }, 100)
   t80uPlatoonAlpha:SetSkill(AI.Skill.EXCELLENT)
+  t80uPlatoonAlpha:SetMissionRange(4)
+
 
 
 local t90PlatoonAlpha = PLATOON:New( "T90", 35, "T90 Alpha")
-  t90PlatoonAlpha:AddMissionCapability(AUFTRAG.Type.GROUNDATTACK, 80)
-  t90PlatoonAlpha:AddMissionCapability(AUFTRAG.Type.CAPTUREZONE, 80)
---  t90PlatoonAlpha:AddMissionCapability(AUFTRAG.Type.PATROLZONE, 80)
---  t90PlatoonAlpha:AddMissionCapability(AUFTRAG.Type.ONGUARD, 80)
+  t90PlatoonAlpha:AddMissionCapability({AUFTRAG.Type.GROUNDATTACK, AUFTRAG.Type.CAPTUREZONE}, 95)
   t90PlatoonAlpha:SetSkill(AI.Skill.EXCELLENT)
+  t90PlatoonAlpha:SetMissionRange(4)
+
 
 local t72PlatoonAlpha = PLATOON:New( "T72B3", 35, "T72B3 Alpha")
---  t72PlatoonAlpha:AddMissionCapability(AUFTRAG.Type.GROUNDATTACK, 80)
---  t72PlatoonAlpha:AddMissionCapability(AUFTRAG.Type.CAPTUREZONE, 80)
-  t72PlatoonAlpha:AddMissionCapability(AUFTRAG.Type.PATROLZONE, 80)
---  t72PlatoonAlpha:AddMissionCapability(AUFTRAG.Type.ONGUARD, 80)
+  t72PlatoonAlpha:AddMissionCapability({AUFTRAG.Type.PATROLZONE, AUFTRAG.Type.ONGUARD}, 100)
   t72PlatoonAlpha:SetSkill(AI.Skill.EXCELLENT)
+  t72PlatoonAlpha:SetMissionRange(4)
+  
+  
 
 --RED ARMOR BRIGADES
 local redBrigadeArmorAlpha = BRIGADE:New( "WarehouseRedAlphaBrigade", "Jelly Rolls")
+
   redBrigadeArmorAlpha:AddPlatoon(strelaPlatoonAlpha)
   redBrigadeArmorAlpha:AddPlatoon(geckoPlatoonAlpha)
   redBrigadeArmorAlpha:AddPlatoon(shilkaPlatoonAlpha)
@@ -820,15 +832,15 @@ local redBrigadeArmorAlpha = BRIGADE:New( "WarehouseRedAlphaBrigade", "Jelly Rol
 
 --CAP
 local redCapOne=SQUADRON:New("MIG29S", 16, "MIG29S") --Ops.Squadron#SQUADRON
-  redCapOne:AddMissionCapability(AUFTRAG.Type.CAP)
-  redCapOne:SetModex(100)
+  redCapOne:AddMissionCapability({AUFTRAG.Type.CAP, AUFTRAG.Type.ALERT5, AUFTRAG.Type.INTERCEPT}, 90)
+  redCapOne:SetModex(100)--you can also set a prefix here
   redCapOne:SetSkill(AI.Skill.ACE)
   redCapOne:SetTakeoffHot()
   redCapOne:SetDespawnAfterHolding(true)
 
 --INTERCEPT
 local redIntOne=SQUADRON:New("MIG31", 16, "MIG31") --Ops.Squadron#SQUADRON
-  redIntOne:AddMissionCapability(AUFTRAG.Type.INTERCEPT)
+  redIntOne:AddMissionCapability({AUFTRAG.Type.INTERCEPT, AUFTRAG.Type.ALERT5}, 90)
   redIntOne:SetModex(100)
   redIntOne:SetSkill(AI.Skill.ACE)
   redIntOne:SetTakeoffHot()
@@ -842,46 +854,16 @@ local redCasOne=SQUADRON:New("KA50", 16, "KA50")
   redCasOne:SetSkill(AI.Skill.ACE)
   redCasOne:SetDespawnAfterHolding(true)
 
---RED AWACS
 
-local AwacsRed = AIRWING:New("WarehouseGeleAwacsAirwing", "AWACSRED")
-  AwacsRed:SetReportOn()
-  AwacsRed:SetMarker(false)
-  AwacsRed:SetAirbase(AIRBASE:FindByName(AIRBASE.Caucasus.Novorossiysk))
-  AwacsRed:SetRespawnAfterDestroyed(300)
-  AwacsRed:SetTakeoffAir()
-  AwacsRed:__Start(2)
-  AwacsRed:SetNumberAWACS(1)
 
--- AWACS itself
+--Awacs
 local AwacsRedSquadron = SQUADRON:New("AWACSRED", 2, "AWACSRED")
   AwacsRedSquadron:AddMissionCapability({AUFTRAG.Type.ORBIT},100)
   AwacsRedSquadron:SetFuelLowRefuel(true)
   AwacsRedSquadron:SetFuelLowThreshold(0.2)
   AwacsRedSquadron:SetTurnoverTime(10,20)
-  AwacsRed:AddSquadron(AwacsRedSquadron)
-  AwacsRed:NewPayload("AWACSRED",-1,{AUFTRAG.Type.ORBIT},100)
+  AwacsRedSquadron:SetTakeoffAir()
 
-
-
--- Escorts
-local AwacsEscortsRed = SQUADRON:New("SU35SESCORT",4,"SU35SESCORT")
-  AwacsEscortsRed:AddMissionCapability({AUFTRAG.Type.ESCORT})
-  AwacsEscortsRed:SetFuelLowRefuel(true)
-  AwacsEscortsRed:SetFuelLowThreshold(0.3)
-  AwacsEscortsRed:SetTurnoverTime(10,20)
-  AwacsEscortsRed:SetTakeoffAir()
-  AwacsEscortsRed:SetRadio(275,radio.modulation.AM)
-  AwacsRed:AddSquadron(AwacsEscortsRed)
-  AwacsRed:NewPayload("SU35SESCORT",-1,{AUFTRAG.Type.ESCORT},100)
-
-
---local RedAwacs = AWACS:New("Awacs-Red", AwacsRed, "red", AIRBASE.Caucasus.Novorossiysk, "REDAWACSORBIT", ZONE:FindByName("REDCHIEF"), "REDCAP", 275, radio.modulation.AM )
---
---  RedAwacs:SetEscort(2)
---  RedAwacs:SetAwacsDetails(CALLSIGN.AWACS.Magic,1,30,280,88,25)
---
---  RedAwacs:__Start(5)
   
   
 --RED AIRWING
@@ -889,25 +871,34 @@ local AwacsEscortsRed = SQUADRON:New("SU35SESCORT",4,"SU35SESCORT")
 local redAirwing = AIRWING:New("WarehouseNovoAirwing", "Jelly Smashers")
 
 
+  redAirwing:SetAirbase(AIRBASE:FindByName(AIRBASE.Caucasus.Novorossiysk))
+  redAirwing:SetMarker(false)
+  redAirwing:SetReportOff()
+
   redAirwing:NewPayload("MIG31", 99, AUFTRAG.Type.INTERCEPT, 100)
   redAirwing:NewPayload("MIG29S", 99, AUFTRAG.Type.CAP, 100)
   redAirwing:NewPayload("KA50", 99, AUFTRAG.Type.CAS, 100)
-
+  redAirwing:NewPayload("AWACSRED",-1,{AUFTRAG.Type.ORBIT},100)
+  
+  
   redAirwing:AddSquadron(redCapOne)
   redAirwing:AddSquadron(redIntOne)
   redAirwing:AddSquadron(redCasOne)
+  redAirwing:AddSquadron(AwacsRedSquadron)
   
+  redAirwing:SetNumberAWACS(1)
+    
   redAirwing:Start()
+
+
   
 --MISSIONS
+
+--Awacs Orbit
 local missionRedAwacsOrbit = AUFTRAG:NewORBIT(ZONE:FindByName("REDAWACSORBIT"):GetCoordinate(), 35000, 350, 90, 40)
   missionRedAwacsOrbit:SetRequiredAssets(1)
   missionRedAwacsOrbit:SetRepeatOnFailure(99)
   
-
-
-
-
 --Red Capture Mission
 local missionRedCaptureZone1=AUFTRAG:NewCAPTUREZONE(opzone1, coalition.side.RED)
   missionRedCaptureZone1:SetRequiredAssets(12)
@@ -932,6 +923,10 @@ local missionRedAirDefenseOne = AUFTRAG:NewAIRDEFENSE(zone10)
   missionRedAirDefenseOne:SetRepeatOnFailure(99)
   missionRedAirDefenseOne:SetROE(ENUMS.ROE.OpenFireWeaponFree)
 
+
+
+
+
 --RED CHIEF
 
 --Agents
@@ -951,8 +946,6 @@ local RUChief=CHIEF:New(coalition.side.RED, RedAgents)
   RUChief:SetResponseOnTarget(8, 10, 0, TARGET.Category.ZONE, AUFTRAG.Type.CAPTUREZONE)
 
 
-
-
 --Strategy--  ADJUST THIS IF TOO MUCH
   RUChief:SetStrategy(RUChief.Strategy.TOTALWAR)
 
@@ -960,13 +953,9 @@ local RUChief=CHIEF:New(coalition.side.RED, RedAgents)
 
   RUChief:AddBrigade(redBrigadeArmorAlpha)
 
-
-
 --ADD AIRWINGS
 
   RUChief:AddAirwing(redAirwing)
-  RUChief:AddAirwing(AwacsRed)
-  
   
 
 
@@ -982,7 +971,6 @@ local RUChief=CHIEF:New(coalition.side.RED, RedAgents)
   RUChief:SetLimitMission(6, AUFTRAG.Type.CAPTUREZONE)
   RUChief:SetLimitMission(2, AUFTRAG.Type.INTERCEPT)
   RUChief:SetLimitMission(6, AUFTRAG.Type.AIRDEFENSE)
-
   RUChief:SetLimitMission(1, AUFTRAG.Type.ORBIT)
 
 --RED RESOURCES
@@ -1151,14 +1139,14 @@ local AwacsBlueSquadron = SQUADRON:New("AWACSBLUE", 2, "AWACSBLUE")
 
 
 -- Escorts
-local AwacsEscortsRed = SQUADRON:New("F14BESCORT",4,"F14BESCORT")
-  AwacsEscortsRed:AddMissionCapability({AUFTRAG.Type.ESCORT})
-  AwacsEscortsRed:SetFuelLowRefuel(true)
-  AwacsEscortsRed:SetFuelLowThreshold(0.3)
-  AwacsEscortsRed:SetTurnoverTime(10,20)
-  AwacsEscortsRed:SetTakeoffAir()
-  AwacsEscortsRed:SetRadio(275,radio.modulation.AM)
-  AwacsBlue:AddSquadron(AwacsEscortsRed)
+local AwacsEscortsBlue = SQUADRON:New("F14BESCORT",4,"F14BESCORT")
+  AwacsEscortsBlue:AddMissionCapability({AUFTRAG.Type.ESCORT})
+  AwacsEscortsBlue:SetFuelLowRefuel(true)
+  AwacsEscortsBlue:SetFuelLowThreshold(0.3)
+  AwacsEscortsBlue:SetTurnoverTime(10,20)
+  AwacsEscortsBlue:SetTakeoffAir()
+  AwacsEscortsBlue:SetRadio(275,radio.modulation.AM)
+  AwacsBlue:AddSquadron(AwacsEscortsBlue)
   AwacsBlue:NewPayload("F14BESCORT",-1,{AUFTRAG.Type.ESCORT},100)
 
 
