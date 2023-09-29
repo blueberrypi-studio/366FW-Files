@@ -18,6 +18,7 @@ TODO
 12.  Fix awacs breaking srs/ to do this more than likely just establish an Orbit AUFTRAG using the persistent AWACS build, and just scratch the voice coms from awacs
 13.  Shorad--done
 14.  Mantis--done
+15.  ADD RAT
 
 
 Ideas-
@@ -995,7 +996,7 @@ local RedCAPTUREResourceEmpty = RUChief:CreateResource(AUFTRAG.Type.ONGUARD, 10,
 
 
 --Start Chief
-  RUChief:Start(5)
+  RUChief:Start(10)
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ---TODO BLUEFOR
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1190,10 +1191,20 @@ local missionBlueCASzone2 = AUFTRAG:NewCAS(zone10, 5000, 250, nil, 90, 5, {"Grou
   missionBlueCASzone2:SetROE(ENUMS.ROE.OpenFireWeaponFree)
 
 --Air Defense Missions -- use Capzones Zone7 Zone8 Zone9
-local missionBlueAirDefenseOne = AUFTRAG:NewAIRDEFENSE( zone10 )
-  missionBlueAirDefenseOne:SetRequiredAssets(6)
-  missionBlueAirDefenseOne:SetRepeatOnFailure(5)
+local missionBlueAirDefenseOne = AUFTRAG:NewAIRDEFENSE( ZONE:FindByName("adZone1") )
+  missionBlueAirDefenseOne:SetRequiredAssets(2)
+  missionBlueAirDefenseOne:SetRepeatOnFailure(15)
   missionBlueAirDefenseOne:SetROE(ENUMS.ROE.OpenFireWeaponFree)
+  
+local missionBlueAirDefenseTwo = AUFTRAG:NewAIRDEFENSE( ZONE:FindByName("adZone2") )
+  missionBlueAirDefenseTwo:SetRequiredAssets(2)
+  missionBlueAirDefenseTwo:SetRepeatOnFailure(15)
+  missionBlueAirDefenseTwo:SetROE(ENUMS.ROE.OpenFireWeaponFree)
+  
+local missionBlueAirDefenseThree = AUFTRAG:NewAIRDEFENSE( ZONE:FindByName("adZone3") )
+  missionBlueAirDefenseThree:SetRequiredAssets(2)
+  missionBlueAirDefenseThree:SetRepeatOnFailure(15)
+  missionBlueAirDefenseThree:SetROE(ENUMS.ROE.OpenFireWeaponFree) 
 
 --Blue RECON Mission for Drone
 local missionBlueRecon = AUFTRAG:NewORBIT(zone7:GetCoordinate(), 45000, 300, 90, 30)
@@ -1206,7 +1217,7 @@ local missionBlueRecon = AUFTRAG:NewORBIT(zone7:GetCoordinate(), 45000, 300, 90,
 --create zoneset for recon
 local reconZoneSet = SET_ZONE:New():FilterPrefixes("wpzone"):FilterOnce()
 
-local missionBlueJtac = AUFTRAG:NewRECON(reconZoneSet, 23, nil, true, true, nil)
+local missionBlueJtac = AUFTRAG:NewRECON(reconZoneSet, 6, nil, true, true, nil)
   missionBlueJtac:SetRequiredAssets(1)
   missionBlueJtac:SetRepeatOnFailure(99)
   missionBlueJtac:SetROE(ENUMS.ROE.ReturnFire)
@@ -1270,6 +1281,11 @@ USChief:AddMission(missionBlueCAPzone2)
 --USChief:AddMission(missionBlueCASzone2)
 USChief:AddMission(missionBlueRecon)
 USChief:AddMission(missionBlueAirDefenseOne)
+USChief:AddMission(missionBlueAirDefenseTwo)
+USChief:AddMission(missionBlueAirDefenseThree)
+
+
+
 USChief:AddMission(missionBlueJtac)
 
 
@@ -1277,7 +1293,7 @@ USChief:AddMission(missionBlueJtac)
 --USChief:SetLimitMission(2, AUFTRAG.Type.CAS)
 USChief:SetLimitMission(2, AUFTRAG.Type.CAP)
 USChief:SetLimitMission(2, AUFTRAG.Type.INTERCEPT)
-USChief:SetLimitMission(2, AUFTRAG.Type.AIRDEFENSE)
+USChief:SetLimitMission(3, AUFTRAG.Type.AIRDEFENSE)
 USChief:SetLimitMission(4, AUFTRAG.Type.CAPTUREZONE)
 USChief:SetLimitMission(4, AUFTRAG.Type.GROUNDATTACK)
 USChief:SetLimitMission(5, AUFTRAG.Type.PATROLZONE)
@@ -1306,7 +1322,7 @@ USChief:SetStrategicZoneResourceEmpty(BlueStratZone1, BlueCAPTUREResourceEmpty)
 
 
 
-USChief:Start(30)
+USChief:Start(15)
 
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1377,7 +1393,7 @@ end
 
 ZoneCaptureCoalitionOne:__Guard( 1 )
   
-ZoneCaptureCoalitionOne:Start( 30, 120 )
+ZoneCaptureCoalitionOne:Start( 60, 120 )
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ---TODO EXTRAS
