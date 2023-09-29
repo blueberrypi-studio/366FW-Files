@@ -1501,4 +1501,42 @@ function blueTankerWing:OnAfterFlightOnMission(From, Event, To, Flightgroup, Mis
 end
 
 
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+---TODO RAT
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+--random air traffic [rat]
+
+--red civs
+
+local redRatTemplateSet = SET_GROUP:New():FilterPrefixes("RR"):FilterStart()
+
+local redRat = RAT:New("Red737Civ", "737 Civilian Russian")
+
+  redRat:SetCoalition()
+  redRat:InitRandomizeTemplateSet(redRatTemplateSet)
+  redRat:Commute(true)
+  redRat:ContinueJourney()
+  redRat:Spawn(3)
+
+
+local blueRatTemplateSet = SET_GROUP:New():FilterPrefixes("BR"):FilterStart()
+
+local blueRat = RAT:New("Blue737Civ", "737 Civilian US")
+
+  blueRat:SetCoalition()
+  blueRat:InitRandomizeTemplateSet(blueRatTemplateSet)
+  blueRat:Commute(true)
+  blueRat:ContinueJourney()
+  blueRat:Spawn(3)
+
+
+--need to add score reduction and penalty for kill
+
+
+
+
+
+
 
