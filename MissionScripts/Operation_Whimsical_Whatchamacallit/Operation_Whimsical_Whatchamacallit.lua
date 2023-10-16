@@ -15,10 +15,10 @@ TODO
 9.  Rebuild zone structure - check from zone list --zone structure tested in aitest1--done
 10.  Add sounds to miz
 11.  Build Script Load Triggers
-12.  Fix awacs breaking srs/ to do this more than likely just establish an Orbit AUFTRAG using the persistent AWACS build, and just scratch the voice coms from awacs
+12.  Fix awacs breaking srs/ to do this more than likely just establish an Orbit AUFTRAG using the persistent AWACS build, and just scratch the voice coms from awacs --done was Red side
 13.  Shorad--done
 14.  Mantis--done
-15.  ADD RAT
+15.  ADD RAT -- Needs more testing
 
 
 Ideas-
@@ -378,6 +378,7 @@ local redMantis = MANTIS:New("Fun Factory AAA", "Red AAA", "EWRRED", nil, "red",
   redMantis:SetSAMRadius(UTILS.NMToMeters(40))
   redMantis:SetSAMRange(85)
   redMantis:SetDetectInterval(20)
+  redMantis:SetAutoRelocate(true, true)
   
   redMantis:Start()
   
@@ -1530,6 +1531,7 @@ local blueRat = RAT:New("Blue737Civ", "737 Civilian US")
   blueRat:Commute(true)
   blueRat:ContinueJourney()
   blueRat:Spawn(3)
+  blueRat:Invisible()
 
 
 --need to add score reduction and penalty for kill
